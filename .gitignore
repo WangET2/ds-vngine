@@ -1,0 +1,6 @@
+*.nds
+.ninja_deps
+.ninja_log
+ninja.exe
+architectds/
+build/

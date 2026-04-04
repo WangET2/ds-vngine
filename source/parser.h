@@ -1,0 +1,34 @@
+#ifndef PARSER_H
+#define PARSER_H
+
+#define PARSER_MAX_ARGS 4
+#define PARSER_MAX_TOKEN_LEN 128
+#define PARSER_MAX_LINE_LEN 512
+
+typedef enum{
+    CMD_BG = 0,
+
+    CMD_SHOW_LEFT,
+    CMD_SHOW_RIGHT,
+    CMD_SHOW_CENTER,
+
+    CMD_HIDE_LEFT,
+    CMD_HIDE_RIGHT,
+    CMD_HIDE_CENTER,
+
+    CMD_SAY,
+    CMD_NARRATE,
+    
+    CMD_WAIT,
+    CMD_LOAD,
+    CMD_END
+} CommandType;
+
+typedef struct{
+    CommandType command;
+    char args[PARSER_MAX_ARGS][PARSER_MAX_TOKEN_LEN];
+} ParsedCommand;
+
+int parser_parse_line(const char *line,  ParsedCommand *out);
+
+#endif
