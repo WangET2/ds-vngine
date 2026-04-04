@@ -40,8 +40,8 @@ static PrintConsole narrationBox;
 static int subTextBg;
 
 void text_init(void){
-    consoleInit(&dialogueBox, MAIN_DISPLAY_BG_TEXT, BgType_Text4bpp, BgSize_T_256x256, 
-                MAIN_TEXT_MAP_BASE, MAIN_TEXT_TILE_BASE, true, true);
+    consoleInit(&dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
+                MAIN_TEXT_MAPBASE, MAIN_TEXT_TILEBASE, true, true);
     speakerBox = dialogueBox;
 
     subTextBg = bgInitSub(0, BgType_Text4bpp, BgSize_T_256x256, 0, 1);
@@ -54,8 +54,7 @@ void text_init(void){
     consoleSetWindow(&narrationBox, SUB_ANCHOR_X, SUB_ANCHOR_Y, 26, 8);
     g_text.frames_per_char = FRAMESPERCHAR;
 
-    //mainTextBg = bgInitHidden(2, BgType_Text8bpp, BgSize_T_256x256, 17, 7);
-    int mainTextBg = display_get_main_bg(MAIN_DISPLAY_BG_TEXTBOX);
+    int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
     void *bgData = NULL;
     size_t bgSize = 0;
     void *palData = NULL;
@@ -66,7 +65,7 @@ void text_init(void){
     memcpy(bgGetGfxPtr(mainTextBg), bgData, bgSize);
     memcpy(bgGetMapPtr(mainTextBg), mapData, mapSize);
     vramSetBankE(VRAM_E_LCD);
-    memcpy(VRAM_E_EXT_PALETTE[MAIN_DISPLAY_BG_TEXTBOX][1], palData, palSize);
+    memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][1], palData, palSize);
     vramSetBankE(VRAM_E_BG_EXT_PALETTE);
     bgExtPaletteEnable();
     free(bgData);
@@ -90,13 +89,13 @@ void text_clear(void){
     consoleClear();
     consoleSelect(&narrationBox);
     consoleClear();
-    int mainTextBg = display_get_main_bg(MAIN_DISPLAY_BG_TEXTBOX);
+    int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
     bgHide(mainTextBg);
 }
 
 void text_begin_dialogue(const char *speaker, const char *text) {
     text_clear();
-    int mainTextBg = display_get_main_bg(MAIN_DISPLAY_BG_TEXTBOX);
+    int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
     bgShow(mainTextBg);
     strcpy(g_text.speaker, speaker);
     consoleSelect(&speakerBox);

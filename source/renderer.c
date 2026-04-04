@@ -66,7 +66,7 @@ void renderer_init(void){
     for(int i = 0; i < NUM_BITMAP_SPRITES; ++i) sprite_mem[i] = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_Bmp);
     /*bgMain = bgInit(3, BgType_Bmp8, BgSize_B8_256x256, 3, 0);
     bgShow(bgMain);*/
-    int bgMain = display_get_main_bg(MAIN_DISPLAY_BG_SCENE);
+    int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
 }
 
@@ -83,7 +83,7 @@ void renderer_reset(void){
     renderer_hide_center();
     renderer_hide_left();
     renderer_hide_right();
-    int bgMain = display_get_main_bg(MAIN_DISPLAY_BG_SCENE);
+    int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgHide(bgMain);
 }
 
@@ -116,7 +116,7 @@ void renderer_hide_center(void){
 }
 
 int renderer_set_background(const char *bg_name) {
-    int bgMain = display_get_main_bg(MAIN_DISPLAY_BG_SCENE);
+    int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     void *bgData = NULL;
     size_t bgSize = 0;
     void *palData = NULL;

@@ -14,21 +14,23 @@ void display_init(void){
 
     
     
-    main_scene_bg = bgInitHidden(MAIN_DISPLAY_BG_SCENE, BgType_Bmp8, BgSize_B8_256x256,
-                                MAIN_SCENE_MAP_BASE, 0);
-    
-    main_textbox_bg = bgInitHidden(MAIN_DISPLAY_BG_TEXTBOX, BgType_Text8bpp, BgSize_T_256x256, 
-                                MAIN_TEXTBOX_MAP_BASE, MAIN_TEXTBOX_TILE_BASE);
+    main_scene_bg = bgInitHidden(MAIN_LAYER_SCENE, BgType_Bmp8, BgSize_B8_256x256,
+                                MAIN_SCENE_BITMAPBASE, 0);
+    main_textbox_bg = bgInitHidden(MAIN_LAYER_TEXTBOX, BgType_Text8bpp, BgSize_T_256x256,
+                                    MAIN_TEXTBOX_MAPBASE, MAIN_TEXTBOX_TILEBASE);
     
     //TODO: bginitsubhidden yada yada
+
+    sub_textbox_bg = bgInitHiddenSub(SUB_LAYER_TEXTBOX, BgType_Text8bpp, BgSize_T_256x256,
+                                    SUB_TEXTBOX_MAPBASE, SUB_TEXTBOX_TILEBASE);
 }
 
 int display_get_main_bg(MainDisplayBgLayer layer){
     switch(layer){
-        case MAIN_DISPLAY_BG_TEXTBOX:
+        case MAIN_LAYER_TEXTBOX:
             return main_textbox_bg;
             break;
-        case MAIN_DISPLAY_BG_SCENE:
+        case MAIN_LAYER_SCENE:
             return main_scene_bg;
             break;
         default:
