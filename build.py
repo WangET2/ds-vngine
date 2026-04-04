@@ -7,9 +7,9 @@
 from architectds import *
 
 nitrofs = NitroFS()
-nitrofs.add_grit(['graphics'])
-nitrofs.add_files_unchanged(['scripts'], out_dir='scripts')
-nitrofs.add_files_unchanged(['graphics/sprites/offsets'], out_dir='offsets')
+nitrofs.add_grit(['assets/graphics'])
+nitrofs.add_files_unchanged(['assets/scripts'], out_dir='scripts')
+nitrofs.add_files_unchanged(['assets/graphics/sprites/offsets'], out_dir='offsets')
 nitrofs.generate_image()
 
 arm9 = Arm9Binary(
