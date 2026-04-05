@@ -10,7 +10,7 @@ enum {
     LEFT_ANCHOR_X = -16,
     RIGHT_ANCHOR_X = 144,
     CENTER_ANCHOR_X = 64,
-    ANCHOR_Y = 78
+    ANCHOR_Y = 74
 };
 
 enum {
@@ -54,6 +54,7 @@ static void renderer_hide_portrait(const PortraitSlot *slot);
 static int get_portrait_offset(const char *name, const char *expression);
 static inline int sprite_x(int anchor, int i);
 static inline int sprite_y(int i);
+int renderer_set_sub_default(void);
 
 void renderer_init(void){
     /*videoSetMode(MODE_3_2D);
@@ -68,6 +69,7 @@ void renderer_init(void){
     bgShow(bgMain);*/
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
+    renderer_set_sub_default();
 }
 
 void renderer_update(void)
@@ -131,6 +133,23 @@ int renderer_set_background(const char *bg_name) {
     free(bgData);
     free(palData);
     bgShow(bgMain);
+    return 0;
+}
+
+int renderer_set_sub_default(void){
+    int bgSub = display_get_sub_bg(SUB_LAYER_SCENE);
+    void *bgData = NULL;
+    size_t bgSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    GRFError err = grfLoadPath("nitro:/grit/bg/subbg_png.grf", NULL, &bgData, &bgSize,
+                               NULL, NULL, &palData, &palSize); 
+    if(err != GRF_NO_ERROR) return -1;
+    memcpy(bgGetGfxPtr(bgSub), bgData, bgSize);
+    memcpy(BG_PALETTE_SUB, palData, palSize);
+    free(bgData);
+    free(palData);
+    bgShow(bgSub);
     return 0;
 }
 
