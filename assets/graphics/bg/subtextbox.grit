@@ -1,0 +1,2 @@
+# 16 bpp, bitmap, not compressed
+-gB8 -gt -m -mp0-mLf -gTFF00FF
