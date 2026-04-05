@@ -7,13 +7,15 @@
 #include <stdbool.h>
 #define FRAMESPERCHAR 2
 
+void load_textbox_gfx(bool main);
+
 enum {
     MAIN_ANCHOR_X = 2,
     MAIN_ANCHOR_Y = 20,
     SPEAKER_ANCHOR_X = 2,
     SPEAKER_ANCHOR_Y = 18,
-    SUB_ANCHOR_X = 4,
-    SUB_ANCHOR_Y = 3
+    SUB_ANCHOR_X = 3,
+    SUB_ANCHOR_Y = 4
 };
 
 typedef struct {
@@ -37,24 +39,25 @@ static PrintConsole speakerBox;
 static PrintConsole narrationBox;
 
 //static int mainTextBg;
-static int subTextBg;
+//static int subTextBg;
 
 void text_init(void){
     consoleInit(&dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 MAIN_TEXT_MAPBASE, MAIN_TEXT_TILEBASE, true, true);
     speakerBox = dialogueBox;
 
-    subTextBg = bgInitSub(0, BgType_Text4bpp, BgSize_T_256x256, 0, 1);
-    bgShow(subTextBg);
-    bgSetPriority(subTextBg, 2);
-    consoleInit(&narrationBox, 1, BgType_Text4bpp, BgSize_T_256x256, 16, 0, false, true);
+    /*subTextBg = bgInitSub(1, BgType_Text4bpp, BgSize_T_256x256, 0, 1);
+    bgShow(subTextBg);*/
+    
+    consoleInit(&narrationBox, SUB_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
+                SUB_TEXT_MAPBASE, SUB_TEXT_TILEBASE, false, true);
 
     consoleSetWindow(&dialogueBox, MAIN_ANCHOR_X, MAIN_ANCHOR_Y, 26, 4);
     consoleSetWindow(&speakerBox, SPEAKER_ANCHOR_X, SPEAKER_ANCHOR_Y, 20, 1);
     consoleSetWindow(&narrationBox, SUB_ANCHOR_X, SUB_ANCHOR_Y, 26, 8);
     g_text.frames_per_char = FRAMESPERCHAR;
 
-    int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
+    /*int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
     void *bgData = NULL;
     size_t bgSize = 0;
     void *palData = NULL;
@@ -65,15 +68,37 @@ void text_init(void){
     memcpy(bgGetGfxPtr(mainTextBg), bgData, bgSize);
     memcpy(bgGetMapPtr(mainTextBg), mapData, mapSize);
     vramSetBankE(VRAM_E_LCD);
-    memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][1], palData, palSize);
+    memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][0], palData, palSize);
     vramSetBankE(VRAM_E_BG_EXT_PALETTE);
-    bgExtPaletteEnable();
     free(bgData);
     free(mapData);
     free(palData);
     bgSetPriority(mainTextBg, 0);
-    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG2 | BLEND_DST_BG3;
+    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG2;
     REG_BLDALPHA = 12 | (4 << 8);
+
+    int subTextBg = display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    void *subBgData = NULL;
+    size_t subBgSize = 0;
+    void *subPalData = NULL;
+    size_t subPalSize = 0;
+    void *subMapData = NULL;
+    size_t subMapSize = 0;
+    grfLoadPath("nitro:/grit/bg/subtextbox_png.grf", NULL, &subBgData, &subBgSize, &subMapData, &subMapSize, &subPalData, &subPalSize);
+    memcpy(bgGetGfxPtr(subTextBg), subBgData, subBgSize);
+    memcpy(bgGetMapPtr(subTextBg), subMapData, subMapSize);
+    vramSetBankH(VRAM_H_LCD);
+    memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_TEXTBOX][0], subPalData, subPalSize);
+    vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
+    free(subBgData);
+    free(subMapData);
+    free(subPalData);
+    bgSetPriority(subTextBg, 0);
+    bgExtPaletteEnable();
+    bgExtPaletteEnableSub();*/
+
+    load_textbox_gfx(true);
+    load_textbox_gfx(false);
 }
 
 void text_clear(void){
@@ -91,6 +116,8 @@ void text_clear(void){
     consoleClear();
     int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
     bgHide(mainTextBg);
+    int subTextBg = display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    bgHide(subTextBg);
 }
 
 void text_begin_dialogue(const char *speaker, const char *text) {
@@ -110,6 +137,8 @@ void text_begin_dialogue(const char *speaker, const char *text) {
 
 void text_begin_narration(const char *text) {
     text_clear();
+    int subTextBg = display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    bgShow(subTextBg);
     strcpy(g_text.speaker, "");
     strcpy(g_text.text, text);
     g_text.total_chars = strlen(text);
@@ -140,4 +169,39 @@ void text_finish_immediately(void){
 
 bool text_is_finished(void){
     return g_text.finished;
+}
+
+void load_textbox_gfx(bool main){
+    int textboxBg = main ? display_get_main_bg(MAIN_LAYER_TEXTBOX) : display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    void *bgData = NULL;
+    size_t bgSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    void *mapData = NULL;
+    size_t mapSize = 0;
+    if(main)
+        grfLoadPath("nitro:/grit/bg/maintextbox_png.grf", NULL, &bgData, &bgSize, &mapData, &mapSize, &palData, &palSize);
+    else
+        grfLoadPath("nitro:/grit/bg/subtextbox_png.grf", NULL, &bgData, &bgSize, &mapData, &mapSize, &palData, &palSize);
+    memcpy(bgGetGfxPtr(textboxBg), bgData, bgSize);
+    memcpy(bgGetMapPtr(textboxBg), mapData, mapSize);
+    if(main){
+        vramSetBankE(VRAM_E_LCD);
+        memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][0], palData, palSize);
+        vramSetBankE(VRAM_E_BG_EXT_PALETTE);
+        bgExtPaletteEnable();
+        REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG2;
+        REG_BLDALPHA = 12 | (4 << 8);
+    } else{
+        vramSetBankH(VRAM_H_LCD);
+        memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_TEXTBOX][0], palData, palSize);
+        vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
+        bgExtPaletteEnableSub();
+        REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_SRC_BG3;
+        REG_BLDALPHA_SUB = 8 | (4 << 8);
+    }
+    free(bgData);
+    free(mapData);
+    free(palData);
+    bgSetPriority(textboxBg, 0);
 }

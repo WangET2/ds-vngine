@@ -42,15 +42,6 @@ typedef enum{
     SUB_SCENE_BITMAPBASE = 4
 }SubMapBase;
 
-//temp please don't break please don't break
-#define SUB_TEXT_MAP_BASE 0
-#define SUB_TEXT_TILE_BASE 1
-
-#define SUB_TEXTBOX_MAP_BASE 1
-#define SUB_TEXTBOX_TILE_BASE 2
-
-#define SUB_UI_MAP_BASE 2
-
 
 void display_init(void);
 
