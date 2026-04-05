@@ -38,16 +38,10 @@ static PrintConsole dialogueBox;
 static PrintConsole speakerBox;
 static PrintConsole narrationBox;
 
-//static int mainTextBg;
-//static int subTextBg;
-
 void text_init(void){
     consoleInit(&dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 MAIN_TEXT_MAPBASE, MAIN_TEXT_TILEBASE, true, true);
     speakerBox = dialogueBox;
-
-    /*subTextBg = bgInitSub(1, BgType_Text4bpp, BgSize_T_256x256, 0, 1);
-    bgShow(subTextBg);*/
     
     consoleInit(&narrationBox, SUB_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 SUB_TEXT_MAPBASE, SUB_TEXT_TILEBASE, false, true);

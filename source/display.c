@@ -19,8 +19,6 @@ void display_init(void){
     main_textbox_bg = bgInitHidden(MAIN_LAYER_TEXTBOX, BgType_Text8bpp, BgSize_T_256x256,
                                     MAIN_TEXTBOX_MAPBASE, MAIN_TEXTBOX_TILEBASE);
     
-    //TODO: bginitsubhidden yada yada
-
     sub_textbox_bg = bgInitHiddenSub(SUB_LAYER_TEXTBOX, BgType_Text8bpp, BgSize_T_256x256,
                                     SUB_TEXTBOX_MAPBASE, SUB_TEXTBOX_TILEBASE);
     sub_ui_bg = bgInitHiddenSub(SUB_LAYER_UI, BgType_Text8bpp, BgSize_T_256x256,

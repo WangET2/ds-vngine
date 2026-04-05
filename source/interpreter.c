@@ -27,51 +27,6 @@ void interpreter_reset(void){
     blockType = BLOCK_NONE;
 }
 
-/* InterpreterResult interpreter_execute(const ParsedCommand *cmd){
-    if(strcmp(cmd->command, "SAY") == 0){
-        blocked = true;
-        text_begin_dialogue(&cmd->args[0], &cmd->args[1]);
-        return INTERPRETER_RESULT_BLOCKED;
-    } else if(strcmp(cmd->command, "NARRATE") == 0){
-        blocked = true;
-        text_begin_narration(&cmd->args[0]);
-        return INTERPRETER_RESULT_BLOCKED;
-    } else if(strcmp(cmd->command, "WAIT") == 0){
-        blocked = true;
-        return INTERPRETER_RESULT_BLOCKED;
-    } else if(strcmp(cmd->command, "HIDE_LEFT") == 0){
-        blocked = false;
-        renderer_hide_left();
-        return INTERPRETER_RESULT_OK;
-    } else if(strcmp(cmd->command, "HIDE_RIGHT") == 0){
-        blocked = false;
-        renderer_hide_right();
-        return INTERPRETER_RESULT_OK;
-    } else if(strcmp(cmd->command, "HIDE_CENTER") == 0){
-        blocked = false;
-        renderer_hide_center();
-        return INTERPRETER_RESULT_OK;
-    } else if(strcmp(cmd->command, "SHOW_LEFT") == 0){
-        blocked = false;
-        int ret = renderer_show_left(&cmd->arg[0], &cmd->arg[1]);
-        return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
-    } else if(strcmp(cmd->command, "SHOW_RIGHT") == 0){
-        blocked = false;
-        int ret = renderer_show_right(&cmd->arg[0], &cmd->arg[1]);
-        return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
-    } else if(strcmp(cmd->command, "SHOW_CENTER") == 0){
-        blocked = false;
-        int ret = renderer_show_center(&cmd->arg[0], &cmd->arg[1]);
-        return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
-    } else if(strcmp(cmd->command, "BG") == 0){
-        blocked = false;
-        int ret = renderer_set_background(&cmd->arg[0]);
-        return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
-    }
-    return INTERPRETER_RESULT_ERROR;
-}
-*/
-
 InterpreterResult interpreter_execute(const ParsedCommand *cmd){
     int ret;
     switch(cmd->command) {
