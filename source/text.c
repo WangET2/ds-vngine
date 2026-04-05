@@ -57,46 +57,6 @@ void text_init(void){
     consoleSetWindow(&narrationBox, SUB_ANCHOR_X, SUB_ANCHOR_Y, 26, 8);
     g_text.frames_per_char = FRAMESPERCHAR;
 
-    /*int mainTextBg = display_get_main_bg(MAIN_LAYER_TEXTBOX);
-    void *bgData = NULL;
-    size_t bgSize = 0;
-    void *palData = NULL;
-    size_t palSize = 0;
-    void *mapData = NULL;
-    size_t mapSize = 0;
-    grfLoadPath("nitro:/grit/bg/maintextbox_png.grf", NULL, &bgData, &bgSize, &mapData, &mapSize, &palData, &palSize);
-    memcpy(bgGetGfxPtr(mainTextBg), bgData, bgSize);
-    memcpy(bgGetMapPtr(mainTextBg), mapData, mapSize);
-    vramSetBankE(VRAM_E_LCD);
-    memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][0], palData, palSize);
-    vramSetBankE(VRAM_E_BG_EXT_PALETTE);
-    free(bgData);
-    free(mapData);
-    free(palData);
-    bgSetPriority(mainTextBg, 0);
-    REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG2;
-    REG_BLDALPHA = 12 | (4 << 8);
-
-    int subTextBg = display_get_sub_bg(SUB_LAYER_TEXTBOX);
-    void *subBgData = NULL;
-    size_t subBgSize = 0;
-    void *subPalData = NULL;
-    size_t subPalSize = 0;
-    void *subMapData = NULL;
-    size_t subMapSize = 0;
-    grfLoadPath("nitro:/grit/bg/subtextbox_png.grf", NULL, &subBgData, &subBgSize, &subMapData, &subMapSize, &subPalData, &subPalSize);
-    memcpy(bgGetGfxPtr(subTextBg), subBgData, subBgSize);
-    memcpy(bgGetMapPtr(subTextBg), subMapData, subMapSize);
-    vramSetBankH(VRAM_H_LCD);
-    memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_TEXTBOX][0], subPalData, subPalSize);
-    vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
-    free(subBgData);
-    free(subMapData);
-    free(subPalData);
-    bgSetPriority(subTextBg, 0);
-    bgExtPaletteEnable();
-    bgExtPaletteEnableSub();*/
-
     load_textbox_gfx(true);
     load_textbox_gfx(false);
 }
