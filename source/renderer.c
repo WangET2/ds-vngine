@@ -4,6 +4,7 @@
 #include <nds.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 enum {
@@ -117,7 +118,7 @@ void renderer_hide_center(void){
     renderer_hide_portrait(&CENTER_SLOT);
 }
 
-int renderer_set_background(const char *bg_name) {
+/*int renderer_set_background(const char *bg_name) {
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     void *bgData = NULL;
     size_t bgSize = 0;
@@ -134,10 +135,32 @@ int renderer_set_background(const char *bg_name) {
     free(palData);
     bgShow(bgMain);
     return 0;
+}*/
+
+int renderer_set_background(const char *bg_name, bool mainScreen) {
+    int bg = mainScreen ? display_get_main_bg(MAIN_LAYER_SCENE) : display_get_sub_bg(SUB_LAYER_SCENE);
+    void *bgData = NULL;
+    size_t bgSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    char path[100];
+    snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", bg_name);
+    GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,
+                               NULL, NULL, &palData, &palSize); 
+    if(err != GRF_NO_ERROR) return -1;
+    memcpy(bgGetGfxPtr(bg), bgData, bgSize);
+    if(mainScreen)
+        memcpy(BG_PALETTE, palData, palSize);
+    else
+        memcpy(BG_PALETTE_SUB, palData, palSize);
+    free(bgData);
+    free(palData);
+    bgShow(bg);
+    return 0;
 }
 
 int renderer_set_sub_default(void){
-    int bgSub = display_get_sub_bg(SUB_LAYER_SCENE);
+    /*int bgSub = display_get_sub_bg(SUB_LAYER_SCENE);
     void *bgData = NULL;
     size_t bgSize = 0;
     void *palData = NULL;
@@ -150,7 +173,8 @@ int renderer_set_sub_default(void){
     free(bgData);
     free(palData);
     bgShow(bgSub);
-    return 0;
+    return 0;*/
+    return renderer_set_background("subbg", false);
 }
 
 static int load_bmp_sprite(const char *path, void *gfxAlloc) {

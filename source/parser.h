@@ -7,6 +7,7 @@
 
 typedef enum{
     CMD_BG = 0,
+    CMD_BG_SUB,
 
     CMD_SHOW_LEFT,
     CMD_SHOW_RIGHT,

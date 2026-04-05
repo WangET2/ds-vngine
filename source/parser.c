@@ -45,6 +45,9 @@ int parser_parse_line(const char *line,  ParsedCommand *out){
     if(strcmp(cmd, "BG") == 0){
         out->command = CMD_BG;
         strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+    } else if(strcmp(cmd, "BGSUB") == 0){
+        out->command = CMD_BG_SUB;
+        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
     } else if (strcmp(cmd, "SHOW_LEFT") == 0){
         out->command = CMD_SHOW_LEFT;
         strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));

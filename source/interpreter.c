@@ -78,7 +78,13 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         case CMD_BG: {
             blocked = false;
             const char *bg_name = cmd->args[0];
-            ret = renderer_set_background(bg_name);
+            ret = renderer_set_background(bg_name, true);
+            return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
+        }
+        case CMD_BG_SUB: {
+            blocked = false;
+            const char *bg_name = cmd->args[0];
+            ret = renderer_set_background(bg_name, false);
             return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
         }
         case CMD_SHOW_LEFT: {
