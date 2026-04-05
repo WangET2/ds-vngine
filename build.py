@@ -14,6 +14,7 @@ nitrofs.generate_image()
 
 arm9 = Arm9Binary(
     sourcedirs=['source'],
+    includedirs=['include']
 )
 arm9.generate_elf()
 
