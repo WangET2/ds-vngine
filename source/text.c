@@ -151,7 +151,7 @@ void load_textbox_gfx(bool main){
         memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_TEXTBOX][0], palData, palSize);
         vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
         bgExtPaletteEnableSub();
-        REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_SRC_BG3;
+        REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG3;
         REG_BLDALPHA_SUB = 8 | (4 << 8);
     }
     free(bgData);

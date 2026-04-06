@@ -54,14 +54,14 @@ static void renderer_hide_portrait(const PortraitSlot *slot);
 static int get_portrait_offset(const char *name, const char *expression);
 static inline int sprite_x(int anchor, int i);
 static inline int sprite_y(int i);
-int renderer_set_sub_default(void);
+int renderer_set_sub_ui(void);
 
 void renderer_init(void){
     oamInit(&oamMain, SpriteMapping_Bmp_1D_128, false);
     for(int i = 0; i < NUM_BITMAP_SPRITES; ++i) sprite_mem[i] = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_Bmp);
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
-    renderer_set_sub_default();
+    renderer_set_sub_ui();
 }
 
 void renderer_update(void)
@@ -131,8 +131,28 @@ int renderer_set_background(const char *bg_name, bool mainScreen) {
     return 0;
 }
 
-int renderer_set_sub_default(void){
-    return renderer_set_background("subbg", false);
+int renderer_set_sub_ui(void){
+    int subBg = display_get_sub_bg(SUB_LAYER_UI);
+    void *bgData = NULL;
+    size_t bgSize = 0;
+    void *mapData = NULL;
+    size_t mapSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    GRFError err = grfLoadPath("nitro:/grit/bg/subbg_png.grf", NULL, &bgData, &bgSize,
+                               &mapData, &mapSize, &palData, &palSize); 
+    if(err != GRF_NO_ERROR) return -1;
+    memcpy(bgGetGfxPtr(subBg), bgData, bgSize);
+    memcpy(bgGetMapPtr(subBg), mapData, mapSize);
+    vramSetBankH(VRAM_H_LCD);
+    memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_UI][2], palData, palSize);
+    vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
+    bgExtPaletteEnableSub();
+    free(bgData);
+    free(mapData);
+    free(palData);
+    bgShow(subBg);
+    return 0;
 }
 
 static int load_bmp_sprite(const char *path, void *gfxAlloc) {

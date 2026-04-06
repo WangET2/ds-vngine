@@ -25,6 +25,9 @@ void display_init(void){
                                 SUB_UI_MAPBASE, SUB_UI_TILEBASE);
     sub_scene_bg = bgInitHiddenSub(SUB_LAYER_SCENE, BgType_Bmp8, BgSize_B8_256x256,
                                     SUB_SCENE_BITMAPBASE, 0);
+
+    bgSetPriority(sub_scene_bg, 1);
+    bgSetPriority(sub_ui_bg, 3);
     
 }
 
