@@ -152,7 +152,7 @@ void load_textbox_gfx(bool main){
         vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
         bgExtPaletteEnableSub();
         REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG3;
-        REG_BLDALPHA_SUB = 8 | (4 << 8);
+        REG_BLDALPHA_SUB = 12 | (4 << 8);
     }
     free(bgData);
     free(mapData);

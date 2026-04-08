@@ -145,7 +145,7 @@ int renderer_set_sub_ui(void){
     memcpy(bgGetGfxPtr(subBg), bgData, bgSize);
     memcpy(bgGetMapPtr(subBg), mapData, mapSize);
     vramSetBankH(VRAM_H_LCD);
-    memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_UI][2], palData, palSize);
+    memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_UI][1], palData, palSize);
     vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
     bgExtPaletteEnableSub();
     free(bgData);
