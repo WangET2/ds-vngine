@@ -77,8 +77,12 @@ void renderer_reset(void){
     renderer_hide_center();
     renderer_hide_left();
     renderer_hide_right();
+    setBackdropColor(RGB15(0,0,0));
+    setBackdropColorSub(RGB15(0,0,0));
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgHide(bgMain);
+    int bgSub = display_get_sub_bg(SUB_LAYER_SCENE);
+    bgHide(bgSub);
 }
 
 int renderer_show_left(const char *name, const char *expression) {
