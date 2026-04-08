@@ -1,13 +1,23 @@
 #include "parser.h"
-
+#include <stdio.h>
 #include <string.h>
 
-int parser_parse_line(const char *line,  ParsedCommand *out){
-    if (strlen(line) == 0) return -1;
+ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
+    if(line == NULL || out == NULL) return PARSER_RESULT_ERROR;
+    if (strlen(line) == 0) return PARSER_RESULT_EMPTY;
+
+    memset(out, 0, sizeof(*out));
+
     char lineCpy[PARSER_MAX_LINE_LEN];
-    strncpy(lineCpy, line, PARSER_MAX_LINE_LEN-1);
+    //strncpy(lineCpy, line, PARSER_MAX_LINE_LEN-1);
+    snprintf(lineCpy, sizeof(lineCpy), "%s", line);
+    char *p = lineCpy;
+    while(*p == ' ' || *p == '\t') ++p;
+
+    if(*p == '\0' || *p == '\n' || *p == '#') return PARSER_RESULT_EMPTY;
+
     lineCpy[PARSER_MAX_LINE_LEN - 1] = '\0';
-    if(lineCpy[0] == '#') return -1;
+    //if(lineCpy[0] == '#') return PARSER_RESULT_EMPTY;
     char *stateptr = NULL;
     char *cmd;
     cmd = strtok_r(lineCpy, " ", &stateptr);
@@ -50,6 +60,6 @@ int parser_parse_line(const char *line,  ParsedCommand *out){
     } else if(strcmp(cmd, "LOAD") == 0){
         out->command = CMD_LOAD;
         strcpy(out->args[0], stateptr);
-    } else return -2;
-    return 0;
+    } else return PARSER_RESULT_ERROR;
+    return PARSER_RESULT_OK;
 }

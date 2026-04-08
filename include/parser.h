@@ -25,11 +25,17 @@ typedef enum{
     CMD_END
 } CommandType;
 
+typedef enum{
+    PARSER_RESULT_OK = 0,
+    PARSER_RESULT_EMPTY,
+    PARSER_RESULT_ERROR
+} ParserResult;
+
 typedef struct{
     CommandType command;
     char args[PARSER_MAX_ARGS][PARSER_MAX_TOKEN_LEN];
 } ParsedCommand;
 
-int parser_parse_line(const char *line,  ParsedCommand *out);
+ParserResult parser_parse_line(const char *line,  ParsedCommand *out);
 
 #endif
