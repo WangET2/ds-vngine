@@ -30,9 +30,9 @@ EngineResult engine_update(void){
         else if(script_res == SCRIPT_RESULT_EOF) return ENGINE_RESULT_FINISHED;
         else{
             ParsedCommand cmd;
-            int parse_res = parser_parse_line(currentLine, &cmd);
-            if(parse_res < -1) return ENGINE_RESULT_ERROR;
-            else if(parse_res == 0){
+            ParserResult parse_res = parser_parse_line(currentLine, &cmd);
+            if(parse_res == PARSER_RESULT_ERROR) return ENGINE_RESULT_ERROR;
+            else if(parse_res == PARSER_RESULT_OK){
                 InterpreterResult int_res = interpreter_execute(&cmd);
                 if(int_res == INTERPRETER_RESULT_BLOCKED) break;
                 else if(int_res == INTERPRETER_RESULT_ERROR) return ENGINE_RESULT_ERROR;
