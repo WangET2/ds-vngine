@@ -22,6 +22,7 @@ typedef enum{
     
     CMD_WAIT,
     CMD_LOAD,
+    CMD_PASS,
     CMD_END
 } CommandType;
 

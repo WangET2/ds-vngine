@@ -101,6 +101,9 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         case CMD_END: {
             return INTERPRETER_RESULT_FINISHED;
         }
+        case CMD_PASS: {
+            return INTERPRETER_RESULT_OK;
+        }
         case CMD_LOAD: {
             script_close();
             renderer_reset();

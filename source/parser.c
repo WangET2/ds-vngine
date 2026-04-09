@@ -57,6 +57,8 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
         out->command = CMD_WAIT;
     } else if (strcmp(cmd, "END") == 0){
         out->command = CMD_END;
+    } else if (strcmp(cmd, "PASS") == 0){
+        out->command = CMD_PASS;
     } else if(strcmp(cmd, "LOAD") == 0){
         out->command = CMD_LOAD;
         strcpy(out->args[0], stateptr);
