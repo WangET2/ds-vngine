@@ -3,6 +3,7 @@
 #include "renderer.h"
 #include "text.h"
 #include "script.h"
+#include "flags.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -18,6 +19,7 @@ static InterpreterBlockType blockType;
 void interpreter_init(void){
     renderer_init();
     text_init();
+    flags_init();
     blocked = false;
     blockType = BLOCK_NONE;
 }
@@ -92,6 +94,23 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             const char *dialogue = cmd->args[0];
             text_begin_narration(dialogue);
             return INTERPRETER_RESULT_BLOCKED;
+        }
+        case CMD_FLAG: {
+            blocked = false;
+            const char *flag = cmd->args[0];
+            flags_set(flag);
+            return INTERPRETER_RESULT_OK;
+        }
+        case CMD_IF:{
+            blocked = false;
+            const char *flag = cmd->args[0];
+            if(flags_has(flag)){
+                const char *line = cmd->args[1];
+                ParsedCommand new_cmd;
+                parser_parse_line(line, &new_cmd);
+                return interpreter_execute(&new_cmd);
+            }
+            return INTERPRETER_RESULT_OK;
         }
         case CMD_WAIT: {
             blocked = true;

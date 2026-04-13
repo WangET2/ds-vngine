@@ -53,6 +53,19 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     } else if (strcmp(cmd, "NARRATE") == 0){
         out->command = CMD_NARRATE;
         strcpy(out->args[0], stateptr);
+    } else if(strcmp(cmd, "FLAG") == 0){
+        out->command = CMD_FLAG;
+        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+    } else if(strcmp(cmd, "IF") == 0){
+        out->command = CMD_IF;
+        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+        strcpy(out->args[1], stateptr);
+    } else if(strcmp(cmd, "CHOICE") == 0){
+        out->command = CMD_CHOICE;
+        strcpy(out->args[0], strtok_r(NULL, " {", &stateptr));
+        strcpy(out->args[1], strtok_r(NULL, "} ", &stateptr));
+        strcpy(out->args[2], strtok_r(NULL, " {", &stateptr));
+        strcpy(out->args[3], strtok_r(NULL, "}", &stateptr));
     } else if (strcmp(cmd, "WAIT") == 0){
         out->command = CMD_WAIT;
     } else if (strcmp(cmd, "END") == 0){

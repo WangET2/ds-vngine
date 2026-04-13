@@ -17,6 +17,10 @@ typedef enum{
     CMD_HIDE_RIGHT,
     CMD_HIDE_CENTER,
 
+    CMD_FLAG,
+    CMD_IF,
+    CMD_CHOICE,
+
     CMD_SAY,
     CMD_NARRATE,
     
