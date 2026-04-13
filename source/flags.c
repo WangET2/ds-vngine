@@ -77,6 +77,8 @@ bool flags_unset(const char *key){
         if(strcmp(cur->key, key) == 0){
             if(prev != NULL){
                 prev->next = cur->next;
+            } else{
+                g_buckets[index] = cur->next;
             }
             free(cur);
             return true;
