@@ -2,11 +2,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #define FLAG_BUCKET_COUNT 64
 
-typedef struct {
-    char *key;
+typedef struct FlagNode{
+    const char *key;
     struct FlagNode *next;
 } FlagNode;
 
@@ -32,7 +33,7 @@ void flags_reset(void){
         FlagNode *cur = g_buckets[i];
         while(cur != NULL){
             FlagNode *next = cur->next;
-            free(cur->key);
+            free((char *) cur->key);
             free(cur);
             cur = next;
         }
