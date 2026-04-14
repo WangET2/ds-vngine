@@ -25,7 +25,7 @@ EngineResult engine_update(void){
     if(!script_is_open()) return ENGINE_RESULT_ERROR;
     char currentLine[500];
     while(!interpreter_is_blocked()){
-        ScriptResult script_res = script_read_line(&currentLine[0], 500);
+        ScriptResult script_res = script_read_line(&currentLine[0], PARSER_MAX_LINE_LEN);
         if(script_res == SCRIPT_RESULT_ERROR) return ENGINE_RESULT_ERROR;
         else if(script_res == SCRIPT_RESULT_EOF) return ENGINE_RESULT_FINISHED;
         else{

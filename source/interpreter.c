@@ -101,7 +101,13 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             flags_set(flag);
             return INTERPRETER_RESULT_OK;
         }
-        case CMD_IF:{
+        case CMD_UNSET: {
+            blocked = false;
+            const char *flag = cmd->args[0];
+            flags_unset(flag);
+            return INTERPRETER_RESULT_OK;
+        }
+        case CMD_IF: {
             blocked = false;
             const char *flag = cmd->args[0];
             if(flags_has(flag)){

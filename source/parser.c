@@ -56,6 +56,9 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     } else if(strcmp(cmd, "FLAG") == 0){
         out->command = CMD_FLAG;
         strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+    } else if(strcmp(cmd, "UNSET") == 0){
+        out->command = CMD_UNSET;
+        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
     } else if(strcmp(cmd, "IF") == 0){
         out->command = CMD_IF;
         strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
