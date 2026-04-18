@@ -48,20 +48,23 @@ static const PortraitSlot CENTER_SLOT = {
 static void *sprite_mem[NUM_BITMAP_SPRITES];
 static const char* const spriteComponent[4] = {"bleft_png.grf", "bright_png.grf", "tleft_png.grf", "tright_png.grf"};
 
+static char current_main_textbox[32] = "";
+static char current_sub_textbox[32] = "";
+
 static int load_bmp_sprite(const char *path, void *gfxAlloc);
 static int renderer_show_portrait(const PortraitSlot *slot, const char *name, const char *expression);
 static void renderer_hide_portrait(const PortraitSlot *slot);
 static int get_portrait_offset(const char *name, const char *expression);
 static inline int sprite_x(int anchor, int i);
 static inline int sprite_y(int i);
-int renderer_set_sub_ui(void);
+int renderer_set_sub_backdrop(void);
 
 void renderer_init(void){
     oamInit(&oamMain, SpriteMapping_Bmp_1D_128, false);
     for(int i = 0; i < NUM_BITMAP_SPRITES; ++i) sprite_mem[i] = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_Bmp);
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
-    renderer_set_sub_ui();
+    renderer_set_sub_backdrop();
 }
 
 void renderer_update(void)
@@ -135,7 +138,58 @@ int renderer_set_background(const char *bg_name, bool mainScreen) {
     return 0;
 }
 
-int renderer_set_sub_ui(void){
+void renderer_show_textbox(bool mainScreen){
+    int bg = mainScreen ? display_get_main_bg(MAIN_LAYER_TEXTBOX) : display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    bgShow(bg);
+}
+
+void renderer_hide_textbox(bool mainScreen){
+    int bg = mainScreen ? display_get_main_bg(MAIN_LAYER_TEXTBOX) : display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    bgHide(bg);
+}
+
+int renderer_load_textbox(const char* textbox_name, bool mainScreen){
+    if(mainScreen && strcmp(textbox_name, current_main_textbox) == 0) return 0;
+    if(!mainScreen && strcmp(textbox_name, current_sub_textbox) == 0) return 0;
+    if(mainScreen) strcpy(current_main_textbox, textbox_name);
+    else strcpy(current_sub_textbox, textbox_name);
+    int textboxBg = mainScreen ? display_get_main_bg(MAIN_LAYER_TEXTBOX) : display_get_sub_bg(SUB_LAYER_TEXTBOX);
+    void *bgData = NULL;
+    size_t bgSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    void *mapData = NULL;
+    size_t mapSize = 0;
+    char path[100];
+    snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", textbox_name);
+    GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,
+                               &mapData, &mapSize, &palData, &palSize); 
+    if(err != GRF_NO_ERROR) return -1;
+    memcpy(bgGetGfxPtr(textboxBg), bgData, bgSize);
+    memcpy(bgGetMapPtr(textboxBg), mapData, mapSize);
+    if(mainScreen){
+        vramSetBankE(VRAM_E_LCD);
+        memcpy(VRAM_E_EXT_PALETTE[MAIN_LAYER_TEXTBOX][0], palData, palSize);
+        vramSetBankE(VRAM_E_BG_EXT_PALETTE);
+        bgExtPaletteEnable();
+        REG_BLDCNT = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG2;
+        REG_BLDALPHA = 12 | (4 << 8);
+    } else{
+        vramSetBankH(VRAM_H_LCD);
+        memcpy(VRAM_H_EXT_PALETTE[SUB_LAYER_TEXTBOX][0], palData, palSize);
+        vramSetBankH(VRAM_H_SUB_BG_EXT_PALETTE);
+        bgExtPaletteEnableSub();
+        REG_BLDCNT_SUB = BLEND_ALPHA | BLEND_SRC_BG1 | BLEND_DST_BG3;
+        REG_BLDALPHA_SUB = 12 | (4 << 8);
+    }
+    free(bgData);
+    free(mapData);
+    free(palData);
+    bgSetPriority(textboxBg, 0);
+    return 0;
+}
+
+int renderer_set_sub_backdrop(void){
     int subBg = display_get_sub_bg(SUB_LAYER_UI);
     void *bgData = NULL;
     size_t bgSize = 0;
