@@ -161,7 +161,7 @@ int renderer_load_textbox(const char* textbox_name, bool mainScreen){
     void *mapData = NULL;
     size_t mapSize = 0;
     char path[100];
-    snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", textbox_name);
+    snprintf(path, sizeof(path), "nitro:/grit/ui/%s_png.grf", textbox_name);
     GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,
                                &mapData, &mapSize, &palData, &palSize); 
     if(err != GRF_NO_ERROR) return -1;
