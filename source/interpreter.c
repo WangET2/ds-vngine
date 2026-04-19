@@ -87,6 +87,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             const char *dialogue = cmd->args[1];
             renderer_load_textbox("maintextbox", true);
             renderer_show_textbox(true);
+            renderer_hide_textbox(false);
             text_begin_dialogue(speaker, dialogue);
             return INTERPRETER_RESULT_BLOCKED;
         }
@@ -96,6 +97,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             const char *dialogue = cmd->args[0];
             renderer_load_textbox("subtextbox", false);
             renderer_show_textbox(false);
+            renderer_hide_textbox(true);
             text_begin_narration(dialogue);
             return INTERPRETER_RESULT_BLOCKED;
         }
@@ -160,12 +162,8 @@ void interpreter_advance(void){
     if(blockType == BLOCK_TEXT){
         if(!text_is_finished())
             text_finish_immediately();
-        else{
-            renderer_hide_textbox(true);
-            renderer_hide_textbox(false);
-            text_clear();
+        else
             interpreter_reset();
-        }
     }
     if(blockType == BLOCK_WAIT) interpreter_reset();
 }
