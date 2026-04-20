@@ -59,7 +59,11 @@ bool flags_set(const char *key){
     uint32_t index = hash_fnv1a(key) % FLAG_BUCKET_COUNT;
     FlagNode *node = malloc(sizeof(FlagNode));
     if (!node) return false;
-    node->key = key;
+    node->key = strdup(key);
+    if(!node->key){
+        free(node);
+        return false;
+    }
     if(g_buckets[index] == NULL){
         g_buckets[index] = node;
         node->next = NULL;
@@ -81,6 +85,7 @@ bool flags_unset(const char *key){
             } else{
                 g_buckets[index] = cur->next;
             }
+            free((char *) cur->key);
             free(cur);
             return true;
         }
