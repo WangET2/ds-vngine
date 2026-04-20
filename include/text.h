@@ -14,4 +14,7 @@ void text_finish_immediately(void);
 
 bool text_is_finished(void);
 
+void text_debug_set(const char *text);
+void text_debug_clear();
+
 #endif

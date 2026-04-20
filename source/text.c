@@ -35,6 +35,7 @@ static TextState g_text;
 static PrintConsole dialogueBox;
 static PrintConsole speakerBox;
 static PrintConsole narrationBox;
+static PrintConsole debugWindow;
 
 void text_init(void){
     consoleInit(&dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
@@ -44,9 +45,12 @@ void text_init(void){
     consoleInit(&narrationBox, SUB_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 SUB_TEXT_MAPBASE, SUB_TEXT_TILEBASE, false, true);
 
+    debugWindow = narrationBox;
+
     consoleSetWindow(&dialogueBox, MAIN_ANCHOR_X, MAIN_ANCHOR_Y, 26, 4);
     consoleSetWindow(&speakerBox, SPEAKER_ANCHOR_X, SPEAKER_ANCHOR_Y, 20, 1);
     consoleSetWindow(&narrationBox, SUB_ANCHOR_X, SUB_ANCHOR_Y, 26, 8);
+    consoleSetWindow(&debugWindow, 2, 20, 30, 4);
     g_text.frames_per_char = FRAMESPERCHAR;
 }
 
@@ -110,4 +114,15 @@ void text_finish_immediately(void){
 
 bool text_is_finished(void){
     return g_text.finished;
+}
+
+void text_debug_clear(){
+    consoleSelect(&debugWindow);
+    consoleClear();
+}
+
+void text_debug_set(const char *text){
+    text_debug_clear();
+    consoleSelect(&debugWindow);
+    printf("%s\n", text);
 }
