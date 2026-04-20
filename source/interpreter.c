@@ -119,7 +119,8 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             if(flags_has(flag)){
                 const char *line = cmd->args[1];
                 ParsedCommand new_cmd;
-                parser_parse_line(line, &new_cmd);
+                ParserResult inner_res = parser_parse_line(line, &new_cmd);
+                if(inner_res == PARSER_RESULT_ERROR|| inner_res == PARSER_RESULT_EMPTY) return INTERPRETER_RESULT_ERROR;
                 return interpreter_execute(&new_cmd);
             }
             return INTERPRETER_RESULT_OK;
@@ -166,4 +167,5 @@ void interpreter_advance(void){
             interpreter_reset();
     }
     if(blockType == BLOCK_WAIT) interpreter_reset();
+    text_debug_clear();
 }

@@ -1,8 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#define PARSER_MAX_ARGS 4
-#define PARSER_MAX_TOKEN_LEN 128
+#define PARSER_MAX_ARGS 8
+#define PARSER_MAX_TOKEN_LEN 256
 #define PARSER_MAX_LINE_LEN 512
 
 typedef enum{
