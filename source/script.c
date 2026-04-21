@@ -44,7 +44,14 @@ bool script_is_open(void) {
 }
 
 int script_current_line(void) {
-    return lineNum;
+    if(script_is_open()) return lineNum;
+    return 0;
+}
+
+int script_current_script(char *out, size_t out_size){
+    if(!script_is_open()) return -1;
+    int ret = snprintf(out, out_size, "%s", &currentScene[0]);
+    return ret < out_size ? 0 : -1;
 }
 
 

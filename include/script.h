@@ -21,6 +21,8 @@ bool script_is_open(void);
 
 int script_current_line(void);
 
+int script_current_script(char *out, size_t out_size);
+
 //int script_seek_line(int line_number);
 
 //int script_get_path(char *out_path, size_t out_size);

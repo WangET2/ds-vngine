@@ -50,3 +50,11 @@ void engine_handle_input(u16 keys_down){
     if(keys_down & KEY_A) interpreter_advance();
 }
 
+int engine_current_line(void){
+    return script_current_line();
+}
+
+int engine_current_script(char* out, size_t out_size){
+    return script_current_script(out, out_size);
+}
+

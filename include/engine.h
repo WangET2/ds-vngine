@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <nds.h>
+#include <stddef.h>
 
 typedef enum{
     ENGINE_RESULT_OK = 0,
@@ -19,6 +20,9 @@ int engine_load_scene(const char *scene_name);
 EngineResult engine_update(void);
 
 void engine_handle_input(u16 keys_down);
+
+int engine_current_line(void);
+int engine_current_script(char* out, size_t out_size);
 
 //bool engine_is_blocked(void);
 
