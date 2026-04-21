@@ -14,6 +14,8 @@ void interpreter_init(void);
 
 void interpreter_reset(void);
 
+void interpreter_shutdown(void);
+
 InterpreterResult interpreter_execute(const ParsedCommand *cmd);
 
 void interpreter_update(void);

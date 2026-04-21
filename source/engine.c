@@ -17,6 +17,11 @@ void engine_reset(void){
     interpreter_reset();
 }
 
+void engine_shutdown(void){
+    interpreter_shutdown();
+    display_shutdown();
+}
+
 int engine_load_scene(const char *scene_name){
     return script_open(scene_name);
 }

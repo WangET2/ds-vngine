@@ -31,6 +31,10 @@ void display_init(void){
     
 }
 
+void display_shutdown(void){
+    vramDefault();
+}
+
 int display_get_main_bg(MainDisplayBgLayer layer){
     switch(layer){
         case MAIN_LAYER_TEXTBOX:

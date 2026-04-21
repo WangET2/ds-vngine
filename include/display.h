@@ -44,6 +44,7 @@ typedef enum{
 
 
 void display_init(void);
+void display_shutdown(void);
 
 int display_get_main_bg(MainDisplayBgLayer layer);
 int display_get_sub_bg(SubDisplayBgLayer layer);

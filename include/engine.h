@@ -15,6 +15,8 @@ void engine_init(void);
 
 void engine_reset(void);
 
+void engine_shutdown(void);
+
 int engine_load_scene(const char *scene_name);
 
 EngineResult engine_update(void);

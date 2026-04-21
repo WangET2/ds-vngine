@@ -29,6 +29,12 @@ void interpreter_reset(void){
     blockType = BLOCK_NONE;
 }
 
+void interpreter_shutdown(void){
+    flags_destroy();
+    text_clear();
+    renderer_shutdown();
+}
+
 InterpreterResult interpreter_execute(const ParsedCommand *cmd){
     int ret;
     switch(cmd->command) {
