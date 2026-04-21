@@ -5,7 +5,6 @@
 #include "display.h"
 
 #include <stdbool.h>
-#include <nds.h>
 #include <string.h>
 
 void engine_init(void){
