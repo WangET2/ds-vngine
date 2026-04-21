@@ -7,6 +7,7 @@
 struct InstructionKeyword {
     const char *name;
     CommandType type;
+    int num_args;
 };
 
 const struct InstructionKeyword *in_word_set(const char *str, size_t len);

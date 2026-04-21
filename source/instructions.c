@@ -1,5 +1,5 @@
 /* C code produced by gperf version 3.0.3 */
-/* Command-line: /Library/Developer/CommandLineTools/usr/bin/gperf -C -E source/instructions.gperf  */
+/* Command-line: /Library/Developer/CommandLineTools/usr/bin/gperf -C -E -m -f source/instructions.gperf  */
 /* Computed positions: -k'1,$' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
@@ -38,6 +38,7 @@ error "gperf generated tables don't work with this execution character set. Plea
 struct InstructionKeyword {
     const char *name;
     CommandType type;
+    int num_args;
 };
 /* maximum key range = 29, duplicates = 0 */
 
@@ -102,60 +103,60 @@ in_word_set (str, len)
   static const struct InstructionKeyword wordlist[] =
     {
       {""}, {""},
-#line 15 "source/instructions.gperf"
-      {"BG", CMD_BG},
-#line 29 "source/instructions.gperf"
-      {"SAY", CMD_SAY},
-#line 38 "source/instructions.gperf"
-      {"PASS", CMD_PASS},
 #line 16 "source/instructions.gperf"
-      {"BGSUB", CMD_BG_SUB},
-      {""},
-#line 27 "source/instructions.gperf"
-      {"IF", CMD_IF},
-#line 33 "source/instructions.gperf"
-      {"BGM", CMD_BGM},
-#line 25 "source/instructions.gperf"
-      {"FLAG", CMD_FLAG},
-      {""},
-#line 21 "source/instructions.gperf"
-      {"SHOW_CENTER", CMD_SHOW_CENTER},
-#line 17 "source/instructions.gperf"
-      {"HIDE_BG", CMD_HIDE_BG},
-#line 31 "source/instructions.gperf"
-      {"HIDE_SAY", CMD_HIDE_SAY},
-#line 36 "source/instructions.gperf"
-      {"WAIT", CMD_WAIT},
-#line 18 "source/instructions.gperf"
-      {"HIDE_BGSUB", CMD_HIDE_BG_SUB},
-#line 24 "source/instructions.gperf"
-      {"HIDE_CENTER", CMD_HIDE_CENTER},
+      {"BG", CMD_BG, 1},
 #line 30 "source/instructions.gperf"
-      {"NARRATE", CMD_NARRATE},
-#line 34 "source/instructions.gperf"
-      {"SFX", CMD_SFX},
-#line 19 "source/instructions.gperf"
-      {"SHOW_LEFT", CMD_SHOW_LEFT},
-#line 20 "source/instructions.gperf"
-      {"SHOW_RIGHT", CMD_SHOW_RIGHT},
-#line 35 "source/instructions.gperf"
-      {"ENDBGM", CMD_ENDBGM},
-      {""},
+      {"SAY", CMD_SAY, 2},
 #line 39 "source/instructions.gperf"
-      {"END", CMD_END},
-#line 22 "source/instructions.gperf"
-      {"HIDE_LEFT", CMD_HIDE_LEFT},
-#line 23 "source/instructions.gperf"
-      {"HIDE_RIGHT", CMD_HIDE_RIGHT},
-#line 28 "source/instructions.gperf"
-      {"CHOICE", CMD_CHOICE},
-#line 32 "source/instructions.gperf"
-      {"HIDE_NARRATE", CMD_HIDE_NARRATE},
+      {"PASS", CMD_PASS, 0},
+#line 17 "source/instructions.gperf"
+      {"BGSUB", CMD_BG_SUB, 1},
       {""},
-#line 37 "source/instructions.gperf"
-      {"LOAD", CMD_LOAD},
+#line 28 "source/instructions.gperf"
+      {"IF", CMD_IF, 2},
+#line 34 "source/instructions.gperf"
+      {"BGM", CMD_BGM, 1},
 #line 26 "source/instructions.gperf"
-      {"UNSET", CMD_UNSET}
+      {"FLAG", CMD_FLAG, 1},
+      {""},
+#line 22 "source/instructions.gperf"
+      {"SHOW_CENTER", CMD_SHOW_CENTER, 2},
+#line 18 "source/instructions.gperf"
+      {"HIDE_BG", CMD_HIDE_BG, 0},
+#line 32 "source/instructions.gperf"
+      {"HIDE_SAY", CMD_HIDE_SAY, 0},
+#line 37 "source/instructions.gperf"
+      {"WAIT", CMD_WAIT, 0},
+#line 19 "source/instructions.gperf"
+      {"HIDE_BGSUB", CMD_HIDE_BG_SUB, 0},
+#line 25 "source/instructions.gperf"
+      {"HIDE_CENTER", CMD_HIDE_CENTER, 0},
+#line 31 "source/instructions.gperf"
+      {"NARRATE", CMD_NARRATE, 1},
+#line 35 "source/instructions.gperf"
+      {"SFX", CMD_SFX, 1},
+#line 20 "source/instructions.gperf"
+      {"SHOW_LEFT", CMD_SHOW_LEFT, 2},
+#line 21 "source/instructions.gperf"
+      {"SHOW_RIGHT", CMD_SHOW_RIGHT, 2},
+#line 36 "source/instructions.gperf"
+      {"ENDBGM", CMD_ENDBGM, 0},
+      {""},
+#line 40 "source/instructions.gperf"
+      {"END", CMD_END, 0},
+#line 23 "source/instructions.gperf"
+      {"HIDE_LEFT", CMD_HIDE_LEFT, 0},
+#line 24 "source/instructions.gperf"
+      {"HIDE_RIGHT", CMD_HIDE_RIGHT, 0},
+#line 29 "source/instructions.gperf"
+      {"CHOICE", CMD_CHOICE, -1},
+#line 33 "source/instructions.gperf"
+      {"HIDE_NARRATE", CMD_HIDE_NARRATE, 0},
+      {""},
+#line 38 "source/instructions.gperf"
+      {"LOAD", CMD_LOAD, 1},
+#line 27 "source/instructions.gperf"
+      {"UNSET", CMD_UNSET, 1}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)

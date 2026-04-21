@@ -47,6 +47,7 @@ typedef enum{
 typedef struct{
     CommandType command;
     char args[PARSER_MAX_ARGS][PARSER_MAX_TOKEN_LEN];
+    int num_args;
 } ParsedCommand;
 
 ParserResult parser_parse_line(const char *line,  ParsedCommand *out);
