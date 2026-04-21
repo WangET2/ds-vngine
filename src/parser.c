@@ -54,6 +54,7 @@ int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr){
         if(n >= PARSER_MAX_TOKEN_LEN) return -1;
     }
     if(!stateptr && num_args != 0) return -1;
+    if(stateptr == '\0' && num_args != 0) return -1;
     int n = snprintf(out->args[num_args-1], PARSER_MAX_TOKEN_LEN, "%s", stateptr);
     if(n >= PARSER_MAX_TOKEN_LEN) return -1;
     out->num_args = num_args;
