@@ -13,7 +13,7 @@ nitrofs.add_files_unchanged(['assets/graphics/sprites/offsets'], out_dir='offset
 nitrofs.generate_image()
 
 arm9 = Arm9Binary(
-    sourcedirs=['source'],
+    sourcedirs=['src'],
     includedirs=['include']
 )
 arm9.generate_elf()

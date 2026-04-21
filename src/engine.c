@@ -43,7 +43,7 @@ EngineResult engine_update(void){
                 else if(int_res == INTERPRETER_RESULT_FINISHED) return ENGINE_RESULT_FINISHED;
             }
         }
-        interpreter_update();
+        //interpreter_update();
     }
     interpreter_update();
     return ENGINE_RESULT_OK;
