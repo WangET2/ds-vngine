@@ -8,11 +8,12 @@
 typedef enum{
     CMD_BG = 0,
     CMD_BG_SUB,
+    CMD_HIDE_BG,
+    CMD_HIDE_BG_SUB,
 
     CMD_SHOW_LEFT,
     CMD_SHOW_RIGHT,
     CMD_SHOW_CENTER,
-
     CMD_HIDE_LEFT,
     CMD_HIDE_RIGHT,
     CMD_HIDE_CENTER,
@@ -24,6 +25,12 @@ typedef enum{
 
     CMD_SAY,
     CMD_NARRATE,
+    CMD_HIDE_SAY,
+    CMD_HIDE_NARRATE,
+
+    CMD_BGM,
+    CMD_SFX,
+    CMD_ENDBGM,
     
     CMD_WAIT,
     CMD_LOAD,

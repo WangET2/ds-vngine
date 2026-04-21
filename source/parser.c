@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "instructions.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -9,7 +10,7 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     memset(out, 0, sizeof(*out));
 
     char lineCpy[PARSER_MAX_LINE_LEN];
-    //strncpy(lineCpy, line, PARSER_MAX_LINE_LEN-1);
+
     snprintf(lineCpy, sizeof(lineCpy), "%s", line);
     char *p = lineCpy;
     while(*p == ' ' || *p == '\t') ++p;
@@ -17,67 +18,74 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     if(*p == '\0' || *p == '\n' || *p == '#') return PARSER_RESULT_EMPTY;
 
     lineCpy[PARSER_MAX_LINE_LEN - 1] = '\0';
-    //if(lineCpy[0] == '#') return PARSER_RESULT_EMPTY;
+    
     char *stateptr = NULL;
     char *cmd;
-    cmd = strtok_r(lineCpy, " ", &stateptr);
-    if(cmd == NULL) return -1;
-    if(strcmp(cmd, "BG") == 0){
-        out->command = CMD_BG;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-    } else if(strcmp(cmd, "BGSUB") == 0){
-        out->command = CMD_BG_SUB;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-    } else if (strcmp(cmd, "SHOW_LEFT") == 0){
-        out->command = CMD_SHOW_LEFT;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-        strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
-    } else if (strcmp(cmd, "SHOW_RIGHT") == 0){
-        out->command = CMD_SHOW_RIGHT;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-        strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
-    } else if (strcmp(cmd, "SHOW_CENTER") == 0){
-        out->command = CMD_SHOW_CENTER;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-        strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
-    } else if (strcmp(cmd, "HIDE_LEFT") == 0){
-        out->command = CMD_HIDE_LEFT;
-    } else if (strcmp(cmd, "HIDE_RIGHT") == 0){
-        out->command = CMD_HIDE_RIGHT;
-    } else if (strcmp(cmd, "HIDE_CENTER") == 0){
-        out->command = CMD_HIDE_CENTER;
-    } else if (strcmp(cmd, "SAY") == 0){
-        out->command = CMD_SAY;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-        strcpy(out->args[1], stateptr);
-    } else if (strcmp(cmd, "NARRATE") == 0){
-        out->command = CMD_NARRATE;
-        strcpy(out->args[0], stateptr);
-    } else if(strcmp(cmd, "FLAG") == 0){
-        out->command = CMD_FLAG;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-    } else if(strcmp(cmd, "UNSET") == 0){
-        out->command = CMD_UNSET;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-    } else if(strcmp(cmd, "IF") == 0){
-        out->command = CMD_IF;
-        strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
-        strcpy(out->args[1], stateptr);
-    } else if(strcmp(cmd, "CHOICE") == 0){
-        out->command = CMD_CHOICE;
-        strcpy(out->args[0], strtok_r(NULL, " {", &stateptr));
-        strcpy(out->args[1], strtok_r(NULL, "} ", &stateptr));
-        strcpy(out->args[2], strtok_r(NULL, " {", &stateptr));
-        strcpy(out->args[3], strtok_r(NULL, "}", &stateptr));
-    } else if (strcmp(cmd, "WAIT") == 0){
-        out->command = CMD_WAIT;
-    } else if (strcmp(cmd, "END") == 0){
-        out->command = CMD_END;
-    } else if (strcmp(cmd, "PASS") == 0){
-        out->command = CMD_PASS;
-    } else if(strcmp(cmd, "LOAD") == 0){
-        out->command = CMD_LOAD;
-        strcpy(out->args[0], stateptr);
-    } else return PARSER_RESULT_ERROR;
+    cmd = strtok_r(p, " ", &stateptr);
+    if(cmd == NULL) return PARSER_RESULT_ERROR;
+
+    const struct InstructionKeyword *kw = in_word_set(cmd, strlen(cmd));
+    if(!kw) return PARSER_RESULT_ERROR;
+    out->command = kw->type;
+
+    switch(kw->type) {
+        case CMD_BG: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            break;
+        }
+        case CMD_BG_SUB: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            break;
+        }
+        case CMD_SHOW_LEFT: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
+            break;
+        }
+        case CMD_SHOW_RIGHT: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
+            break;
+        }
+        case CMD_SHOW_CENTER: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            strcpy(out->args[1], strtok_r(NULL, " ", &stateptr));
+            break;
+        }
+        case CMD_SAY: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            strcpy(out->args[1], stateptr);
+            break;
+        } 
+        case CMD_NARRATE: {
+            strcpy(out->args[0], stateptr);
+            break;
+        } 
+        case CMD_FLAG: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            break;
+        } 
+        case CMD_UNSET: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            break;
+        } 
+        case CMD_IF: {
+            strcpy(out->args[0], strtok_r(NULL, " ", &stateptr));
+            strcpy(out->args[1], stateptr);
+            break;
+        } 
+        case CMD_CHOICE: {
+            //TODO: Implement variable length CHOICE
+            strcpy(out->args[0], strtok_r(NULL, " {", &stateptr));
+            strcpy(out->args[1], strtok_r(NULL, "} ", &stateptr));
+            strcpy(out->args[2], strtok_r(NULL, " {", &stateptr));
+            strcpy(out->args[3], strtok_r(NULL, "}", &stateptr));
+            break;
+        } 
+        case CMD_LOAD: {
+            strcpy(out->args[0], stateptr);
+            break;
+        }
+    }
     return PARSER_RESULT_OK;
 }
