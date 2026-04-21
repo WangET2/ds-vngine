@@ -172,6 +172,42 @@ void test_parser_end(void){
     verify_command_fields(input, CMD_END, 0, expected_args);
 }
 
+void test_parser_missing_arguments(void){
+    char *input1 = "SAY testcharacter";
+    ParsedCommand cmd1;
+    ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
+    TEST_ASSERT_EQUAL_INT(parse_res1, PARSER_RESULT_ERROR);
+
+    char *input2 = "BG";
+    ParsedCommand cmd2;
+    ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
+    TEST_ASSERT_EQUAL_INT(parse_res2, PARSER_RESULT_ERROR);
+}
+
+void test_parser_empty(void){
+    char *input1 = "";
+    ParsedCommand cmd1;
+    ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
+    TEST_ASSERT_EQUAL_INT(parse_res1, PARSER_RESULT_EMPTY);
+
+    char *input2 = "  ";
+    ParsedCommand cmd2;
+    ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
+    TEST_ASSERT_EQUAL_INT(parse_res2, PARSER_RESULT_EMPTY);
+
+    char *input3 = "    ";
+    ParsedCommand cmd3;
+    ParserResult parse_res3 = parser_parse_line(input3, &cmd3);
+    TEST_ASSERT_EQUAL_INT(parse_res3, PARSER_RESULT_EMPTY);
+}
+
+void test_parser_comment(void){
+    char *input = "#This is an example comment.";
+    ParsedCommand cmd;
+    ParserResult parse_res = parser_parse_line(input, &cmd);
+    TEST_ASSERT_EQUAL_INT(parse_res, PARSER_RESULT_EMPTY);
+}
+
 int main(void){
     UNITY_BEGIN();
     RUN_TEST(test_parser_bg);
@@ -207,6 +243,10 @@ int main(void){
     RUN_TEST(test_parser_leading_whitespace);
     RUN_TEST(test_parser_leading_tabs);
     RUN_TEST(test_parser_choice);
+
+    RUN_TEST(test_parser_missing_arguments);
+    RUN_TEST(test_parser_empty);
+    RUN_TEST(test_parser_comment);
     return UNITY_END();
 }
 
