@@ -176,12 +176,12 @@ void test_parser_missing_arguments(void){
     char *input1 = "SAY testcharacter";
     ParsedCommand cmd1;
     ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
-    TEST_ASSERT_EQUAL_INT(parse_res1, PARSER_RESULT_ERROR);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(parse_res1, PARSER_RESULT_ERROR, "Case 1 Failed.");
 
     char *input2 = "BG";
     ParsedCommand cmd2;
     ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
-    TEST_ASSERT_EQUAL_INT(parse_res2, PARSER_RESULT_ERROR);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(parse_res2, PARSER_RESULT_ERROR, "Case 2 Failed.");
 }
 
 void test_parser_empty(void){
