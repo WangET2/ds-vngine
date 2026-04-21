@@ -148,7 +148,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             text_clear();
             const char *script_name = cmd->args[0];
             script_open(script_name);
-            return INTERPRETER_RESULT_FINISHED;
+            return INTERPRETER_RESULT_OK;
         }
     }
     return INTERPRETER_RESULT_ERROR;
