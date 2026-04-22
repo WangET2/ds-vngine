@@ -1,5 +1,5 @@
 /* C code produced by gperf version 3.0.3 */
-/* Command-line: /Library/Developer/CommandLineTools/usr/bin/gperf -C -E -m -f source/instructions.gperf  */
+/* Command-line: /Library/Developer/CommandLineTools/usr/bin/gperf -C -E -m -f --output-file=src/instructions.c src/instructions.gperf  */
 /* Computed positions: -k'1,$' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
@@ -29,16 +29,17 @@
 error "gperf generated tables don't work with this execution character set. Please report a bug to <bug-gnu-gperf@gnu.org>."
 #endif
 
-#line 1 "source/instructions.gperf"
+#line 1 "src/instructions.gperf"
 
 #include "parser.h"
 #include <string.h>
-
-#line 9 "source/instructions.gperf"
+#include <stdbool.h>
+#line 9 "src/instructions.gperf"
 struct InstructionKeyword {
     const char *name;
     CommandType type;
     int num_args;
+    bool consumes_rest;
 };
 /* maximum key range = 29, duplicates = 0 */
 
@@ -103,60 +104,60 @@ in_word_set (str, len)
   static const struct InstructionKeyword wordlist[] =
     {
       {""}, {""},
-#line 16 "source/instructions.gperf"
-      {"BG", CMD_BG, 1},
-#line 30 "source/instructions.gperf"
-      {"SAY", CMD_SAY, 2},
-#line 39 "source/instructions.gperf"
-      {"PASS", CMD_PASS, 0},
-#line 17 "source/instructions.gperf"
-      {"BGSUB", CMD_BG_SUB, 1},
+#line 17 "src/instructions.gperf"
+      {"BG", CMD_BG, 1, false},
+#line 31 "src/instructions.gperf"
+      {"SAY", CMD_SAY, 2, true},
+#line 40 "src/instructions.gperf"
+      {"PASS", CMD_PASS, 0, false},
+#line 18 "src/instructions.gperf"
+      {"BGSUB", CMD_BG_SUB, 1, false},
       {""},
-#line 28 "source/instructions.gperf"
-      {"IF", CMD_IF, 2},
-#line 34 "source/instructions.gperf"
-      {"BGM", CMD_BGM, 1},
-#line 26 "source/instructions.gperf"
-      {"FLAG", CMD_FLAG, 1},
+#line 29 "src/instructions.gperf"
+      {"IF", CMD_IF, 2, true},
+#line 35 "src/instructions.gperf"
+      {"BGM", CMD_BGM, 1, false},
+#line 27 "src/instructions.gperf"
+      {"FLAG", CMD_FLAG, 1, false},
       {""},
-#line 22 "source/instructions.gperf"
-      {"SHOW_CENTER", CMD_SHOW_CENTER, 2},
-#line 18 "source/instructions.gperf"
-      {"HIDE_BG", CMD_HIDE_BG, 0},
-#line 32 "source/instructions.gperf"
-      {"HIDE_SAY", CMD_HIDE_SAY, 0},
-#line 37 "source/instructions.gperf"
-      {"WAIT", CMD_WAIT, 0},
-#line 19 "source/instructions.gperf"
-      {"HIDE_BGSUB", CMD_HIDE_BG_SUB, 0},
-#line 25 "source/instructions.gperf"
-      {"HIDE_CENTER", CMD_HIDE_CENTER, 0},
-#line 31 "source/instructions.gperf"
-      {"NARRATE", CMD_NARRATE, 1},
-#line 35 "source/instructions.gperf"
-      {"SFX", CMD_SFX, 1},
-#line 20 "source/instructions.gperf"
-      {"SHOW_LEFT", CMD_SHOW_LEFT, 2},
-#line 21 "source/instructions.gperf"
-      {"SHOW_RIGHT", CMD_SHOW_RIGHT, 2},
-#line 36 "source/instructions.gperf"
-      {"ENDBGM", CMD_ENDBGM, 0},
+#line 23 "src/instructions.gperf"
+      {"SHOW_CENTER", CMD_SHOW_CENTER, 2, false},
+#line 19 "src/instructions.gperf"
+      {"HIDE_BG", CMD_HIDE_BG, 0, false},
+#line 33 "src/instructions.gperf"
+      {"HIDE_SAY", CMD_HIDE_SAY, 0, false},
+#line 38 "src/instructions.gperf"
+      {"WAIT", CMD_WAIT, 0, false},
+#line 20 "src/instructions.gperf"
+      {"HIDE_BGSUB", CMD_HIDE_BG_SUB, 0, false},
+#line 26 "src/instructions.gperf"
+      {"HIDE_CENTER", CMD_HIDE_CENTER, 0, false},
+#line 32 "src/instructions.gperf"
+      {"NARRATE", CMD_NARRATE, 1, true},
+#line 36 "src/instructions.gperf"
+      {"SFX", CMD_SFX, 1, false},
+#line 21 "src/instructions.gperf"
+      {"SHOW_LEFT", CMD_SHOW_LEFT, 2, false},
+#line 22 "src/instructions.gperf"
+      {"SHOW_RIGHT", CMD_SHOW_RIGHT, 2, false},
+#line 37 "src/instructions.gperf"
+      {"ENDBGM", CMD_ENDBGM, 0, false},
       {""},
-#line 40 "source/instructions.gperf"
-      {"END", CMD_END, 0},
-#line 23 "source/instructions.gperf"
-      {"HIDE_LEFT", CMD_HIDE_LEFT, 0},
-#line 24 "source/instructions.gperf"
-      {"HIDE_RIGHT", CMD_HIDE_RIGHT, 0},
-#line 29 "source/instructions.gperf"
-      {"CHOICE", CMD_CHOICE, -1},
-#line 33 "source/instructions.gperf"
-      {"HIDE_NARRATE", CMD_HIDE_NARRATE, 0},
+#line 41 "src/instructions.gperf"
+      {"END", CMD_END, 0, false},
+#line 24 "src/instructions.gperf"
+      {"HIDE_LEFT", CMD_HIDE_LEFT, 0, false},
+#line 25 "src/instructions.gperf"
+      {"HIDE_RIGHT", CMD_HIDE_RIGHT, 0, false},
+#line 30 "src/instructions.gperf"
+      {"CHOICE", CMD_CHOICE, -1, false},
+#line 34 "src/instructions.gperf"
+      {"HIDE_NARRATE", CMD_HIDE_NARRATE, 0, false},
       {""},
-#line 38 "source/instructions.gperf"
-      {"LOAD", CMD_LOAD, 1},
-#line 27 "source/instructions.gperf"
-      {"UNSET", CMD_UNSET, 1}
+#line 39 "src/instructions.gperf"
+      {"LOAD", CMD_LOAD, 1, false},
+#line 28 "src/instructions.gperf"
+      {"UNSET", CMD_UNSET, 1, false}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)

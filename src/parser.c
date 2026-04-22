@@ -2,8 +2,9 @@
 #include "instructions.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
-int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr);
+int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr, bool consumes_rest);
 
 ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     if(line == NULL || out == NULL) return PARSER_RESULT_ERROR;
@@ -30,7 +31,7 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     if(!kw) return PARSER_RESULT_ERROR;
     out->command = kw->type;
     if(kw->num_args != -1){
-        int ret = parser_fill_args(out, kw->num_args, stateptr);
+        int ret = parser_fill_args(out, kw->num_args, stateptr, kw->consumes_rest);
         return ret != -1 ? PARSER_RESULT_OK : PARSER_RESULT_ERROR;
     }
     switch(kw->type) {
@@ -46,16 +47,20 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     return PARSER_RESULT_OK;
 }
 
-int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr){
-    for(int i = 0; i < num_args - 1; ++i){
+int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr, bool consumes_rest){
+    int ubound = consumes_rest ? num_args - 1 : num_args;
+    for(int i = 0; i < ubound; ++i){
         char *ret = strtok_r(NULL, " ", &stateptr);
         if(!ret || *ret == '\0') return -1;
         int n = snprintf(out->args[i], PARSER_MAX_TOKEN_LEN, "%s", ret);
         if(n >= PARSER_MAX_TOKEN_LEN) return -1;
     }
-    if((!stateptr || *stateptr == '\0') && num_args != 0) return -1;
-    int n = snprintf(out->args[num_args-1], PARSER_MAX_TOKEN_LEN, "%s", stateptr);
-    if(n >= PARSER_MAX_TOKEN_LEN) return -1;
+    if(consumes_rest){
+        if(!stateptr || *stateptr == '\0') return -1;
+        int n = snprintf(out->args[num_args-1], PARSER_MAX_TOKEN_LEN, "%s", stateptr);
+        if(n >= PARSER_MAX_TOKEN_LEN) return -1;
+    }
     out->num_args = num_args;
+    if(!consumes_rest && stateptr && stateptr != '\0') return -1;
     return 0;
 }

@@ -1,7 +1,7 @@
 %{
 #include "parser.h"
 #include <string.h>
-
+#include <stdbool.h>
 %}
 
 %struct-type
@@ -10,32 +10,33 @@ struct InstructionKeyword {
     const char *name;
     CommandType type;
     int num_args;
+    bool consumes_rest;
 };
 
 %%
-BG, CMD_BG, 1
-BGSUB, CMD_BG_SUB, 1
-HIDE_BG, CMD_HIDE_BG, 0
-HIDE_BGSUB, CMD_HIDE_BG_SUB, 0
-SHOW_LEFT, CMD_SHOW_LEFT, 2
-SHOW_RIGHT, CMD_SHOW_RIGHT, 2
-SHOW_CENTER, CMD_SHOW_CENTER, 2
-HIDE_LEFT, CMD_HIDE_LEFT, 0
-HIDE_RIGHT, CMD_HIDE_RIGHT, 0
-HIDE_CENTER, CMD_HIDE_CENTER, 0
-FLAG, CMD_FLAG, 1
-UNSET, CMD_UNSET, 1
-IF, CMD_IF, 2
-CHOICE, CMD_CHOICE, -1
-SAY, CMD_SAY, 2
-NARRATE, CMD_NARRATE, 1
-HIDE_SAY, CMD_HIDE_SAY, 0
-HIDE_NARRATE, CMD_HIDE_NARRATE, 0
-BGM, CMD_BGM, 1
-SFX, CMD_SFX, 1
-ENDBGM, CMD_ENDBGM, 0
-WAIT, CMD_WAIT, 0
-LOAD, CMD_LOAD, 1
-PASS, CMD_PASS, 0
-END, CMD_END, 0
+BG, CMD_BG, 1, false
+BGSUB, CMD_BG_SUB, 1, false
+HIDE_BG, CMD_HIDE_BG, 0, false
+HIDE_BGSUB, CMD_HIDE_BG_SUB, 0, false
+SHOW_LEFT, CMD_SHOW_LEFT, 2, false
+SHOW_RIGHT, CMD_SHOW_RIGHT, 2, false
+SHOW_CENTER, CMD_SHOW_CENTER, 2, false
+HIDE_LEFT, CMD_HIDE_LEFT, 0, false
+HIDE_RIGHT, CMD_HIDE_RIGHT, 0, false
+HIDE_CENTER, CMD_HIDE_CENTER, 0, false
+FLAG, CMD_FLAG, 1, false
+UNSET, CMD_UNSET, 1, false
+IF, CMD_IF, 2, true
+CHOICE, CMD_CHOICE, -1, false
+SAY, CMD_SAY, 2, true
+NARRATE, CMD_NARRATE, 1, true
+HIDE_SAY, CMD_HIDE_SAY, 0, false
+HIDE_NARRATE, CMD_HIDE_NARRATE, 0, false
+BGM, CMD_BGM, 1, false
+SFX, CMD_SFX, 1, false
+ENDBGM, CMD_ENDBGM, 0, false
+WAIT, CMD_WAIT, 0, false
+LOAD, CMD_LOAD, 1, false
+PASS, CMD_PASS, 0, false
+END, CMD_END, 0, false
 %%

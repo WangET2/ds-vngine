@@ -176,12 +176,12 @@ void test_parser_missing_arguments(void){
     char *input1 = "SAY testcharacter";
     ParsedCommand cmd1;
     ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(parse_res1, PARSER_RESULT_ERROR, "Case 1 Failed.");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res1, "Case 1 Failed.");
 
     char *input2 = "BG";
     ParsedCommand cmd2;
     ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(parse_res2, PARSER_RESULT_ERROR, "Case 2 Failed.");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res2, "Case 2 Failed.");
 
     char *input3 = "SAY";
     ParsedCommand cmd3;
@@ -193,24 +193,41 @@ void test_parser_empty(void){
     char *input1 = "";
     ParsedCommand cmd1;
     ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
-    TEST_ASSERT_EQUAL_INT(parse_res1, PARSER_RESULT_EMPTY);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_EMPTY, parse_res1, "Case 1 failed.");
 
     char *input2 = "  ";
     ParsedCommand cmd2;
     ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
-    TEST_ASSERT_EQUAL_INT(parse_res2, PARSER_RESULT_EMPTY);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_EMPTY, parse_res2, "Case 2 failed.");
 
     char *input3 = "    ";
     ParsedCommand cmd3;
     ParserResult parse_res3 = parser_parse_line(input3, &cmd3);
-    TEST_ASSERT_EQUAL_INT(parse_res3, PARSER_RESULT_EMPTY);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_EMPTY, parse_res3, "Case 3 failed.");
 }
 
 void test_parser_comment(void){
     char *input = "#This is an example comment.";
     ParsedCommand cmd;
     ParserResult parse_res = parser_parse_line(input, &cmd);
-    TEST_ASSERT_EQUAL_INT(parse_res, PARSER_RESULT_EMPTY);
+    TEST_ASSERT_EQUAL_INT(PARSER_RESULT_EMPTY, parse_res);
+}
+
+void test_parser_extraneous_arguments(void){
+    char *input1 = "HIDEBG garbage";
+    ParsedCommand cmd1;
+    ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res1, "Case 1 Failed.");
+
+    char *input2 = "BG testbg garbage";
+    ParsedCommand cmd2;
+    ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res2, "Case 2 Failed.");
+
+    char *input3 = "SHOW_LEFT testchar testexpr garbage";
+    ParsedCommand cmd3;
+    ParserResult parse_res3 = parser_parse_line(input3, &cmd3);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res3, "Case 3 Failed.");
 }
 
 int main(void){
@@ -252,16 +269,18 @@ int main(void){
     RUN_TEST(test_parser_missing_arguments);
     RUN_TEST(test_parser_empty);
     RUN_TEST(test_parser_comment);
+    RUN_TEST(test_parser_extraneous_arguments);
+
     return UNITY_END();
 }
 
 void verify_command_fields(char *input, CommandType expected_res, int expected_num_args, char *expected_args[]){
     ParsedCommand cmd;
     ParserResult res = parser_parse_line(input, &cmd);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(res, PARSER_RESULT_OK, "Expected PARSER_RESULT_OK.");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_OK, res, "Expected PARSER_RESULT_OK.");
     TEST_ASSERT_NOT_NULL(&cmd);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(cmd.command, expected_res, "Wrong ParserResult generated.");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(expected_res, cmd.command, "Wrong ParserResult generated.");
     TEST_ASSERT_EQUAL_INT(cmd.num_args, expected_num_args);
     for(int i = 0; i < expected_num_args; ++i)
-        TEST_ASSERT_EQUAL_STRING(cmd.args[i], expected_args[i]);
+        TEST_ASSERT_EQUAL_STRING(expected_args[i], cmd.args[i]);
 }
