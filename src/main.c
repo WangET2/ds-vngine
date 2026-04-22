@@ -46,13 +46,30 @@ int main(int argc, char *argv[])
         {
             swiWaitForVBlank();
             scanKeys();
-
             u16 keys_down = keysDown();
             engine_handle_input(keys_down);
-            engine_update();
+            EngineResult res = engine_update();
+
+            if(res == ENGINE_RESULT_ERROR){
+                consoleDemoInit();
+                char buf[100];
+                engine_current_script(&buf[0], sizeof(buf));
+                printf("Error executing scene!\nScript Name:%s\nLine Number:%d", buf, engine_current_line());
+                break;
+            }
+
+            if(res == ENGINE_RESULT_FINISHED) break;
         }
     }
 
+    while(1){
+        swiWaitForVBlank();
+        scanKeys();
+        u16 keys_down = keysDown();
+        if(keys_down & KEY_START) break;
+    }
+
+    engine_shutdown();
 
     return 0;
 }
