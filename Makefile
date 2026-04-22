@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I src/ -I include/ -I unity/src/
+CFLAGS = -I src/ -I include/ -I unity/src/ -fsanitize=address
 
 UNITY_SRC = unity/src/unity.c
 ENGINE_SRC = src/flags.c src/parser.c src/instructions.c

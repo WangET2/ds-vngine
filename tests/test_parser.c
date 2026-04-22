@@ -300,7 +300,7 @@ void verify_command_fields(char *input, CommandType expected_res, int expected_n
     TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_OK, res, "Expected PARSER_RESULT_OK.");
     TEST_ASSERT_NOT_NULL(&cmd);
     TEST_ASSERT_EQUAL_INT_MESSAGE(expected_res, cmd.command, "Wrong ParserResult generated.");
-    TEST_ASSERT_EQUAL_INT(cmd.num_args, expected_num_args);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(expected_num_args, cmd.num_args, "Wrong number of arguments received.");
     for(int i = 0; i < expected_num_args; ++i)
         TEST_ASSERT_EQUAL_STRING(expected_args[i], cmd.args[i]);
 }
