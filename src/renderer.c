@@ -138,6 +138,11 @@ int renderer_set_background(const char *bg_name, bool mainScreen) {
     return 0;
 }
 
+void renderer_hide_background(bool mainScreen){
+    int bg = mainScreen ? display_get_main_bg(MAIN_LAYER_SCENE) : display_get_sub_bg(SUB_LAYER_SCENE);
+    bgHide(bg);
+}
+
 void renderer_show_textbox(bool mainScreen){
     int bg = mainScreen ? display_get_main_bg(MAIN_LAYER_TEXTBOX) : display_get_sub_bg(SUB_LAYER_TEXTBOX);
     bgShow(bg);

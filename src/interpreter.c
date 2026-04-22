@@ -50,6 +50,16 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             ret = renderer_set_background(bg_name, false);
             return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
         }
+        case CMD_HIDE_BG: {
+            blocked = false;
+            renderer_hide_background(true);
+            return INTERPRETER_RESULT_OK;
+        }
+        case CMD_HIDE_BG_SUB: {
+            blocked = false;
+            renderer_hide_background(false);
+            return INTERPRETER_RESULT_OK;
+        }
         case CMD_SHOW_LEFT: {
             blocked = false;
             const char *character = cmd->args[0];
@@ -106,6 +116,18 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             renderer_hide_textbox(true);
             text_begin_narration(dialogue);
             return INTERPRETER_RESULT_BLOCKED;
+        }
+        case CMD_HIDE_SAY: {
+            blocked = false;
+            renderer_hide_textbox(true);
+            text_clear();
+            return INTERPRETER_RESULT_OK;
+        }
+        case CMD_HIDE_NARRATE: {
+            blocked = false;
+            renderer_hide_textbox(false);
+            text_clear();
+            return INTERPRETER_RESULT_OK;
         }
         case CMD_FLAG: {
             blocked = false;
