@@ -103,7 +103,27 @@ void test_parser_if(void){
 
 //TODO: Write CHOICE tests for variable num_args.
 void test_parser_choice(void){
-    return;
+    char *input1 = "CHOICE text1 {INSTRUCTION 1}";
+    ParsedCommand cmd1;
+    ParserResult parse_res1 = parser_parse_line(input1, &cmd1);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res1, "Case 1 failed.");
+
+    char *input2 = "CHOICE text 1 {INSTRUCTION 1} text 2 {INSTRUCTION 2}";
+    char *expected_args2[4] = {"text 1", "INSTRUCTION 1", "text 2", "INSTRUCTION 2"};
+    verify_command_fields(input2, CMD_CHOICE, 4, expected_args2);
+
+    char *input3 = "CHOICE text 1 {INSTRUCTION 1} text 2 {INSTRUCTION 2} text 3 {INSTRUCTION 3}";
+    char *expected_args3[6] = {"text 1", "INSTRUCTION 1", "text 2", "INSTRUCTION 2", "text 3", "INSTRUCTION 3"};
+    verify_command_fields(input3, CMD_CHOICE, 6, expected_args3);
+
+    char *input4 = "CHOICE text 1 {INSTRUCTION 1} text 2 {INSTRUCTION 2} text 3 {INSTRUCTION 3} text 4 {INSTRUCTION 4}";
+    char *expected_args4[8] = {"text 1", "INSTRUCTION 1", "text 2", "INSTRUCTION 2", "text 3", "INSTRUCTION 3", "text 4", "INSTRUCTION 4"};
+    verify_command_fields(input4, CMD_CHOICE, 8, expected_args4);
+
+    char *input5 = "CHOICE text 1 {INSTRUCTION 1} text 2 {INSTRUCTION 2} text 3 {INSTRUCTION 3} text 4 {INSTRUCTION 4} text 5 {INSTRUCTION 5}";
+    ParsedCommand cmd5;
+    ParserResult parse_res5 = parser_parse_line(input5, &cmd5);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res5, "Case 5 failed.");
 }
 
 void test_parser_say(void){

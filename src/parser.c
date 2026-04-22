@@ -36,11 +36,31 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     }
     switch(kw->type) {
         case CMD_CHOICE: {
-            //TODO: Implement variable length CHOICE
-            strcpy(out->args[0], strtok_r(NULL, " {", &stateptr));
-            strcpy(out->args[1], strtok_r(NULL, "} ", &stateptr));
-            strcpy(out->args[2], strtok_r(NULL, " {", &stateptr));
-            strcpy(out->args[3], strtok_r(NULL, "}", &stateptr));
+            int num_args = 0;
+            while(1){
+                char *text = strtok_r(NULL, "{", &stateptr);
+                if(!text || *text == '\0') return PARSER_RESULT_ERROR;
+                int n = snprintf(out->args[num_args], PARSER_MAX_TOKEN_LEN, "%s", text);
+                if (n >= PARSER_MAX_TOKEN_LEN) return PARSER_RESULT_ERROR;
+                //Need to strip trailing whitespace:
+                out->args[num_args][strlen(text) - 1] = '\0';
+                ++num_args;
+
+                if(num_args > 8) return PARSER_RESULT_ERROR;
+
+                char *instr = strtok_r(NULL, "}", &stateptr);
+                if(!instr || *instr == '\0') return PARSER_RESULT_ERROR;
+                int m = snprintf(out->args[num_args], PARSER_MAX_TOKEN_LEN, "%s", instr);
+                if (m>= PARSER_MAX_TOKEN_LEN) return PARSER_RESULT_ERROR;
+                ++num_args;
+                if(!stateptr || *stateptr == '\0'){
+                    if(num_args < 4) return PARSER_RESULT_ERROR;
+                    out->num_args = num_args;
+                    return PARSER_RESULT_OK;
+                }
+                //Advance past trailing whitespace
+                stateptr++;
+            }
             break;
         } 
     }
