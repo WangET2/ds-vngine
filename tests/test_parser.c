@@ -182,6 +182,11 @@ void test_parser_missing_arguments(void){
     ParsedCommand cmd2;
     ParserResult parse_res2 = parser_parse_line(input2, &cmd2);
     TEST_ASSERT_EQUAL_INT_MESSAGE(parse_res2, PARSER_RESULT_ERROR, "Case 2 Failed.");
+
+    char *input3 = "SAY";
+    ParsedCommand cmd3;
+    ParserResult parse_res3 = parser_parse_line(input3, &cmd3);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res3, "Case 3 Failed.");
 }
 
 void test_parser_empty(void){

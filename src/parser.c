@@ -49,7 +49,7 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
 int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr){
     for(int i = 0; i < num_args - 1; ++i){
         char *ret = strtok_r(NULL, " ", &stateptr);
-        if(!ret) return -1;
+        if(!ret || *ret == '\0') return -1;
         int n = snprintf(out->args[i], PARSER_MAX_TOKEN_LEN, "%s", ret);
         if(n >= PARSER_MAX_TOKEN_LEN) return -1;
     }
