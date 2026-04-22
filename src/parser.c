@@ -37,8 +37,7 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
     switch(kw->type) {
         case CMD_CHOICE: {
             int num_args = 0;
-            while(1){
-                if(num_args >= 8) return PARSER_RESULT_ERROR;
+            while(num_args < 8){
                 char *text = strtok_r(NULL, "{", &stateptr);
                 if(!text || *text == '\0') return PARSER_RESULT_ERROR;
                 int n = snprintf(out->args[num_args], PARSER_MAX_TOKEN_LEN, "%s", text);
@@ -60,6 +59,7 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
                 //Advance past trailing whitespace
                 stateptr++;
             }
+            return PARSER_RESULT_ERROR;
             break;
         } 
     }
