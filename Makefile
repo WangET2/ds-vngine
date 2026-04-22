@@ -6,7 +6,7 @@ ENGINE_SRC = src/flags.c src/parser.c src/instructions.c
 
 TEST_OUT = test_runner
 
-.PHONY: test clean
+.PHONY: parsertest flagtest clean
 
 flagtest: $(UNITY_SRC) $(ENGINE_SRC) tests/test_flags.c
 	$(CC) $(CFLAGS) $^ -o $(TEST_OUT) && ./$(TEST_OUT)
