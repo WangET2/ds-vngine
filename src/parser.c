@@ -61,6 +61,6 @@ int parser_fill_args(ParsedCommand *out, int num_args, char *stateptr, bool cons
         if(n >= PARSER_MAX_TOKEN_LEN) return -1;
     }
     out->num_args = num_args;
-    if(!consumes_rest && stateptr && stateptr != '\0') return -1;
+    if(!consumes_rest && stateptr && *stateptr != '\0') return -1;
     return 0;
 }
