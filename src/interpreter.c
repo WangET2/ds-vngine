@@ -36,6 +36,7 @@ void interpreter_shutdown(void){
 }
 
 InterpreterResult interpreter_execute(const ParsedCommand *cmd){
+    if(!cmd) return INTERPRETER_RESULT_ERROR;
     int ret;
     switch(cmd->command) {
         case CMD_BG: {
