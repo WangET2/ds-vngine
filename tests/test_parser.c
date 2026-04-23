@@ -242,8 +242,8 @@ void test_parser_extraneous_arguments(void){
     TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res3, "Case 3 Failed.");
 }
 
-int run_parser_tests(void){
-    UNITY_BEGIN();
+void run_parser_tests(void){
+    //UNITY_BEGIN();
     RUN_TEST(test_parser_bg);
     RUN_TEST(test_parser_bg_sub);
     RUN_TEST(test_parser_hide_bg);
@@ -283,7 +283,7 @@ int run_parser_tests(void){
     RUN_TEST(test_parser_comment);
     RUN_TEST(test_parser_extraneous_arguments);
 
-    return UNITY_END();
+    //return UNITY_END();
 }
 
 void verify_command_fields(char *input, CommandType expected_res, int expected_num_args, char *expected_args[]){
