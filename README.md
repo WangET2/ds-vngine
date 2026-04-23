@@ -172,10 +172,12 @@ These script files are written in a simple scripting language and must follow ce
 - Comments take up an entire line, and are denoted with the `#` symbol.
 - Blank/empty lines are permitted.
 - Exactly one space is expected between the arguments to an instruction.
+- Each argument should be at most 256 characters in length.
+- Each line should be at most 512 characters in length.
 
 The scripting language provides a minimal instruction set for describing scene flow in script files.
 
-The engine parses, interprets, and executes instructions within script files continously without user input until it encounters a blocking instruction, such as `WAIT` or `SAY`.
+The engine parses, interprets, and executes instructions within script files continuously without user input until it encounters a blocking instruction, such as `WAIT` or `SAY`.
 
 Commands listed below are non-blocking unless otherwise specified.
 
@@ -185,26 +187,92 @@ Commands listed below are non-blocking unless otherwise specified.
     * Loads the image located at `assets/graphics/bg/<bgname>.png` into VRAM and displays it as the scene background on the main (upper) screen.
 * `HIDE_BG` 
     * Hides the scene background currently displayed on the main screen, if there is one.
+    * Does not unload the scene background from VRAM.
 * `BGSUB <bgname>`
     * Loads the image located at `assets/graphics/bg/<bgname>.png` into VRAM and displays it as the scene background on the sub (lower) screen.
 * `HIDE_BGSUB` 
     * Hides the scene background currently displayed on the sub screen, if there is one.
+    * Does not unload the scene background from VRAM.
 * `SHOW_LEFT <character> <expression>`
     * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it on the left side of the main screen.
     * Note that only one sprite can be displayed in the left "slot" of the screen at a time. If a sprite is already being displayed in the left slot, calling this instruction with valid arguments will replace it.
 * `HIDE_LEFT`
     * Hides the sprite currently being displayed in the left slot of the main screen, if there is one.
+    * Does not unload the sprite from VRAM.
 * `SHOW_RIGHT <character> <expression>`
     * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it on the right side of the main screen.
     * Note that only one sprite can be displayed in the right "slot" of the screen at a time. If a sprite is already being displayed in the right slot, calling this instruction with valid arguments will replace it.
 * `HIDE_RIGHT`
     * Hides the sprite currently being displayed in the right slot of the main screen, if there is one.
+    * Does not unload the sprite from VRAM.
 * `SHOW_CENTER <character> <expression>`
     * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it in the center of the main screen.
     * Note that only one sprite can be displayed in the center "slot" of the screen at a time. If a sprite is already being displayed in the center slot, calling this instruction with valid arguments will replace it.
     * Note that displaying a sprite in the center slot of the screen is mutually exclusive with displaying a sprite in the left and/or right slots of the screen. Calling this instruction with valid arguments will hide any sprites currently being displayed in those slots.
 * `HIDE_CENTER`
     * Hides the sprite currently being displayed in the center slot of the main screen, if there is one.
+    * Does not unload the sprite from VRAM.
+
+### Dialogue Instructions:
+
+* `SAY <character> <dialogue>`
+    * **Blocking instruction.**
+    * Loads the textbox located at `assets/graphics/ui/maintextbox.png` into VRAM and displays it on the main screen, if not already displayed.
+    * Writes `<character>` onto the main screen above dialogue text.
+    * Begins writing `<dialogue>` onto the main screen with a typewriter effect.
+        * The user can skip this animation by pressing the `A` button.
+    * Blocks until text reveal is complete and the user presses the `A` button to proceed.
+    * Note that the `<character>` argument is expected to not contain any whitespace. If it contains whitespace, the subsequent contents of the argument will be treated as part of the `<dialogue>` argument.
+    * Note that the `<dialogue>` argument does not necessarily need to be surrounded by quotation marks.
+    * Note that the `<character>` argument does not necessarily need to correspond to a "character" with sprites located in `assets/graphics/sprites/<character>/`.
+* `HIDE_SAY`
+    * Hides the textbox, character name, and dialogue currently being displayed on the main screen, if any.
+    * Does not unload the textbox from VRAM.
+* `NARRATE <narration>`
+    * **Blocking instruction.**
+    * Loads the textbox located at `assets/graphics/ui/subtextbox.png` into VRAM and displays it on the sub screen, if not already displayed.
+    * Begins writing `<narration>` onto the sub screen with a typewriter effect.
+        * The user can skip this animation by pressing the `A` button.
+    * Blocks until text reveal is complete and the user presses the `A` button to proceed.
+    * Note that the `<narration>` argument does not necessarily need to be surrounded by quotation marks.
+* `HIDE_NARRATE`
+    * Hides the textbox and narration text currently being displayed on the sub screen, if any.
+    * Does not unload the textbox from VRAM.
+
+### Control Flow Instructions:
+
+* `FLAG <flag>`
+    * Creates `<flag>`, marking it as active. Active flags can be checked by the `IF` and `IFN` instructions.
+    * Calling this instruction multiple times on the same `<flag>` has no effect.
+* `UNSET <flag>`
+    * Removes `<flag>` if it exists, marking it as no longer active. 
+    * `UNSET` flags can be recreated with the `FLAG` instruction.
+* `IF <flag> <instruction>`
+    * Checks if `<flag>` is active. If it is, executes `<instruction>`.
+    * Note that the `IF` instruction can be blocking if the `<instruction>` argument is a blocking instruction and `<flag>` is active.
+    * Note that the `<instruction>` argument can also be an `IF` or `IFN` instruction, enabling nested conditional execution as long as the line does not exceed the maximum line length and `<instruction>` does not exceed the maximum argument length.
+* `IFN <flag> <instruction>`
+    * Checks if `<flag>` is active. If it is not active, executes `<instruction>`.
+    * Note that the `IFN` instruction can be blocking if the `<instruction>` argument is a blocking instruction and `<flag>` is not active.
+    * Note that the `<instruction>` argument can also be an `IF` or `IFN` instruction, enabling nested conditional execution as long as the line does not exceed the maximum line length and `<instruction>` does not exceed the maximum argument length.
+* `LOAD <script>`
+    * Loads the script located at `assets/scripts/<script>.txt` into memory and begins execution.
+    * Note that any remaining instructions in the current (caller) script will not be executed, as it is unloaded from memory.
+* `PASS`
+    * No-op (does nothing).
+    * Intended to be used alongside the `CHOICE` instruction.
+* `CHOICE <text_1> {<instruction_1>} ... <text_4> {<instruction_4>}`
+    * **Blocking instruction.**
+    * This instruction accepts anywhere between 2 and 4 `<text_i> {<instruction_i>}` pairs, inclusive.
+    * Loads the textbox located at `assets/graphics/ui/choices<i>.png` into VRAM and displays it on the sub screen, if not already displayed.
+    * Writes `<text_i>` onto the sub screen, vertically stacked.
+    * This instruction blocks until the user selects a choice with the touchscreen or with the D-pad and `A` key.
+    * If the user selects the choice associated with `<text_i>`, `<instruction_i>` will be executed.
+    * Note that the `<instruction_i>` arguments must be wrapped with curly brackets `{}`.
+* `END`
+    * Marks the end of engine execution.
+    * Can be used to return control to `src/main.c`.
+    * Equivalent to reaching the end of a script file.
 
 ## Unit Tests
 
