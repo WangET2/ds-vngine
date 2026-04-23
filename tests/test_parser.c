@@ -93,6 +93,12 @@ void test_parser_if(void){
     verify_command_fields(input, CMD_IF, 2, expected_args);
 }
 
+void test_parser_ifn(void){
+    char *input = "IFN testflag NESTEDINSTRUCTION instructionargs";
+    char *expected_args[2] = {"testflag", "NESTEDINSTRUCTION instructionargs"};
+    verify_command_fields(input, CMD_IFN, 2, expected_args);
+}
+
 //TODO: Write CHOICE tests for variable num_args.
 void test_parser_choice(void){
     char *input1 = "CHOICE text1 {INSTRUCTION 1}";
@@ -259,6 +265,7 @@ void run_parser_tests(void){
     RUN_TEST(test_parser_flag);
     RUN_TEST(test_parser_unset);
     RUN_TEST(test_parser_if);
+    RUN_TEST(test_parser_ifn);
 
     RUN_TEST(test_parser_say);
     RUN_TEST(test_parser_narrate);

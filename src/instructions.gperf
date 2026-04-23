@@ -27,6 +27,7 @@ HIDE_CENTER, CMD_HIDE_CENTER, 0, false
 FLAG, CMD_FLAG, 1, false
 UNSET, CMD_UNSET, 1, false
 IF, CMD_IF, 2, true
+IFN, CMD_IFN, 2, true
 CHOICE, CMD_CHOICE, -1, false
 SAY, CMD_SAY, 2, true
 NARRATE, CMD_NARRATE, 1, true

@@ -21,6 +21,7 @@ typedef enum{
     CMD_FLAG,
     CMD_UNSET,
     CMD_IF,
+    CMD_IFN,
     CMD_CHOICE,
 
     CMD_SAY,
