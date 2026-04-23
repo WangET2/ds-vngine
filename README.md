@@ -216,7 +216,7 @@ Commands listed below are non-blocking unless otherwise specified.
 ### Dialogue Instructions:
 
 * `SAY <character> <dialogue>`
-    * #### **Blocking instruction.**
+    * **Blocking instruction.**
     * Loads the textbox located at `assets/graphics/ui/maintextbox.png` into VRAM and displays it on the main screen, if not already displayed.
     * Writes `<character>` onto the main screen above dialogue text.
     * Begins writing `<dialogue>` onto the main screen with a typewriter effect.
@@ -229,7 +229,7 @@ Commands listed below are non-blocking unless otherwise specified.
     * Hides the textbox, character name, and dialogue currently being displayed on the main screen, if any.
     * Does not unload the textbox from VRAM.
 * `NARRATE <narration>`
-    * #### **Blocking instruction.**
+    * **Blocking instruction.**
     * Loads the textbox located at `assets/graphics/ui/subtextbox.png` into VRAM and displays it on the sub screen, if not already displayed.
     * Begins writing `<narration>` onto the sub screen with a typewriter effect.
         * The user can skip this animation by pressing the `A` button.
@@ -251,7 +251,7 @@ Commands listed below are non-blocking unless otherwise specified.
     * Checks if `<flag>` is active. If it is, executes `<instruction>`.
     * Note that the `IF` instruction can be blocking if the `<instruction>` argument is a blocking instruction and `<flag>` is active.
     * Note that the `<instruction>` argument can also be an `IF` or `IFN` instruction, enabling nested conditional execution as long as the line does not exceed the maximum line length and `<instruction>` does not exceed the maximum argument length.
-* `IFN <flag> <instruction>`
+ * `IFN <flag> <instruction>`
     * Checks if `<flag>` is active. If it is not active, executes `<instruction>`.
     * Note that the `IFN` instruction can be blocking if the `<instruction>` argument is a blocking instruction and `<flag>` is not active.
     * Note that the `<instruction>` argument can also be an `IF` or `IFN` instruction, enabling nested conditional execution as long as the line does not exceed the maximum line length and `<instruction>` does not exceed the maximum argument length.
@@ -262,7 +262,7 @@ Commands listed below are non-blocking unless otherwise specified.
     * No-op (does nothing).
     * Intended to be used alongside the `CHOICE` instruction.
 * `CHOICE <text_1> {<instruction_1>} ... <text_4> {<instruction_4>}`
-    * #### **Blocking instruction.**
+    * **Blocking instruction.**
     * This instruction accepts anywhere between 2 and 4 `<text_i> {<instruction_i>}` pairs, inclusive.
     * Loads the textbox located at `assets/graphics/ui/choices<i>.png` into VRAM and displays it on the sub screen, if not already displayed.
     * Writes `<text_i>` onto the sub screen, vertically stacked.
