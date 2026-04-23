@@ -3,14 +3,6 @@
 
 void verify_command_fields(char *input, CommandType expected_res, int expected_num_args, char *expected_args[]);
 
-void setUp(void){
-    return;
-}
-
-void tearDown(void){
-    return;
-}
-
 void test_parser_bg(void){
     char *input = "BG testbg";
     char *expected_args[1] = {"testbg"};
@@ -250,7 +242,7 @@ void test_parser_extraneous_arguments(void){
     TEST_ASSERT_EQUAL_INT_MESSAGE(PARSER_RESULT_ERROR, parse_res3, "Case 3 Failed.");
 }
 
-int main(void){
+int run_parser_tests(void){
     UNITY_BEGIN();
     RUN_TEST(test_parser_bg);
     RUN_TEST(test_parser_bg_sub);

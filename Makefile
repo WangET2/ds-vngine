@@ -3,15 +3,13 @@ CFLAGS = -I src/ -I include/ -I unity/src/ -fsanitize=address
 
 UNITY_SRC = unity/src/unity.c
 ENGINE_SRC = src/flags.c src/parser.c src/instructions.c
+TEST_SRC = tests/test_flags.c tests/test_parser.c tests/main.c
 
 TEST_OUT = test_runner
 
-.PHONY: parsertest flagtest clean
+.PHONY: test clean
 
-flagtest: $(UNITY_SRC) $(ENGINE_SRC) tests/test_flags.c
-	$(CC) $(CFLAGS) $^ -o $(TEST_OUT) && ./$(TEST_OUT)
-
-parsertest: $(UNITY_SRC) $(ENGINE_SRC) tests/test_parser.c
+test: $(UNITY_SRC) $(ENGINE_SRC) $(TEST_SRC)
 	$(CC) $(CFLAGS) $^ -o $(TEST_OUT) && ./$(TEST_OUT)
 
 clean:

@@ -69,7 +69,7 @@ void test_flags_large_load_factor(void){
     }
 }
 
-int main(void){
+int run_flag_tests(void){
     UNITY_BEGIN();
     RUN_TEST(test_flags_set_basic);
     RUN_TEST(test_flags_unset_basic);
