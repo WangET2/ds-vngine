@@ -4,6 +4,12 @@ A visual novel engine for Nintendo DS homebrew game development.
 
 ## Overview
 
+ds-vngine is a visual novel engine inspired by the likes of [Ren'Py](https://www.renpy.org/) and [VNDS](https://github.com/BASLQC/vnds). It's meant to facilitate the low-code development of homebrew visual novels for the Nintendo DS.
+
+Currently, the engine supports dialogue, narration, sprite and background rendering, setting and unsetting flags, and the conditional execution of instructions based on flags.
+
+Features to be implemented soon include choices, sound effects, background music, save/load states, and text rollback.  
+
 ## Table of Contents
 - [Dependencies](#dependencies)
 - [Installation](#installation)
@@ -53,7 +59,7 @@ git submodule update --init --recursive
 
 The [ArchitectDS build system](https://codeberg.org/blocksds/architectds) is used to generate NDS ROMs.
 
-After installing its dependencies ([ninja](https://ninja-build.org/) and [Python](https://www.python.org/downloads/)), copy the `achitectds/` folder (from the repository linked above) into your project's root.
+After installing its dependencies ([ninja](https://ninja-build.org/) and [Python](https://www.python.org/downloads/)), copy the `architectds/` folder (from the repository linked above) into your project's root.
 
 ## Building a ROM
 The instructions ArchitectDS uses to build a ROM are located in `build.py`.
@@ -109,7 +115,7 @@ ds-vngine/
 
 Other directories and files may appear, but these are build artifacts and can be safely ignored.
 
-For the most part, game development can be done solely by adding assets to the correct subdirectory of `assets/` (see [Assets and Tools](#assets-and-tools)) and by modifying entry behavior and non-scripted behavior in `src/main.c`. A sample `src/main.c` is provided for convenience.
+For the most part, game development can be done solely by adding assets to the correct subdirectory of `assets/` (see [Assets and Tools](#assets-and-tools)) and by modifying entry behavior and non-scripted behavior in `src/main.c`. A sample [`src/main.c`](src/main.c) is provided for convenience.
 
 ## Assets and Tools
 
@@ -154,6 +160,8 @@ python3 spritemaker.py <yourimage>.png
 4. Create the directory `assets/graphics/sprites/<character>/<expression>/` and paste the generated files. Replace `<character>` and `<expression>` with the name of the character and expression you would like to associate with the generated sprite.
 
 Character sprites can have (but do not require) an associated `offset.txt` file located at `assets/graphics/sprites/offsets/<character>/<expression>/`. This file should contain a single integer only, positive or negative, specifying a constant horizontal pixel shift to be applied to the corresponding sprite whenever it is displayed on screen.
+
+Character sprites use magenta `(255, 0, 255)` as a transparency indicator, which is why the background of your sprites may appear bright purple in file previews. This is because grit struggles with converting transparency based on the alpha layer alone, leading to artifacts; thus, `spritemaker.py` recolors all transparent pixels to be magenta. If you notice misplaced transparent pixels in your converted sprites due to the original image containing magenta, consider using an image editor like [GIMP](https://www.gimp.org/) to alter their color slightly.
 
 #### UI Elements:
 The engine expects to find all of the images already located in `assets/ui/` there at compile time as well.
@@ -258,6 +266,9 @@ Commands listed below are non-blocking unless otherwise specified.
 * `LOAD <script>`
     * Loads the script located at `assets/scripts/<script>.txt` into memory and begins execution.
     * Note that any remaining instructions in the current (caller) script will not be executed, as it is unloaded from memory.
+* `WAIT`
+    * **Blocking instruction.**
+    * Blocks until the user presses the `A` button.
 * `PASS`
     * No-op (does nothing).
     * Intended to be used alongside the `CHOICE` instruction.
@@ -273,6 +284,8 @@ Commands listed below are non-blocking unless otherwise specified.
     * Marks the end of engine execution.
     * Can be used to return control to `src/main.c`.
     * Equivalent to reaching the end of a script file.
+
+Your starting script can be executed by calling `engine_init();` and `engine_load_scene(char * scene_name)` in `src/main.c`. A [template `src/main.c`](src/main.c) is provided for reference.
 
 ## Unit Tests
 
