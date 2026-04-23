@@ -3,6 +3,11 @@ from PIL import Image, ImageOps
 from pathlib import Path
 import numpy as np
 
+def create_sprite_grit(out_dir):
+    for name in ["bleft","bright","tleft","tright"]:
+        with open(f"{out_dir/name}.grit", "w") as f:
+            f.write("-gB16 -gb -gTFF00FF")
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Usage: spritemaker.py <input1.png> <input2.png> <input3.png>...")
@@ -62,6 +67,7 @@ if __name__ == '__main__':
             component_list[1].save(out_dir / "tright.png")
             component_list[2].save(out_dir / "bleft.png")
             component_list[3].save(out_dir / "bright.png")
+            create_sprite_grit(out_dir)
         except Exception as e:
             print("Error saving file located at " + sys.argv[i] + f": {e}")
             sys.exit(1)
