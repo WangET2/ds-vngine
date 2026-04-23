@@ -1,5 +1,4 @@
-# ds-vngine
-[![Tests](https://github.com/WangET2/ds-vngine/actions/workflows/test.yml/badge.svg)](https://github.com/WangET2/ds-vngine/actions/workflows/test.yml)
+# ds-vngine [![Tests](https://github.com/WangET2/ds-vngine/actions/workflows/test.yml/badge.svg)](https://github.com/WangET2/ds-vngine/actions/workflows/test.yml)
 
 A visual novel engine for Nintendo DS homebrew game development.
 
@@ -12,6 +11,7 @@ A visual novel engine for Nintendo DS homebrew game development.
 - [Project Structure](#project-structure)
 - [Assets and Tools](#assets-and-tools)
 - [Scripting Language](#scripting-language)
+- [Unit Tests](#unit-tests)
 - [Design Notes](#design-notes)
 
 ## Dependencies
@@ -23,8 +23,8 @@ A visual novel engine for Nintendo DS homebrew game development.
  - [Python 3](https://www.python.org/)
  
 ### For asset creation:
- - [pillow](https://pypi.org/project/pillow/)
- - [numpy](https://pypi.org/project/numpy/)
+ - [Pillow](https://pypi.org/project/pillow/)
+ - [NumPy](https://pypi.org/project/numpy/)
 
 ### For testing:
  - [gmake](https://www.gnu.org/software/make/)
@@ -80,7 +80,6 @@ Ensure that you follow the instructions provided in the [BlocksDS getting starte
 
 ```
 python3 build.py -c
-
 python3 build.py
 ```
 The generated ROM will be located in the root of your project with the `.nds` file extension.
@@ -91,21 +90,21 @@ This ROM can be run on a DS emulator, or, with the [NDS Homebrew Menu](https://g
 
 ```
 ds-vngine/
-├── architectds/    #See Installation
-├── include/        #Header files
-├── src/            #Engine source files
+├── architectds/    # See Installation
+├── include/        # Header files
+├── src/            # Engine source files
 ├── assets/
-│   ├── audio/          #Sound effects, music
-│   ├── scripts/        #VN scripts (.txt)
+│   ├── audio/          # Sound effects, music
+│   ├── scripts/        # VN scripts (.txt)
 │   └── graphics/
 │       ├── bg/             # Background images
 │       ├── sprites/        # Character sprites
 │       │   └── offsets/    # Sprite offsets
 │       └── ui/             # UI elements
-├── tools/      #Asset conversion scripts
-├── tests/      #Unity unit tests 
-├── unity/      #Unity Test Framework                  
-└── build.py    #ArchitectDS build configuration  
+├── tools/      # Asset conversion scripts
+├── tests/      # Unity unit tests 
+├── unity/      # Unity Test Framework                  
+└── build.py    # ArchitectDS build configuration  
 ```
 
 Other directories and files may appear, but these are build artifacts and can be safely ignored.
@@ -133,7 +132,6 @@ Located in the `tools/` directory are Python scripts intended to automate away t
 > Note that these scripts have dependencies:
 ```
 pip3 install numpy
-
 pip3 install pillow
 ```
 
@@ -144,7 +142,7 @@ pip3 install pillow
 ```
 python3 backgroundmaker.py <yourimage>.png
 ```
-3. Copy the generated `.png` and `.grit` files located in the newly created `<yourimage>/` directory to the `assets/bg/` directory.
+3. Copy the generated `.png` and `.grit` files located in the newly created `<yourimage>/` directory to the `assets/graphics/bg/` directory.
 
 #### Character Sprites:
 1. Prepare your sprite. It should be a `.png` file. If you want to avoid automatic cropping, manually crop your image to a square aspect ratio.
@@ -153,7 +151,9 @@ python3 backgroundmaker.py <yourimage>.png
 python3 spritemaker.py <yourimage>.png
 ```
 3. Copy all eight generated files (four `.png`, four `.grit`)  located in the newly created `<yourimage>/` directory.
-4. Create the directory `assets/sprites/<character>/<expression>/` and paste the generated files. Replace `<character>` and `<expression>` with the name of the character and expression you would like to associate with the generated sprite.
+4. Create the directory `assets/graphics/sprites/<character>/<expression>/` and paste the generated files. Replace `<character>` and `<expression>` with the name of the character and expression you would like to associate with the generated sprite.
+
+Character sprites can have (but do not require) an associated `offset.txt` file located at `assets/graphics/sprites/offsets/<character>/<expression>/`. This file should contain a single integer only, positive or negative, specifying a constant horizontal pixel shift to be applied to the corresponding sprite whenever it is displayed on screen.
 
 #### UI Elements:
 The engine expects to find all of the images already located in `assets/ui/` there at compile time as well.
@@ -163,6 +163,63 @@ The engine expects to find all of the images already located in `assets/ui/` the
 3. Copy **only the `.png` file** to `assets/ui/` to replace the existing asset. **_Do not copy the generated `.grit` file or replace the existing `.grit` files in `assets/ui/`!_**
 
 ## Scripting Language
+
+The bulk of your visual novel's content will be outlined in scripts: `.txt` files located in the `assets/scripts/` directory.
+
+These script files are written in a simple scripting language and must follow certain syntax rules:  
+- Leading whitespaces and tabs are ignored.
+- Trailing whitespaces and tabs are prohibited and will result in an error.
+- Comments take up an entire line, and are denoted with the `#` symbol.
+- Blank/empty lines are permitted.
+- Exactly one space is expected between the arguments to an instruction.
+
+The scripting language provides a minimal instruction set for describing scene flow in script files.
+
+The engine parses, interprets, and executes instructions within script files continously without user input until it encounters a blocking instruction, such as `WAIT` or `SAY`.
+
+Commands listed below are non-blocking unless otherwise specified.
+
+### Display Instructions:
+
+* `BG <bgname>` 
+    * Loads the image located at `assets/graphics/bg/<bgname>.png` into VRAM and displays it as the scene background on the main (upper) screen.
+* `HIDE_BG` 
+    * Hides the scene background currently displayed on the main screen, if there is one.
+* `BGSUB <bgname>`
+    * Loads the image located at `assets/graphics/bg/<bgname>.png` into VRAM and displays it as the scene background on the sub (lower) screen.
+* `HIDE_BGSUB` 
+    * Hides the scene background currently displayed on the sub screen, if there is one.
+* `SHOW_LEFT <character> <expression>`
+    * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it on the left side of the main screen.
+    * Note that only one sprite can be displayed in the left "slot" of the screen at a time. If a sprite is already being displayed in the left slot, calling this instruction with valid arguments will replace it.
+* `HIDE_LEFT`
+    * Hides the sprite currently being displayed in the left slot of the main screen, if there is one.
+* `SHOW_RIGHT <character> <expression>`
+    * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it on the right side of the main screen.
+    * Note that only one sprite can be displayed in the right "slot" of the screen at a time. If a sprite is already being displayed in the right slot, calling this instruction with valid arguments will replace it.
+* `HIDE_RIGHT`
+    * Hides the sprite currently being displayed in the right slot of the main screen, if there is one.
+* `SHOW_CENTER <character> <expression>`
+    * Loads the sprite located at `assets/graphics/sprites/<character>/<expression>/` into VRAM and displays it in the center of the main screen.
+    * Note that only one sprite can be displayed in the center "slot" of the screen at a time. If a sprite is already being displayed in the center slot, calling this instruction with valid arguments will replace it.
+    * Note that displaying a sprite in the center slot of the screen is mutually exclusive with displaying a sprite in the left and/or right slots of the screen. Calling this instruction with valid arguments will hide any sprites currently being displayed in those slots.
+* `HIDE_CENTER`
+    * Hides the sprite currently being displayed in the center slot of the main screen, if there is one.
+
+## Unit Tests
+
+If you choose to extend or update engine behavior and would like to ensure that your changes have not affected existing functionality, you can run the provided unit tests (See [Dependencies](#dependencies)).
+
+To run unit tests:
+```
+make test
+```
+
+The provided tests cover the expected behavior of the flag and parser modules.
+
+To write your own unit tests, see the [Unity testing framework documentation](https://github.com/ThrowTheSwitch/unity). Be sure to add any new test files to the `Makefile`.
+
+You may find [CMock](https://www.throwtheswitch.org/cmock) useful for testing modules that directly or indirectly interact with DS hardware. 
 
 ## Design Notes
 
