@@ -6,6 +6,8 @@ A visual novel engine for Nintendo DS homebrew game development.
 
 ds-vngine is a visual novel engine inspired by the likes of [Ren'Py](https://www.renpy.org/) and [VNDS](https://github.com/BASLQC/vnds). It's meant to facilitate the low-code development of homebrew visual novels for the Nintendo DS.
 
+The engine is built around a custom scripting language, and is designed to take advantage of the DS's titular dual screen layout. Character sprites, scene backgrounds, and dialogue are displayed on the upper scene, while the lower screen features narration and player choices.
+
 Currently, the engine supports dialogue, narration, sprite and background rendering, setting and unsetting flags, and the conditional execution of instructions based on flags.
 
 Features to be implemented soon include choices, sound effects, background music, save/load states, and text rollback.  
