@@ -291,4 +291,14 @@ You may find [CMock](https://www.throwtheswitch.org/cmock) useful for testing mo
 
 ## Design Notes
 
+- The "flag" system is implemented as a statically allocated HashSet. While it would have been possible to implement it as a dynamically allocated HashSet instead, it felt inappropriate considering the DS's limited resources: the original DS only has 4 MB of RAM.
 
+- The "flag" system is implemented as a HashSet rather than a HashMap. Theoretically, a HashMap would allow for simple counters, as a flag could be incremented each time a `FLAG` instruction is called on it. However, this would introduce more conditional instructions or require the introduction of conditional expressions in order to be useful. This remains an area for potential extension.
+
+- While the instruction set is minimal and RISC-inspired, there are no instructions for loading data directly into memory or directly into VRAM. Due to the way the DS's VRAM is banked in particular, the engine "reserves" regions of memory for different types of data, such as scene backgrounds, UI layers, and sprites. On engine shutdown (typically on an `END` instruction or script end of file), the engine relinquishes control of the VRAM banks.
+
+- Currently, text rendering is handled by the [`PrintConsole`](https://blocksds.skylyrac.net/libnds/structPrintConsole.html) struct provided by [libnds](https://blocksds.skylyrac.net/libnds/). Unfortunately, this solution does not allow for fine-grained control of text location or text palette memory management; thus, it is temporary.
+
+- The parser is designed to be as simple and as safe as possible. String delimiting, in particular, was made to be as simple as possible, which is why arguments are primarily separated by spaces (with the exception of the `CHOICE` instruction). This is why the `<character>` argument of the `SAY` instruction cannot contain whitespaces; when a custom text rendering solution is implemented, a character (likely `_`) will be reserved to render nothing for characters with multi-word names.
+
+- Intentionally absent from the syntax and instruction set are labels and a `JUMP` instruction. This was done to avoid the complexity of a two-pass parser or the overhead of loading an entire script file into memory. Instead, the `LOAD` instruction can be used to handle branching paths and even looping behavior in combination with `IF`/`IFN` instructions. Furthermore, `.txt` files contain relatively little metadata; a set of reasonably sized `.txt` files should not take up significantly more storage than one `.txt` file with all of their contents combined.
