@@ -1,7 +1,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include <nds.h>
+//#include <nds.h>
 
 typedef enum{
     MAIN_LAYER_TEXT = 0,

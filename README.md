@@ -38,6 +38,8 @@ Features to be implemented soon include choices, sound effects, background music
  - [gmake](https://www.gnu.org/software/make/)
  - [gcc](https://gcc.gnu.org/)
  - [Unity Test](https://github.com/ThrowTheSwitch/Unity)
+ - [CMock](https://github.com/throwtheswitch/cmock)
+ - [Ruby](https://www.ruby-lang.org/en/documentation/installation/)
 
 ### For extending:
  - [gperf](https://www.gnu.org/software/gperf/)
@@ -54,7 +56,7 @@ Alternatively, if you have no interest in running unit tests,
 ```
 git clone https://github.com/WangET2/ds-vngine.git
 ```
-Note that if you change your mind later, you must manually initialize Unity as a submodule:
+Note that if you change your mind later, you must manually initialize Unity and CMock as submodules:
 ```
 git submodule update --init --recursive
 ```
