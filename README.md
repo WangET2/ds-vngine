@@ -107,13 +107,15 @@ ds-vngine/
 │   ├── audio/          # Sound effects, music
 │   ├── scripts/        # VN scripts (.txt)
 │   └── graphics/
-│       ├── bg/             # Background images
-│       ├── sprites/        # Character sprites
-│       │   └── offsets/    # Sprite offsets
-│       └── ui/             # UI elements
+│       ├── bg/             # Background images (.png, .grit)
+│       ├── sprites/        # Character sprites (.png, .grit)
+│       │   └── offsets/    # Sprite offsets (.txt)
+│       └── ui/             # UI elements (.png, .grit)
 ├── tools/      # Asset conversion scripts
 ├── tests/      # Unity unit tests 
-├── unity/      # Unity Test Framework                  
+├── mocks/      # Mocked modules for unit tests
+├── unity/      # Unity Test Framework submodule
+├── CMock/      # CMock submodule                 
 └── build.py    # ArchitectDS build configuration  
 ```
 
