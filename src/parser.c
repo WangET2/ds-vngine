@@ -14,7 +14,8 @@ ParserResult parser_parse_line(const char *line,  ParsedCommand *out){
 
     char lineCpy[PARSER_MAX_LINE_LEN];
 
-    snprintf(lineCpy, sizeof(lineCpy), "%s", line);
+    int copied = snprintf(lineCpy, sizeof(lineCpy), "%s", line);
+    if(copied >= PARSER_MAX_LINE_LEN) return PARSER_RESULT_ERROR;
     char *p = lineCpy;
     while(*p == ' ' || *p == '\t') ++p;
 

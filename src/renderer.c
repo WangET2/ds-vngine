@@ -123,7 +123,8 @@ int renderer_set_background(const char *bg_name, bool mainScreen) {
     void *palData = NULL;
     size_t palSize = 0;
     char path[100];
-    snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", bg_name);
+    int n = snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", bg_name);
+    if(n >= sizeof(path)) return -1;
     GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,
                                NULL, NULL, &palData, &palSize); 
     if(err != GRF_NO_ERROR) return -1;
@@ -166,7 +167,8 @@ int renderer_load_textbox(const char* textbox_name, bool mainScreen){
     void *mapData = NULL;
     size_t mapSize = 0;
     char path[100];
-    snprintf(path, sizeof(path), "nitro:/grit/ui/%s_png.grf", textbox_name);
+    int n = snprintf(path, sizeof(path), "nitro:/grit/ui/%s_png.grf", textbox_name);
+    if(n >= sizeof(path)) return -1;
     GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,
                                &mapData, &mapSize, &palData, &palSize); 
     if(err != GRF_NO_ERROR) return -1;
@@ -238,7 +240,8 @@ static int renderer_show_portrait(const PortraitSlot *slot, const char *name, co
     int additional_offset = get_portrait_offset(name, expression);
     for(int i = 0; i < 4; ++i){
         char path[100];
-        snprintf(path, sizeof(path), "nitro:/grit/sprites/%s/%s/%s", name, expression, spriteComponent[i]);
+        int n = snprintf(path, sizeof(path), "nitro:/grit/sprites/%s/%s/%s", name, expression, spriteComponent[i]);
+        if(n >= sizeof(path)) return -1;
         int ret = load_bmp_sprite(path, sprite_mem[slot->baseIndex + i]);
         if (ret!= 0) return ret;
         oamSet(&oamMain, slot->baseIndex + i, sprite_x(slot->anchorX, i) + additional_offset, 
@@ -266,7 +269,8 @@ static void renderer_hide_portrait(const PortraitSlot *slot){
 
 static int get_portrait_offset(const char *name, const char *expression){
     char path[100];
-    snprintf(path, sizeof(path), "nitro:/offsets/%s/%s/%s", name, expression, "offset.txt");
+    int n = snprintf(path, sizeof(path), "nitro:/offsets/%s/%s/%s", name, expression, "offset.txt");
+    if(n >= sizeof(path)) return -1;
     FILE *fptr;
     fptr = fopen(path, "r");
     if(fptr == NULL) return 0;

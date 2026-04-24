@@ -18,7 +18,8 @@ void script_close(void){
 int script_open(const char* scene_name){
     if(fptr != NULL) script_close();
     char path[100];
-    snprintf(path, sizeof(path), "nitro:/scripts/%s.txt", scene_name);
+    int n = snprintf(path, sizeof(path), "nitro:/scripts/%s.txt", scene_name);
+    if(n >= sizeof(path)) return -1; 
     fptr = fopen(path, "r");
     if (fptr == NULL) return -1;
     lineNum = 0;
