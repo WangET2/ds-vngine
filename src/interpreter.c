@@ -179,10 +179,11 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         }
         case CMD_LOAD: {
             script_close();
+            const char *script_name = cmd->args[0];
+            ret = script_open(script_name);
+            if(ret != 0) return INTERPRETER_RESULT_ERROR;
             renderer_reset();
             text_clear();
-            const char *script_name = cmd->args[0];
-            script_open(script_name);
             return INTERPRETER_RESULT_OK;
         }
     }

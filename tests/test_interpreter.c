@@ -5,6 +5,7 @@
 #include "Mockrenderer.h"
 #include "Mocktext.h"
 #include "Mockdisplay.h"
+#include "Mockscript.h"
 #include <string.h>
 #include <stdbool.h>
 
@@ -42,8 +43,7 @@ void test_interpreter_bg_error(void){
 
 void test_interpreter_hide_bg(void){
     renderer_hide_background_Expect(true);
-    char *args[1];
-    fill_and_test_interpreter(CMD_HIDE_BG, 0, args, INTERPRETER_RESULT_OK, false);
+    fill_and_test_interpreter(CMD_HIDE_BG, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
 
 void test_interpreter_bgsub(void){
@@ -60,8 +60,7 @@ void test_interpreter_bgsub_error(void){
 
 void test_interpreter_hide_bgsub(void){
     renderer_hide_background_Expect(false);
-    char *args[1];
-    fill_and_test_interpreter(CMD_HIDE_BG_SUB, 0, args, INTERPRETER_RESULT_OK, false);
+    fill_and_test_interpreter(CMD_HIDE_BG_SUB, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
 
 void test_interpreter_show_left(void){
@@ -78,8 +77,7 @@ void test_interpreter_show_left_error(void){
 
 void test_interpreter_hide_left(void){
     renderer_hide_left_Expect();
-    char *args[1];
-    fill_and_test_interpreter(CMD_HIDE_LEFT, 0, args, INTERPRETER_RESULT_OK, false);
+    fill_and_test_interpreter(CMD_HIDE_LEFT, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
 
 void test_interpreter_show_right(void){
@@ -96,8 +94,7 @@ void test_interpreter_show_right_error(void){
 
 void test_interpreter_hide_right(void){
     renderer_hide_right_Expect();
-    char *args[1];
-    fill_and_test_interpreter(CMD_HIDE_RIGHT, 0, args, INTERPRETER_RESULT_OK, false);
+    fill_and_test_interpreter(CMD_HIDE_RIGHT, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
 
 void test_interpreter_show_center(void){
@@ -114,8 +111,7 @@ void test_interpreter_show_center_error(void){
 
 void test_interpreter_hide_center(void){
     renderer_hide_center_Expect();
-    char *args[1];
-    fill_and_test_interpreter(CMD_HIDE_CENTER, 0, args, INTERPRETER_RESULT_OK, false);
+    fill_and_test_interpreter(CMD_HIDE_CENTER, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
 
 void test_interpreter_flag(void){
@@ -183,13 +179,73 @@ void test_interpreter_if_nested_dispatch(void){
     fill_and_test_interpreter(CMD_IF, 2, args, INTERPRETER_RESULT_BLOCKED, true);
 }
 
+void test_interpreter_ifn_existing(void){
+    flags_set("testflag");
+    char *args[2] = {"testflag", "FLAG testflag2"};
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_OK, false);
+    TEST_ASSERT_FALSE(flags_has("testflag2"));
+}
+
+void test_interpreter_ifn_nonexistent(void){
+    char *args[2] = {"testflag", "FLAG testflag2"};
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_OK, false);
+    TEST_ASSERT_TRUE(flags_has("testflag2"));
+}
+
+void test_interpreter_ifn_nested_existing(void){
+    flags_set("testflag");
+    flags_set("testflag2");
+    char *args[2] = {"testflag", "IFN testflag2 FLAG testflag3"};
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_OK, false);
+    TEST_ASSERT_FALSE(flags_has("testflag3"));
+}
+
+void test_interpreter_ifn_nested_nonexistent(void){
+    char *args[2] = {"testflag", "IFN testflag2 FLAG testflag3"};
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_OK, false);
+    TEST_ASSERT_TRUE(flags_has("testflag3"));
+}
+
+void test_interpreter_ifn_nested_blocking(void){
+    char *args[2] = {"testflag", "IFN testflag2 WAIT"};
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_BLOCKED, true);
+}
+
+void test_interpreter_ifn_nested_dispatch(void){
+    char *args[2] = {"testflag", "IFN testflag2 SAY testchar test dialogue"};
+    renderer_load_textbox_ExpectAndReturn("maintextbox", true, 0);
+    renderer_show_textbox_Expect(true);
+    renderer_hide_textbox_Expect(false);
+    text_begin_dialogue_Expect("testchar", "test dialogue");
+    fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_BLOCKED, true);
+}
+
 void test_interpreter_pass(void){
-    ParsedCommand cmd;
-    cmd.command = CMD_PASS;
-    cmd.num_args = 0;
-    InterpreterResult res = interpreter_execute(&cmd);
-    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, res);
-    TEST_ASSERT_FALSE(interpreter_is_blocked());
+    fill_and_test_interpreter(CMD_PASS, 0, NULL, INTERPRETER_RESULT_OK, false);
+}
+
+void test_interpreter_wait(void){
+    fill_and_test_interpreter(CMD_WAIT, 0, NULL, INTERPRETER_RESULT_BLOCKED, true);
+}
+
+void test_interpreter_load(void){
+    char *args[1] = {"testscript"};
+    script_close_Expect();
+    renderer_reset_Expect();
+    text_clear_Expect();
+    script_open_ExpectAndReturn("testscript", 0);
+    fill_and_test_interpreter(CMD_LOAD, 1, args, INTERPRETER_RESULT_OK, false);
+}
+
+void test_interpreter_load_error(void){
+    char *args[1] = {"testscript"};
+    script_close_Expect();
+    script_open_ExpectAndReturn("testscript", -1);
+    fill_and_test_interpreter(CMD_LOAD, 1, args, INTERPRETER_RESULT_ERROR, false);
+}
+
+void test_interpreter_end(void){
+    fill_and_test_interpreter(CMD_END, 0, NULL, INTERPRETER_RESULT_FINISHED, false);
 }
 
 void run_interpreter_tests(void){
@@ -213,6 +269,7 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_flag);
     RUN_TEST(test_interpreter_unset_existing);
     RUN_TEST(test_interpreter_unset_nonexistent);
+
     RUN_TEST(test_interpreter_if_existing);
     RUN_TEST(test_interpreter_if_nonexistent);
     RUN_TEST(test_interpreter_if_nested_existing);
@@ -220,7 +277,18 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_if_nested_blocking);
     RUN_TEST(test_interpreter_if_nested_dispatch);
 
+    RUN_TEST(test_interpreter_ifn_existing);
+    RUN_TEST(test_interpreter_ifn_nonexistent);
+    RUN_TEST(test_interpreter_ifn_nested_existing);
+    RUN_TEST(test_interpreter_ifn_nested_nonexistent);
+    RUN_TEST(test_interpreter_ifn_nested_blocking);
+    RUN_TEST(test_interpreter_ifn_nested_dispatch);
+
     RUN_TEST(test_interpreter_pass);
+    RUN_TEST(test_interpreter_wait);
+    RUN_TEST(test_interpreter_load);
+    RUN_TEST(test_interpreter_load_error);
+    RUN_TEST(test_interpreter_end);
 }
 
 void fill_and_test_interpreter(CommandType cmd_type, int arg_count, char *filled_args[], InterpreterResult expected_res, bool blocking){
