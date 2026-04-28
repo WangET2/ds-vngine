@@ -164,6 +164,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         }
         case CMD_CHOICE: {
             blocked = true;
+            blockType = BLOCK_CHOICE;
             //renderer set ui, text draw choice text, etc.
             int arr_size = cmd->num_args;
             char *instructions[arr_size/2];
@@ -171,6 +172,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
                 instructions[i/2] = cmd->args[i];
             }
             choice_init(instructions, arr_size/2);
+            return INTERPRETER_RESULT_BLOCKED;
         }
         case CMD_WAIT: {
             blocked = true;
@@ -206,21 +208,33 @@ void interpreter_update(void){
     if(blockType == BLOCK_TEXT) text_update();
 }
 
-void interpreter_advance(void){
-    if(!blocked) return;
-    if(blockType == BLOCK_TEXT){
-        if(!text_is_finished())
-            text_finish_immediately();
-        else
+InterpreterResult interpreter_advance(void){
+    switch(blockType) {
+        case BLOCK_NONE: {
+            return INTERPRETER_RESULT_OK;
+        }
+        case BLOCK_TEXT: {
+            if(!text_is_finished())
+                text_finish_immediately();
+            else
+                interpreter_reset();
+            break;
+        }
+        case BLOCK_WAIT: {
             interpreter_reset();
-    }
-    if(blockType == BLOCK_WAIT) interpreter_reset();
-    if(blockType == BLOCK_CHOICE){
-        char *line = choice_get_choice();
-        ParsedCommand cmd;
-        parser_parse_line(line, &cmd);
-        interpreter_execute(&cmd);
-        interpreter_reset();
+            break;
+        }
+        case BLOCK_CHOICE: {
+            char *line = choice_get_choice();
+            ParsedCommand cmd;
+            ParserResult parse_res = parser_parse_line(line, &cmd);
+            if(parse_res == PARSER_RESULT_ERROR) return INTERPRETER_RESULT_ERROR;         
+            InterpreterResult int_res = interpreter_execute(&cmd);
+            if(int_res == INTERPRETER_RESULT_ERROR) return int_res;
+            interpreter_reset();
+            break;
+        }
     }
     text_debug_clear();
+    return INTERPRETER_RESULT_OK;
 }

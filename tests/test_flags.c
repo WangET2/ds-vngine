@@ -69,7 +69,7 @@ void test_flags_large_load_factor(void){
     }
 }
 
-int run_flag_tests(void){
+void run_flag_tests(void){
     //UNITY_BEGIN();
     RUN_TEST(test_flags_set_basic);
     RUN_TEST(test_flags_unset_basic);
@@ -78,5 +78,5 @@ int run_flag_tests(void){
     RUN_TEST(test_flags_unset_duplicate);
     RUN_TEST(test_flags_has_false);
     RUN_TEST(test_flags_large_load_factor);
-    return UNITY_END();
+    //return UNITY_END();
 }

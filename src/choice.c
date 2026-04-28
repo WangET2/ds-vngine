@@ -1,5 +1,6 @@
 #include "choice.h"
 #include <string.h>
+#include <stdlib.h>
 
 //basically just shared access to an array... should this handle rendering?
 
@@ -9,11 +10,13 @@ char* g_choice_arr[4];
 
 void choice_init(char* choices[], int num_choices){
     for(int i = 0; i < num_choices; ++i)
-        memcpy(&g_choice_arr[i], &choices[i], sizeof(choices[i]));
+        g_choice_arr[i] = strdup(choices[i]);
     g_num_choices = num_choices;
 }
 
 void choice_reset(void){
+    for(int i = 0; i < g_num_choices; ++i)
+        free(g_choice_arr[i]);
     g_num_choices = 0;
     g_current_index = 0;
 }

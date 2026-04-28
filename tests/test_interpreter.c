@@ -2,6 +2,7 @@
 #include "interpreter.h"
 #include "parser.h"
 #include "flags.h"
+#include "choice.h"
 #include "Mockrenderer.h"
 #include "Mocktext.h"
 #include "Mockdisplay.h"
@@ -221,9 +222,15 @@ void test_interpreter_ifn_nested_dispatch(void){
 }
 
 void test_interpreter_choice(void){
+    choice_reset();
     char *args1[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
     fill_and_test_interpreter(CMD_CHOICE, 4, args1, INTERPRETER_RESULT_BLOCKED, true);
-    //CMock choice.c, check if flag1/flag2 are set
+    TEST_ASSERT_EQUAL_STRING("FLAG flag1", choice_get_choice());
+    choice_set_choice(1);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag2", choice_get_choice());
+    text_debug_clear_Expect();
+    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
+    TEST_ASSERT_TRUE(flags_has("flag2"));
 }
 
 void test_interpreter_pass(void){

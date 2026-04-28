@@ -29,6 +29,6 @@ void interpreter_update(void);
 
 InterpreterBlockType interpreter_is_blocked(void);
 
-void interpreter_advance(void);
+InterpreterResult interpreter_advance(void);
 
 #endif
