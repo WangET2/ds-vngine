@@ -225,7 +225,12 @@ InterpreterResult interpreter_advance(void){
             break;
         }
         case BLOCK_CHOICE: {
-            char *line = choice_get_choice();
+            char *line[PARSER_MAX_TOKEN_LEN];
+            int res = choice_get_choice(&line[0], PARSER_MAX_TOKEN_LEN);
+            if(res == -1){
+                choice_reset();
+                return -1;
+            }
             ParsedCommand cmd;
             ParserResult parse_res = parser_parse_line(line, &cmd);
             if(parse_res == PARSER_RESULT_ERROR) return INTERPRETER_RESULT_ERROR;         

@@ -1,6 +1,7 @@
 #include "choice.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 //basically just shared access to an array... should this handle rendering?
 
@@ -21,8 +22,9 @@ void choice_reset(void){
     g_current_index = 0;
 }
 
-char* choice_get_choice(void){
-    return g_choice_arr[g_current_index];
+int choice_get_choice(char *out, int out_size){
+    int ret = snprintf(out, out_size, "%s", g_choice_arr[g_current_index]);
+    return ret >= out_size ? -1 : 0;
 }
 
 int choice_set_choice(int choice_index){
