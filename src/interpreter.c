@@ -232,6 +232,7 @@ InterpreterResult interpreter_advance(void){
             InterpreterResult int_res = interpreter_execute(&cmd);
             if(int_res == INTERPRETER_RESULT_ERROR) return int_res;
             interpreter_reset();
+            choice_reset();
             break;
         }
     }

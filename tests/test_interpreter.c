@@ -231,7 +231,6 @@ void test_interpreter_choice(void){
     text_debug_clear_Expect();
     TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
     TEST_ASSERT_TRUE(flags_has("flag2"));
-    choice_reset();
 }
 
 void test_interpreter_pass(void){
