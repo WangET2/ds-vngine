@@ -4,14 +4,9 @@
 #include "text.h"
 #include "script.h"
 #include "flags.h"
+#include "choice.h"
 #include <stdbool.h>
 #include <string.h>
-
-typedef enum {
-    BLOCK_NONE = 0,
-    BLOCK_WAIT,
-    BLOCK_TEXT
-} InterpreterBlockType;
 
 static bool blocked;
 static InterpreterBlockType blockType;
@@ -38,6 +33,7 @@ void interpreter_shutdown(void){
 InterpreterResult interpreter_execute(const ParsedCommand *cmd){
     if(!cmd) return INTERPRETER_RESULT_ERROR;
     int ret;
+    blockType = BLOCK_NONE;
     switch(cmd->command) {
         case CMD_BG: {
             blocked = false;
@@ -166,6 +162,16 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             }
             return INTERPRETER_RESULT_OK;
         }
+        case CMD_CHOICE: {
+            blocked = true;
+            //renderer set ui, text draw choice text, etc.
+            int arr_size = cmd->num_args;
+            char *instructions[arr_size/2];
+            for(int i = 1; i < arr_size; i+=2){
+                instructions[i/2] = cmd->args[i];
+            }
+            choice_init(instructions, arr_size/2);
+        }
         case CMD_WAIT: {
             blocked = true;
             blockType = BLOCK_WAIT;
@@ -190,8 +196,8 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
     return INTERPRETER_RESULT_ERROR;
 }
 
-bool interpreter_is_blocked(void){
-    return blocked;
+InterpreterBlockType interpreter_is_blocked(void){
+    return blockType;
 }
 
 void interpreter_update(void){
@@ -209,5 +215,12 @@ void interpreter_advance(void){
             interpreter_reset();
     }
     if(blockType == BLOCK_WAIT) interpreter_reset();
+    if(blockType == BLOCK_CHOICE){
+        char *line = choice_get_choice();
+        ParsedCommand cmd;
+        parser_parse_line(line, &cmd);
+        interpreter_execute(&cmd);
+        interpreter_reset();
+    }
     text_debug_clear();
 }

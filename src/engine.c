@@ -50,8 +50,20 @@ EngineResult engine_update(void){
 }
 
 void engine_handle_input(u16 keys_down){
-    if(!interpreter_is_blocked()) return;
-    if(keys_down & KEY_A) interpreter_advance();
+    InterpreterBlockType block_type = interpreter_is_blocked();
+    if(block_type == BLOCK_NONE) return;
+    if(block_type == BLOCK_TEXT && (keys_down & KEY_A)) interpreter_advance();
+    if(block_type == BLOCK_CHOICE){
+        if(keys_down & KEY_DOWN){
+            //increment index stuff
+        } else if(keys_down & KEY_UP){
+            //decrement index stuff
+        } else if(keys_down & KEY_A){
+            //select stuff
+        }
+        //touch screen stuff should be grabbed as well... (pass touchRead as arg as well?)
+    }
+
 }
 
 int engine_current_line(void){

@@ -10,6 +10,13 @@ typedef enum {
     INTERPRETER_RESULT_ERROR
 } InterpreterResult;
 
+typedef enum {
+    BLOCK_NONE = 0,
+    BLOCK_WAIT,
+    BLOCK_TEXT,
+    BLOCK_CHOICE
+} InterpreterBlockType;
+
 void interpreter_init(void);
 
 void interpreter_reset(void);
@@ -20,7 +27,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd);
 
 void interpreter_update(void);
 
-bool interpreter_is_blocked(void);
+InterpreterBlockType interpreter_is_blocked(void);
 
 void interpreter_advance(void);
 

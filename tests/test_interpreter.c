@@ -220,6 +220,12 @@ void test_interpreter_ifn_nested_dispatch(void){
     fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_BLOCKED, true);
 }
 
+void test_interpreter_choice(void){
+    char *args1[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
+    fill_and_test_interpreter(CMD_CHOICE, 4, args1, INTERPRETER_RESULT_BLOCKED, true);
+    //CMock choice.c, check if flag1/flag2 are set
+}
+
 void test_interpreter_pass(void){
     fill_and_test_interpreter(CMD_PASS, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
@@ -283,6 +289,8 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_ifn_nested_nonexistent);
     RUN_TEST(test_interpreter_ifn_nested_blocking);
     RUN_TEST(test_interpreter_ifn_nested_dispatch);
+
+    RUN_TEST(test_interpreter_choice);
 
     RUN_TEST(test_interpreter_pass);
     RUN_TEST(test_interpreter_wait);
