@@ -157,7 +157,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
                 const char *line = cmd->args[1];
                 ParsedCommand new_cmd;
                 ParserResult inner_res = parser_parse_line(line, &new_cmd);
-                if(inner_res == PARSER_RESULT_ERROR|| inner_res == PARSER_RESULT_EMPTY) return INTERPRETER_RESULT_ERROR;
+                if(inner_res == PARSER_RESULT_ERROR || inner_res == PARSER_RESULT_EMPTY) return INTERPRETER_RESULT_ERROR;
                 return interpreter_execute(&new_cmd);
             }
             return INTERPRETER_RESULT_OK;
@@ -233,6 +233,8 @@ InterpreterResult interpreter_advance(void){
             if(int_res == INTERPRETER_RESULT_ERROR) return int_res;
             interpreter_reset();
             choice_reset();
+            text_debug_clear();
+            return int_res;
             break;
         }
     }
