@@ -222,13 +222,36 @@ void test_interpreter_ifn_nested_dispatch(void){
 }
 
 void test_interpreter_choice(void){
-    choice_reset();
-    char *args1[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
-    fill_and_test_interpreter(CMD_CHOICE, 4, args1, INTERPRETER_RESULT_BLOCKED, true);
+    char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
+    fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_STRING("FLAG flag1", choice_get_choice());
     choice_set_choice(1);
     TEST_ASSERT_EQUAL_STRING("FLAG flag2", choice_get_choice());
+}
+
+void test_interpreter_choice_dispatch(void){
+    char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
+    fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
+    choice_set_choice(1);
     text_debug_clear_Expect();
+    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
+    TEST_ASSERT_FALSE(flags_has("flag1"));
+    TEST_ASSERT_TRUE(flags_has("flag2"));
+    flags_reset();
+    flags_init();
+    fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
+    choice_set_choice(0);
+    text_debug_clear_Expect();
+    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
+    TEST_ASSERT_TRUE(flags_has("flag1"));
+    TEST_ASSERT_FALSE(flags_has("flag2"));
+}
+
+void test_interpreter_choice_nested_dispatch(void){
+    char *args[4] = {"text1", "IF flag1 FLAG flag2", "text2", "PASS"};
+    fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
+    text_debug_clear_Expect();
+    flags_set("flag1");
     TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
     TEST_ASSERT_TRUE(flags_has("flag2"));
 }
@@ -298,6 +321,8 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_ifn_nested_dispatch);
 
     RUN_TEST(test_interpreter_choice);
+    RUN_TEST(test_interpreter_choice_dispatch);
+    RUN_TEST(test_interpreter_choice_nested_dispatch);
 
     RUN_TEST(test_interpreter_pass);
     RUN_TEST(test_interpreter_wait);
