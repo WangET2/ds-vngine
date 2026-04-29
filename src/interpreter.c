@@ -233,9 +233,11 @@ InterpreterResult interpreter_advance(void){
             }
             ParsedCommand cmd;
             ParserResult parse_res = parser_parse_line(line, &cmd);
-            if(parse_res == PARSER_RESULT_ERROR) return INTERPRETER_RESULT_ERROR;         
+            if(parse_res == PARSER_RESULT_ERROR){
+                choice_reset();
+                return INTERPRETER_RESULT_ERROR;         
+            }
             InterpreterResult int_res = interpreter_execute(&cmd);
-            if(int_res == INTERPRETER_RESULT_ERROR) return int_res;
             interpreter_reset();
             choice_reset();
             text_debug_clear();
