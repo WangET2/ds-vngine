@@ -234,7 +234,6 @@ InterpreterResult interpreter_advance(void){
             ParserResult parse_res = parser_parse_line(line, &cmd);
             if(parse_res == PARSER_RESULT_ERROR) return INTERPRETER_RESULT_ERROR;
             InterpreterResult int_res = interpreter_execute(&cmd);
-            interpreter_reset();
             text_debug_clear();
             return int_res;
             break;

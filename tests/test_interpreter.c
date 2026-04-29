@@ -261,6 +261,16 @@ void test_interpreter_choice_nested_dispatch(void){
     TEST_ASSERT_TRUE(flags_has("flag2"));
 }
 
+void test_interpreter_nested_multi_choice(void){
+    char *args[4] = {"text1", "CHOICE text3 {FLAG flag1} text4 {PASS}", "text2", "PASS"};
+    fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
+    text_debug_clear_Expect();
+    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_BLOCKED, interpreter_advance());
+    text_debug_clear_Expect();
+    TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_OK, interpreter_advance());
+    TEST_ASSERT_TRUE(flags_has("flag1"));
+}
+
 void test_interpreter_pass(void){
     fill_and_test_interpreter(CMD_PASS, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
@@ -328,6 +338,7 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_choice);
     RUN_TEST(test_interpreter_choice_dispatch);
     RUN_TEST(test_interpreter_choice_nested_dispatch);
+    RUN_TEST(test_interpreter_nested_multi_choice);
 
     RUN_TEST(test_interpreter_pass);
     RUN_TEST(test_interpreter_wait);
