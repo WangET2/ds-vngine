@@ -231,6 +231,7 @@ void test_interpreter_choice(void){
     char *buf2[PARSER_MAX_TOKEN_LEN];
     choice_get_choice(&buf2[0], PARSER_MAX_TOKEN_LEN);
     TEST_ASSERT_EQUAL_STRING("FLAG flag2", buf2);
+    choice_reset();
 }
 
 void test_interpreter_choice_dispatch(void){
