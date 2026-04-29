@@ -223,12 +223,12 @@ void test_interpreter_ifn_nested_dispatch(void){
 
 void test_interpreter_choice(void){
     char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
-    char *buf1[PARSER_MAX_TOKEN_LEN];
+    char buf1[PARSER_MAX_TOKEN_LEN];
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
     TEST_ASSERT_EQUAL_STRING("FLAG flag1", buf1);
     choice_set_choice(1);
-    char *buf2[PARSER_MAX_TOKEN_LEN];
+    char buf2[PARSER_MAX_TOKEN_LEN];
     choice_get_choice(&buf2[0], PARSER_MAX_TOKEN_LEN);
     TEST_ASSERT_EQUAL_STRING("FLAG flag2", buf2);
     choice_reset();
