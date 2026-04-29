@@ -327,7 +327,7 @@ void run_interpreter_tests(void){
 
     RUN_TEST(test_interpreter_choice);
     RUN_TEST(test_interpreter_choice_dispatch);
-    //RUN_TEST(test_interpreter_choice_nested_dispatch);
+    RUN_TEST(test_interpreter_choice_nested_dispatch);
 
     RUN_TEST(test_interpreter_pass);
     RUN_TEST(test_interpreter_wait);
