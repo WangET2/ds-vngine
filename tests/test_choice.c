@@ -16,9 +16,9 @@ void test_choice_two(void){
     TEST_ASSERT_EQUAL_STRING("TESTINSTR 1", buf2);
     choices[0] = NULL;
     TEST_ASSERT_EQUAL_STRING("TESTINSTR 1", buf2);
+    choice_reset();
 }
 
 void run_choice_tests(void){
     RUN_TEST(test_choice_two);
-    choice_reset();
 }
