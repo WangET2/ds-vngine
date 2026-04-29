@@ -33,6 +33,10 @@ int choice_set_choice(int choice_index){
     return 0;
 }
 
+int choice_current_index(void){
+    return g_current_index;
+}
+
 int choice_num_choices(void){
     return g_num_choices;
 }

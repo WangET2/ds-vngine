@@ -3,6 +3,7 @@
 #include "interpreter.h"
 #include "script.h"
 #include "display.h"
+#include "choice.h"
 
 #include <stdbool.h>
 #include <string.h>
@@ -27,7 +28,7 @@ int engine_load_scene(const char *scene_name){
 
 EngineResult engine_update(void){
     if(!script_is_open()) return ENGINE_RESULT_ERROR;
-    char currentLine[500];
+    char currentLine[PARSER_MAX_LINE_LEN];
     while(!interpreter_is_blocked()){
         ScriptResult script_res = script_read_line(&currentLine[0], PARSER_MAX_LINE_LEN);
         if(script_res == SCRIPT_RESULT_ERROR) return ENGINE_RESULT_ERROR;
@@ -54,12 +55,13 @@ void engine_handle_input(u16 keys_down){
     if(block_type == BLOCK_NONE) return;
     if(block_type == BLOCK_TEXT && (keys_down & KEY_A)) interpreter_advance();
     if(block_type == BLOCK_CHOICE){
+        int current_index = choice_current_index();
         if(keys_down & KEY_DOWN){
-            //increment index stuff
+            if(current_index < choice_num_choices() - 1) choice_set_choice(current_index + 1);
         } else if(keys_down & KEY_UP){
-            //decrement index stuff
+            if(current_index > 0) choice_set_choice(current_index - 1);
         } else if(keys_down & KEY_A){
-            //select stuff
+            interpreter_advance();
         }
         //touch screen stuff should be grabbed as well... (pass touchRead as arg as well?)
     }
