@@ -221,16 +221,57 @@ void test_interpreter_ifn_nested_dispatch(void){
     fill_and_test_interpreter(CMD_IFN, 2, args, INTERPRETER_RESULT_BLOCKED, true);
 }
 
-void test_interpreter_choice(void){
+void test_interpreter_choice_two(void){
     char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
     char buf1[PARSER_MAX_TOKEN_LEN];
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
+    TEST_ASSERT_EQUAL_INT(2, choice_num_choices());
     choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
     TEST_ASSERT_EQUAL_STRING("FLAG flag1", buf1);
     choice_set_choice(1);
     char buf2[PARSER_MAX_TOKEN_LEN];
     choice_get_choice(&buf2[0], PARSER_MAX_TOKEN_LEN);
     TEST_ASSERT_EQUAL_STRING("FLAG flag2", buf2);
+    choice_reset();
+}
+
+void test_interpreter_choice_three(void){
+    char *args[6] = {"text1", "FLAG flag1", "text2", "FLAG flag2", "text3", "FLAG flag3"};
+    char buf1[PARSER_MAX_TOKEN_LEN];
+    fill_and_test_interpreter(CMD_CHOICE, 6, args, INTERPRETER_RESULT_BLOCKED, true);
+    TEST_ASSERT_EQUAL_INT(3, choice_num_choices());
+    choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag1", buf1);
+    choice_set_choice(1);
+    char buf2[PARSER_MAX_TOKEN_LEN];
+    choice_get_choice(&buf2[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag2", buf2);
+    choice_set_choice(2);
+    char buf3[PARSER_MAX_TOKEN_LEN];
+    choice_get_choice(&buf3[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag3", buf3);
+    choice_reset();
+}
+
+void test_interpreter_choice_four(void){
+    char *args[8] = {"text1", "FLAG flag1", "text2", "FLAG flag2", "text3", "FLAG flag3", "text4", "FLAG flag4"};
+    char buf1[PARSER_MAX_TOKEN_LEN];
+    fill_and_test_interpreter(CMD_CHOICE, 8, args, INTERPRETER_RESULT_BLOCKED, true);
+    TEST_ASSERT_EQUAL_INT(4, choice_num_choices());
+    choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag1", buf1);
+    choice_set_choice(1);
+    char buf2[PARSER_MAX_TOKEN_LEN];
+    choice_get_choice(&buf2[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag2", buf2);
+    choice_set_choice(2);
+    char buf3[PARSER_MAX_TOKEN_LEN];
+    choice_get_choice(&buf3[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag3", buf3);
+    choice_set_choice(3);
+    char buf4[PARSER_MAX_TOKEN_LEN];
+    choice_get_choice(&buf4[0], PARSER_MAX_TOKEN_LEN);
+    TEST_ASSERT_EQUAL_STRING("FLAG flag4", buf4);
     choice_reset();
 }
 
@@ -335,7 +376,9 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_ifn_nested_blocking);
     RUN_TEST(test_interpreter_ifn_nested_dispatch);
 
-    RUN_TEST(test_interpreter_choice);
+    RUN_TEST(test_interpreter_choice_two);
+    RUN_TEST(test_interpreter_choice_three);
+    RUN_TEST(test_interpreter_choice_four);
     RUN_TEST(test_interpreter_choice_dispatch);
     RUN_TEST(test_interpreter_choice_nested_dispatch);
     RUN_TEST(test_interpreter_nested_multi_choice);
