@@ -166,12 +166,30 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             blocked = true;
             blockType = BLOCK_CHOICE;
             //renderer set ui, text draw choice text, etc.
+
             int arr_size = cmd->num_args;
-            char *instructions[arr_size/2];
-            for(int i = 1; i < arr_size; i+=2){
-                instructions[i/2] = cmd->args[i];
-            }
-            choice_init(instructions, arr_size/2);
+            int num_choices = arr_size/2;
+
+            //replace this call with appropriate choice ui once the asset is created
+            //ternary operator on num_choices for name of asset?
+            renderer_load_textbox("subtextbox", false);
+            renderer_show_textbox(false);
+            //this function is much more general than loading a textbox (?) worth a rename?
+            //magic string! bad!
+
+            //also todo: refactor text module; this leaf module knows too much about dispatch... 
+            //are text locations more like dispatch details? 
+            //immediate write vs animated write
+            //anyways call text to write choice text here
+            char *choice_text[num_choices];
+            for(int i = 0; i < arr_size; i+=2)
+                choice_text[i/2] = cmd->args[i];
+            text_write_choices(choice_text, num_choices);
+
+            char *instructions[num_choices];
+            for(int j = 1; j < arr_size; j+=2)
+                instructions[j/2] = cmd->args[j];
+            choice_init(instructions, num_choices);
             return INTERPRETER_RESULT_BLOCKED;
         }
         case CMD_WAIT: {

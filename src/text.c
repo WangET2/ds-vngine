@@ -93,6 +93,18 @@ void text_begin_narration(const char *text) {
     g_text.narration = true;
 }
 
+void text_write_choices(char* choices[], int num_choices){
+    //TODO: implement!
+    //temporary, for testing purposes:
+    char buf[500] = "";
+    for(int i = 0; i < num_choices; ++i){
+        strcat(buf, choices[i]);
+    }
+    text_begin_narration(&buf[0]);
+    text_finish_immediately();
+    return;
+}
+
 void text_update(void) {
     if(g_text.visible_chars > g_text.total_chars){
         g_text.finished = true;
