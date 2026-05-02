@@ -172,7 +172,8 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
 
             //replace this call with appropriate choice ui once the asset is created
             //ternary operator on num_choices for name of asset?
-            renderer_load_textbox("subtextbox", false);
+            char *ui_element = num_choices == 2 ? "choicetwo" : num_choices == 3 ? "choicethree" : "choicefour";
+            renderer_load_textbox(ui_element, false);
             renderer_show_textbox(false);
             //this function is much more general than loading a textbox (?) worth a rename?
             //magic string! bad!
