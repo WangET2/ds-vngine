@@ -5,6 +5,8 @@
 #include "cmock.h"
 #include "Mocktext.h"
 
+static const char* CMockString_choices = "choices";
+static const char* CMockString_num_choices = "num_choices";
 static const char* CMockString_speaker = "speaker";
 static const char* CMockString_text = "text";
 static const char* CMockString_text_begin_dialogue = "text_begin_dialogue";
@@ -16,6 +18,7 @@ static const char* CMockString_text_finish_immediately = "text_finish_immediatel
 static const char* CMockString_text_init = "text_init";
 static const char* CMockString_text_is_finished = "text_is_finished";
 static const char* CMockString_text_update = "text_update";
+static const char* CMockString_text_write_choices = "text_write_choices";
 
 typedef struct _CMOCK_text_init_CALL_INSTANCE
 {
@@ -43,6 +46,14 @@ typedef struct _CMOCK_text_begin_narration_CALL_INSTANCE
   const char* Expected_text;
 
 } CMOCK_text_begin_narration_CALL_INSTANCE;
+
+typedef struct _CMOCK_text_write_choices_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  char** Expected_choices;
+  int Expected_num_choices;
+
+} CMOCK_text_write_choices_CALL_INSTANCE;
 
 typedef struct _CMOCK_text_update_CALL_INSTANCE
 {
@@ -78,14 +89,26 @@ typedef struct _CMOCK_text_debug_clear_CALL_INSTANCE
 
 static struct MocktextInstance
 {
+  char text_init_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_init_CallInstance;
+  char text_clear_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_clear_CallInstance;
+  char text_begin_dialogue_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_begin_dialogue_CallInstance;
+  char text_begin_narration_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_begin_narration_CallInstance;
+  char text_write_choices_IgnoreBool;
+  CMOCK_MEM_INDEX_TYPE text_write_choices_CallInstance;
+  char text_update_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_update_CallInstance;
+  char text_finish_immediately_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_finish_immediately_CallInstance;
+  char text_is_finished_IgnoreBool;
+  bool text_is_finished_FinalReturn;
   CMOCK_MEM_INDEX_TYPE text_is_finished_CallInstance;
+  char text_debug_set_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_debug_set_CallInstance;
+  char text_debug_clear_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE text_debug_clear_CallInstance;
 } Mock;
 
@@ -95,54 +118,80 @@ void Mocktext_Verify(void)
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_MEM_INDEX_TYPE call_instance;
   call_instance = Mock.text_init_CallInstance;
+  if (Mock.text_init_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_init);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_clear_CallInstance;
+  if (Mock.text_clear_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_clear);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_begin_dialogue_CallInstance;
+  if (Mock.text_begin_dialogue_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_begin_dialogue);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_begin_narration_CallInstance;
+  if (Mock.text_begin_narration_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_begin_narration);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
+  call_instance = Mock.text_write_choices_CallInstance;
+  if (Mock.text_write_choices_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
+  if (CMOCK_GUTS_NONE != call_instance)
+  {
+    UNITY_SET_DETAIL(CMockString_text_write_choices);
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
+  }
   call_instance = Mock.text_update_CallInstance;
+  if (Mock.text_update_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_update);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_finish_immediately_CallInstance;
+  if (Mock.text_finish_immediately_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_finish_immediately);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_is_finished_CallInstance;
+  if (Mock.text_is_finished_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_is_finished);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_debug_set_CallInstance;
+  if (Mock.text_debug_set_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_debug_set);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.text_debug_clear_CallInstance;
+  if (Mock.text_debug_clear_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_text_debug_clear);
@@ -168,9 +217,24 @@ void text_init(void)
   UNITY_SET_DETAIL(CMockString_text_init);
   cmock_call_instance = (CMOCK_text_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_init_CallInstance);
   Mock.text_init_CallInstance = CMock_Guts_MemNext(Mock.text_init_CallInstance);
+  if (Mock.text_init_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void text_init_CMockIgnore(void)
+{
+  Mock.text_init_IgnoreBool = (char)1;
+}
+
+void text_init_CMockStopIgnore(void)
+{
+  Mock.text_init_IgnoreBool = (char)0;
 }
 
 void text_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -180,6 +244,7 @@ void text_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_init_CallInstance = CMock_Guts_MemChain(Mock.text_init_CallInstance, cmock_guts_index);
+  Mock.text_init_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -190,9 +255,24 @@ void text_clear(void)
   UNITY_SET_DETAIL(CMockString_text_clear);
   cmock_call_instance = (CMOCK_text_clear_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_clear_CallInstance);
   Mock.text_clear_CallInstance = CMock_Guts_MemNext(Mock.text_clear_CallInstance);
+  if (Mock.text_clear_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void text_clear_CMockIgnore(void)
+{
+  Mock.text_clear_IgnoreBool = (char)1;
+}
+
+void text_clear_CMockStopIgnore(void)
+{
+  Mock.text_clear_IgnoreBool = (char)0;
 }
 
 void text_clear_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -202,6 +282,7 @@ void text_clear_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_clear_CallInstance = CMock_Guts_MemChain(Mock.text_clear_CallInstance, cmock_guts_index);
+  Mock.text_clear_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -212,6 +293,11 @@ void text_begin_dialogue(const char* speaker, const char* text)
   UNITY_SET_DETAIL(CMockString_text_begin_dialogue);
   cmock_call_instance = (CMOCK_text_begin_dialogue_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_begin_dialogue_CallInstance);
   Mock.text_begin_dialogue_CallInstance = CMock_Guts_MemNext(Mock.text_begin_dialogue_CallInstance);
+  if (Mock.text_begin_dialogue_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -232,6 +318,16 @@ void CMockExpectParameters_text_begin_dialogue(CMOCK_text_begin_dialogue_CALL_IN
   cmock_call_instance->Expected_text = text;
 }
 
+void text_begin_dialogue_CMockIgnore(void)
+{
+  Mock.text_begin_dialogue_IgnoreBool = (char)1;
+}
+
+void text_begin_dialogue_CMockStopIgnore(void)
+{
+  Mock.text_begin_dialogue_IgnoreBool = (char)0;
+}
+
 void text_begin_dialogue_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* speaker, const char* text)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_text_begin_dialogue_CALL_INSTANCE));
@@ -239,6 +335,7 @@ void text_begin_dialogue_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* spe
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_begin_dialogue_CallInstance = CMock_Guts_MemChain(Mock.text_begin_dialogue_CallInstance, cmock_guts_index);
+  Mock.text_begin_dialogue_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_text_begin_dialogue(cmock_call_instance, speaker, text);
 }
@@ -250,6 +347,11 @@ void text_begin_narration(const char* text)
   UNITY_SET_DETAIL(CMockString_text_begin_narration);
   cmock_call_instance = (CMOCK_text_begin_narration_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_begin_narration_CallInstance);
   Mock.text_begin_narration_CallInstance = CMock_Guts_MemNext(Mock.text_begin_narration_CallInstance);
+  if (Mock.text_begin_narration_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -265,6 +367,16 @@ void CMockExpectParameters_text_begin_narration(CMOCK_text_begin_narration_CALL_
   cmock_call_instance->Expected_text = text;
 }
 
+void text_begin_narration_CMockIgnore(void)
+{
+  Mock.text_begin_narration_IgnoreBool = (char)1;
+}
+
+void text_begin_narration_CMockStopIgnore(void)
+{
+  Mock.text_begin_narration_IgnoreBool = (char)0;
+}
+
 void text_begin_narration_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* text)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_text_begin_narration_CALL_INSTANCE));
@@ -272,8 +384,63 @@ void text_begin_narration_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* te
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_begin_narration_CallInstance = CMock_Guts_MemChain(Mock.text_begin_narration_CallInstance, cmock_guts_index);
+  Mock.text_begin_narration_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_text_begin_narration(cmock_call_instance, text);
+}
+
+void text_write_choices(char** choices, int num_choices)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_text_write_choices_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_text_write_choices);
+  cmock_call_instance = (CMOCK_text_write_choices_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_write_choices_CallInstance);
+  Mock.text_write_choices_CallInstance = CMock_Guts_MemNext(Mock.text_write_choices_CallInstance);
+  if (Mock.text_write_choices_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_text_write_choices,CMockString_choices);
+    UNITY_TEST_ASSERT_EQUAL_PTR(cmock_call_instance->Expected_choices, choices, cmock_line, CMockStringMismatch);
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_text_write_choices,CMockString_num_choices);
+    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_num_choices, num_choices, cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_text_write_choices(CMOCK_text_write_choices_CALL_INSTANCE* cmock_call_instance, char** choices, int num_choices);
+void CMockExpectParameters_text_write_choices(CMOCK_text_write_choices_CALL_INSTANCE* cmock_call_instance, char** choices, int num_choices)
+{
+  cmock_call_instance->Expected_choices = choices;
+  cmock_call_instance->Expected_num_choices = num_choices;
+}
+
+void text_write_choices_CMockIgnore(void)
+{
+  Mock.text_write_choices_IgnoreBool = (char)1;
+}
+
+void text_write_choices_CMockStopIgnore(void)
+{
+  Mock.text_write_choices_IgnoreBool = (char)0;
+}
+
+void text_write_choices_CMockExpect(UNITY_LINE_TYPE cmock_line, char** choices, int num_choices)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_text_write_choices_CALL_INSTANCE));
+  CMOCK_text_write_choices_CALL_INSTANCE* cmock_call_instance = (CMOCK_text_write_choices_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.text_write_choices_CallInstance = CMock_Guts_MemChain(Mock.text_write_choices_CallInstance, cmock_guts_index);
+  Mock.text_write_choices_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_text_write_choices(cmock_call_instance, choices, num_choices);
 }
 
 void text_update(void)
@@ -283,9 +450,24 @@ void text_update(void)
   UNITY_SET_DETAIL(CMockString_text_update);
   cmock_call_instance = (CMOCK_text_update_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_update_CallInstance);
   Mock.text_update_CallInstance = CMock_Guts_MemNext(Mock.text_update_CallInstance);
+  if (Mock.text_update_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void text_update_CMockIgnore(void)
+{
+  Mock.text_update_IgnoreBool = (char)1;
+}
+
+void text_update_CMockStopIgnore(void)
+{
+  Mock.text_update_IgnoreBool = (char)0;
 }
 
 void text_update_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -295,6 +477,7 @@ void text_update_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_update_CallInstance = CMock_Guts_MemChain(Mock.text_update_CallInstance, cmock_guts_index);
+  Mock.text_update_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -305,9 +488,24 @@ void text_finish_immediately(void)
   UNITY_SET_DETAIL(CMockString_text_finish_immediately);
   cmock_call_instance = (CMOCK_text_finish_immediately_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_finish_immediately_CallInstance);
   Mock.text_finish_immediately_CallInstance = CMock_Guts_MemNext(Mock.text_finish_immediately_CallInstance);
+  if (Mock.text_finish_immediately_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void text_finish_immediately_CMockIgnore(void)
+{
+  Mock.text_finish_immediately_IgnoreBool = (char)1;
+}
+
+void text_finish_immediately_CMockStopIgnore(void)
+{
+  Mock.text_finish_immediately_IgnoreBool = (char)0;
 }
 
 void text_finish_immediately_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -317,6 +515,7 @@ void text_finish_immediately_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_finish_immediately_CallInstance = CMock_Guts_MemChain(Mock.text_finish_immediately_CallInstance, cmock_guts_index);
+  Mock.text_finish_immediately_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -327,10 +526,38 @@ bool text_is_finished(void)
   UNITY_SET_DETAIL(CMockString_text_is_finished);
   cmock_call_instance = (CMOCK_text_is_finished_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_is_finished_CallInstance);
   Mock.text_is_finished_CallInstance = CMock_Guts_MemNext(Mock.text_is_finished_CallInstance);
+  if (Mock.text_is_finished_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.text_is_finished_FinalReturn;
+    Mock.text_is_finished_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
   return cmock_call_instance->ReturnVal;
+}
+
+void text_is_finished_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, bool cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_text_is_finished_CALL_INSTANCE));
+  CMOCK_text_is_finished_CALL_INSTANCE* cmock_call_instance = (CMOCK_text_is_finished_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.text_is_finished_CallInstance = CMock_Guts_MemChain(Mock.text_is_finished_CallInstance, cmock_guts_index);
+  Mock.text_is_finished_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.text_is_finished_IgnoreBool = (char)1;
+}
+
+void text_is_finished_CMockStopIgnore(void)
+{
+  if(Mock.text_is_finished_IgnoreBool)
+    Mock.text_is_finished_CallInstance = CMock_Guts_MemNext(Mock.text_is_finished_CallInstance);
+  Mock.text_is_finished_IgnoreBool = (char)0;
 }
 
 void text_is_finished_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, bool cmock_to_return)
@@ -340,6 +567,7 @@ void text_is_finished_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, bool cmoc
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_is_finished_CallInstance = CMock_Guts_MemChain(Mock.text_is_finished_CallInstance, cmock_guts_index);
+  Mock.text_is_finished_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   cmock_call_instance->ReturnVal = cmock_to_return;
 }
@@ -351,6 +579,11 @@ void text_debug_set(const char* text)
   UNITY_SET_DETAIL(CMockString_text_debug_set);
   cmock_call_instance = (CMOCK_text_debug_set_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_debug_set_CallInstance);
   Mock.text_debug_set_CallInstance = CMock_Guts_MemNext(Mock.text_debug_set_CallInstance);
+  if (Mock.text_debug_set_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -366,6 +599,16 @@ void CMockExpectParameters_text_debug_set(CMOCK_text_debug_set_CALL_INSTANCE* cm
   cmock_call_instance->Expected_text = text;
 }
 
+void text_debug_set_CMockIgnore(void)
+{
+  Mock.text_debug_set_IgnoreBool = (char)1;
+}
+
+void text_debug_set_CMockStopIgnore(void)
+{
+  Mock.text_debug_set_IgnoreBool = (char)0;
+}
+
 void text_debug_set_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* text)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_text_debug_set_CALL_INSTANCE));
@@ -373,6 +616,7 @@ void text_debug_set_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* text)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_debug_set_CallInstance = CMock_Guts_MemChain(Mock.text_debug_set_CallInstance, cmock_guts_index);
+  Mock.text_debug_set_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_text_debug_set(cmock_call_instance, text);
 }
@@ -384,9 +628,24 @@ void text_debug_clear(void)
   UNITY_SET_DETAIL(CMockString_text_debug_clear);
   cmock_call_instance = (CMOCK_text_debug_clear_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.text_debug_clear_CallInstance);
   Mock.text_debug_clear_CallInstance = CMock_Guts_MemNext(Mock.text_debug_clear_CallInstance);
+  if (Mock.text_debug_clear_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void text_debug_clear_CMockIgnore(void)
+{
+  Mock.text_debug_clear_IgnoreBool = (char)1;
+}
+
+void text_debug_clear_CMockStopIgnore(void)
+{
+  Mock.text_debug_clear_IgnoreBool = (char)0;
 }
 
 void text_debug_clear_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -396,6 +655,7 @@ void text_debug_clear_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.text_debug_clear_CallInstance = CMock_Guts_MemChain(Mock.text_debug_clear_CallInstance, cmock_guts_index);
+  Mock.text_debug_clear_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 

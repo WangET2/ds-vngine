@@ -224,6 +224,9 @@ void test_interpreter_ifn_nested_dispatch(void){
 void test_interpreter_choice_two(void){
     char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
     char buf1[PARSER_MAX_TOKEN_LEN];
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(2, choice_num_choices());
     choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
@@ -238,6 +241,9 @@ void test_interpreter_choice_two(void){
 void test_interpreter_choice_three(void){
     char *args[6] = {"text1", "FLAG flag1", "text2", "FLAG flag2", "text3", "FLAG flag3"};
     char buf1[PARSER_MAX_TOKEN_LEN];
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 6, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(3, choice_num_choices());
     choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
@@ -256,6 +262,9 @@ void test_interpreter_choice_three(void){
 void test_interpreter_choice_four(void){
     char *args[8] = {"text1", "FLAG flag1", "text2", "FLAG flag2", "text3", "FLAG flag3", "text4", "FLAG flag4"};
     char buf1[PARSER_MAX_TOKEN_LEN];
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 8, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(4, choice_num_choices());
     choice_get_choice(&buf1[0], PARSER_MAX_TOKEN_LEN);
@@ -277,6 +286,9 @@ void test_interpreter_choice_four(void){
 
 void test_interpreter_choice_dispatch(void){
     char *args[4] = {"text1", "FLAG flag1", "text2", "FLAG flag2"};
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     choice_set_choice(1);
     text_debug_clear_Expect();
@@ -285,6 +297,8 @@ void test_interpreter_choice_dispatch(void){
     TEST_ASSERT_TRUE(flags_has("flag2"));
     flags_reset();
     flags_init();
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     choice_set_choice(0);
     text_debug_clear_Expect();
@@ -295,6 +309,9 @@ void test_interpreter_choice_dispatch(void){
 
 void test_interpreter_choice_nested_dispatch(void){
     char *args[4] = {"text1", "IF flag1 FLAG flag2", "text2", "PASS"};
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     text_debug_clear_Expect();
     flags_set("flag1");
@@ -304,6 +321,11 @@ void test_interpreter_choice_nested_dispatch(void){
 
 void test_interpreter_nested_multi_choice(void){
     char *args[4] = {"text1", "CHOICE text3 {FLAG flag1} text4 {PASS}", "text2", "PASS"};
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    renderer_load_textbox_ExpectAndReturn("subtextbox", false, 0);
+    renderer_show_textbox_Expect(false);
+    text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     text_debug_clear_Expect();
     TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_BLOCKED, interpreter_advance());

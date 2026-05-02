@@ -28,30 +28,83 @@ void Mocktext_Verify(void);
 
 
 
+#define text_init_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_init requires _Ignore (not AndReturn)");
+#define text_init_Ignore() text_init_CMockIgnore()
+void text_init_CMockIgnore(void);
+#define text_init_StopIgnore() text_init_CMockStopIgnore()
+void text_init_CMockStopIgnore(void);
 #define text_init_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_init requires _Expect (not AndReturn)");
 #define text_init_Expect() text_init_CMockExpect(__LINE__)
 void text_init_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define text_clear_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_clear requires _Ignore (not AndReturn)");
+#define text_clear_Ignore() text_clear_CMockIgnore()
+void text_clear_CMockIgnore(void);
+#define text_clear_StopIgnore() text_clear_CMockStopIgnore()
+void text_clear_CMockStopIgnore(void);
 #define text_clear_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_clear requires _Expect (not AndReturn)");
 #define text_clear_Expect() text_clear_CMockExpect(__LINE__)
 void text_clear_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define text_begin_dialogue_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_begin_dialogue requires _Ignore (not AndReturn)");
+#define text_begin_dialogue_Ignore() text_begin_dialogue_CMockIgnore()
+void text_begin_dialogue_CMockIgnore(void);
+#define text_begin_dialogue_StopIgnore() text_begin_dialogue_CMockStopIgnore()
+void text_begin_dialogue_CMockStopIgnore(void);
 #define text_begin_dialogue_ExpectAndReturn(speaker, text, cmock_retval) TEST_FAIL_MESSAGE("text_begin_dialogue requires _Expect (not AndReturn)");
 #define text_begin_dialogue_Expect(speaker, text) text_begin_dialogue_CMockExpect(__LINE__, speaker, text)
 void text_begin_dialogue_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* speaker, const char* text);
+#define text_begin_narration_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_begin_narration requires _Ignore (not AndReturn)");
+#define text_begin_narration_Ignore() text_begin_narration_CMockIgnore()
+void text_begin_narration_CMockIgnore(void);
+#define text_begin_narration_StopIgnore() text_begin_narration_CMockStopIgnore()
+void text_begin_narration_CMockStopIgnore(void);
 #define text_begin_narration_ExpectAndReturn(text, cmock_retval) TEST_FAIL_MESSAGE("text_begin_narration requires _Expect (not AndReturn)");
 #define text_begin_narration_Expect(text) text_begin_narration_CMockExpect(__LINE__, text)
 void text_begin_narration_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* text);
+#define text_write_choices_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_write_choices requires _Ignore (not AndReturn)");
+#define text_write_choices_Ignore() text_write_choices_CMockIgnore()
+void text_write_choices_CMockIgnore(void);
+#define text_write_choices_StopIgnore() text_write_choices_CMockStopIgnore()
+void text_write_choices_CMockStopIgnore(void);
+#define text_write_choices_ExpectAndReturn(choices, num_choices, cmock_retval) TEST_FAIL_MESSAGE("text_write_choices requires _Expect (not AndReturn)");
+#define text_write_choices_Expect(choices, num_choices) text_write_choices_CMockExpect(__LINE__, choices, num_choices)
+void text_write_choices_CMockExpect(UNITY_LINE_TYPE cmock_line, char** choices, int num_choices);
+#define text_update_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_update requires _Ignore (not AndReturn)");
+#define text_update_Ignore() text_update_CMockIgnore()
+void text_update_CMockIgnore(void);
+#define text_update_StopIgnore() text_update_CMockStopIgnore()
+void text_update_CMockStopIgnore(void);
 #define text_update_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_update requires _Expect (not AndReturn)");
 #define text_update_Expect() text_update_CMockExpect(__LINE__)
 void text_update_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define text_finish_immediately_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_finish_immediately requires _Ignore (not AndReturn)");
+#define text_finish_immediately_Ignore() text_finish_immediately_CMockIgnore()
+void text_finish_immediately_CMockIgnore(void);
+#define text_finish_immediately_StopIgnore() text_finish_immediately_CMockStopIgnore()
+void text_finish_immediately_CMockStopIgnore(void);
 #define text_finish_immediately_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_finish_immediately requires _Expect (not AndReturn)");
 #define text_finish_immediately_Expect() text_finish_immediately_CMockExpect(__LINE__)
 void text_finish_immediately_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define text_is_finished_Ignore() TEST_FAIL_MESSAGE("text_is_finished requires _IgnoreAndReturn");
+#define text_is_finished_IgnoreAndReturn(cmock_retval) text_is_finished_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void text_is_finished_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, bool cmock_to_return);
+#define text_is_finished_StopIgnore() text_is_finished_CMockStopIgnore()
+void text_is_finished_CMockStopIgnore(void);
 #define text_is_finished_Expect() TEST_FAIL_MESSAGE("text_is_finished requires _ExpectAndReturn");
 #define text_is_finished_ExpectAndReturn(cmock_retval) text_is_finished_CMockExpectAndReturn(__LINE__, cmock_retval)
 void text_is_finished_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, bool cmock_to_return);
+#define text_debug_set_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_debug_set requires _Ignore (not AndReturn)");
+#define text_debug_set_Ignore() text_debug_set_CMockIgnore()
+void text_debug_set_CMockIgnore(void);
+#define text_debug_set_StopIgnore() text_debug_set_CMockStopIgnore()
+void text_debug_set_CMockStopIgnore(void);
 #define text_debug_set_ExpectAndReturn(text, cmock_retval) TEST_FAIL_MESSAGE("text_debug_set requires _Expect (not AndReturn)");
 #define text_debug_set_Expect(text) text_debug_set_CMockExpect(__LINE__, text)
 void text_debug_set_CMockExpect(UNITY_LINE_TYPE cmock_line, const char* text);
+#define text_debug_clear_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_debug_clear requires _Ignore (not AndReturn)");
+#define text_debug_clear_Ignore() text_debug_clear_CMockIgnore()
+void text_debug_clear_CMockIgnore(void);
+#define text_debug_clear_StopIgnore() text_debug_clear_CMockStopIgnore()
+void text_debug_clear_CMockStopIgnore(void);
 #define text_debug_clear_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("text_debug_clear requires _Expect (not AndReturn)");
 #define text_debug_clear_Expect() text_debug_clear_CMockExpect(__LINE__)
 void text_debug_clear_CMockExpect(UNITY_LINE_TYPE cmock_line);
