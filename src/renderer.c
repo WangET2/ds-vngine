@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "display.h"
+#include "choice.h"
 
 #include <nds.h>
 #include <stdio.h>
@@ -28,15 +29,6 @@ enum {
 enum {
     SPR_CHOICE_BASE = 0,
     NUM_SUB_SPRITES = 3
-};
-
-enum {
-    CHOICE_TWO_BASE_Y = 51,
-    CHOICE_TWO_OFFSET_Y = 57,
-    CHOICE_THREE_BASE_Y = 39,
-    CHOICE_THREE_OFFSET_Y = 41,
-    CHOICE_FOUR_BASE_Y = 20,
-    CHOICE_FOUR_OFFSET_Y = 40
 };
 
 typedef struct {
@@ -85,11 +77,6 @@ void renderer_init(void){
         sprite_mem_sub[j] = oamAllocateGfx(&oamSub, SpriteSize_64x32, SpriteColorFormat_256Color);
         load_normal_sprite(element_paths[j], sprite_mem_sub[j]);
     }
-    /*for(int j = 0; j < 3; ++j){
-        oamSet(&oamSub, j, 32 + (64 * j), 50, 0, 0, SpriteSize_64x32, 
-        SpriteColorFormat_256Color,  sprite_mem_sub[j], -1, 
-        false, false, false, false, false);
-    }*/
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
     renderer_set_sub_backdrop();

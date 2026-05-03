@@ -33,6 +33,18 @@ int choice_set_choice(int choice_index){
     return 0;
 }
 
+bool choice_set_choice_touch(int x, int y){
+    if(x < CHOICE_BASE_X || x > CHOICE_BASE_X + CHOICE_OVERLAY_WIDTH) return false;
+    int new_index = -1;
+    int dy = g_num_choices == 2 ? CHOICE_TWO_OFFSET_Y : g_num_choices == 3 ? CHOICE_THREE_OFFSET_Y : CHOICE_FOUR_OFFSET_Y;
+    int y_0 = g_num_choices == 2 ? CHOICE_TWO_BASE_Y : g_num_choices == 3 ? CHOICE_THREE_BASE_Y : CHOICE_FOUR_BASE_Y;
+    for(int i = 0; i < g_num_choices; ++i)
+        if(y > y_0 + (dy*i) && y < y_0 + (dy*i) + CHOICE_OVERLAY_HEIGHT) new_index = i;
+    bool ret = new_index == g_current_index;
+    if(new_index != -1) g_current_index = new_index;
+    return ret;
+}
+
 int choice_current_index(void){
     return g_current_index;
 }

@@ -58,10 +58,12 @@ void engine_handle_input(u16 keys_down){
         }
         case BLOCK_TEXT: {
             if(keys_down & KEY_A) interpreter_advance();
+            if(keys_down & KEY_TOUCH) interpreter_advance();
             break;
         }
         case BLOCK_WAIT: {
             if(keys_down & KEY_A) interpreter_advance();
+            if(keys_down & KEY_TOUCH) interpreter_advance();
             break;
         }
         case BLOCK_CHOICE: {
@@ -74,9 +76,17 @@ void engine_handle_input(u16 keys_down){
                 renderer_hide_choice_overlay();
                 interpreter_advance();
                 return;
+            } else if(keys_down & KEY_TOUCH){
+                touchPosition touch_pos;
+                touchRead(&touch_pos);
+                bool advance = choice_set_choice_touch(touch_pos.px, touch_pos.py);
+                if(advance){
+                    renderer_hide_choice_overlay();
+                    interpreter_advance();
+                    return;
+                }
             }
             renderer_show_choice_overlay(choice_current_index(), choice_num_choices());
-            //touch screen stuff should be grabbed as well... (pass touchRead as arg as well?)
             break;
         }
     }
