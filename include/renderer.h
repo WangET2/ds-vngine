@@ -14,6 +14,9 @@ int renderer_load_textbox(const char *textbox_name, bool mainScreen);
 void renderer_show_textbox(bool mainScreen);
 void renderer_hide_textbox(bool mainScreen);
 
+void renderer_show_choice_overlay(int choice_index, int num_choices);
+void renderer_hide_choice_overlay(void);
+
 int renderer_show_left(const char *name, const char *expression);
 int renderer_show_right(const char *name, const char *expression);
 int renderer_show_center(const char *name, const char *expression);

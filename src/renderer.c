@@ -22,7 +22,21 @@ enum {
     SPR_CENTER_BASE = 8,
 
     SPR_DIALOGUE_PORTRAIT = 12,
-    NUM_BITMAP_SPRITES
+    NUM_MAIN_SPRITES
+};
+
+enum {
+    SPR_CHOICE_BASE = 0,
+    NUM_SUB_SPRITES = 3
+};
+
+enum {
+    CHOICE_TWO_BASE_Y = 51,
+    CHOICE_TWO_OFFSET_Y = 57,
+    CHOICE_THREE_BASE_Y = 39,
+    CHOICE_THREE_OFFSET_Y = 41,
+    CHOICE_FOUR_BASE_Y = 20,
+    CHOICE_FOUR_OFFSET_Y = 40
 };
 
 typedef struct {
@@ -45,7 +59,8 @@ static const PortraitSlot CENTER_SLOT = {
     .anchorX = CENTER_ANCHOR_X
 };
 
-static void *sprite_mem[NUM_BITMAP_SPRITES];
+static void *sprite_mem_main[NUM_MAIN_SPRITES];
+static void *sprite_mem_sub[NUM_SUB_SPRITES];
 static const char* const spriteComponent[4] = {"bleft_png.grf", "bright_png.grf", "tleft_png.grf", "tright_png.grf"};
 
 static char current_main_textbox[32] = "";
@@ -57,11 +72,24 @@ static void renderer_hide_portrait(const PortraitSlot *slot);
 static int get_portrait_offset(const char *name, const char *expression);
 static inline int sprite_x(int anchor, int i);
 static inline int sprite_y(int i);
+static void load_normal_sprite(const char* path, void *gfxAlloc);
 int renderer_set_sub_backdrop(void);
 
 void renderer_init(void){
-    oamInit(&oamMain, SpriteMapping_Bmp_1D_128, false);
-    for(int i = 0; i < NUM_BITMAP_SPRITES; ++i) sprite_mem[i] = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_Bmp);
+    oamInit(&oamMain, SpriteMapping_Bmp_1D_256, false);
+    oamInit(&oamSub, SpriteMapping_1D_256, false);
+    for(int i = 0; i < NUM_MAIN_SPRITES; ++i) sprite_mem_main[i] = oamAllocateGfx(&oamMain, SpriteSize_64x64, SpriteColorFormat_Bmp);
+    char *element_paths[3] = {"nitro:/grit/ui/choiceoverlay_left_png.grf", "nitro:/grit/ui/choiceoverlay_center_png.grf",
+                            "nitro:/grit/ui/choiceoverlay_right_png.grf"};
+    for(int j = 0; j < 3; ++j){
+        sprite_mem_sub[j] = oamAllocateGfx(&oamSub, SpriteSize_64x32, SpriteColorFormat_256Color);
+        load_normal_sprite(element_paths[j], sprite_mem_sub[j]);
+    }
+    /*for(int j = 0; j < 3; ++j){
+        oamSet(&oamSub, j, 32 + (64 * j), 50, 0, 0, SpriteSize_64x32, 
+        SpriteColorFormat_256Color,  sprite_mem_sub[j], -1, 
+        false, false, false, false, false);
+    }*/
     int bgMain = display_get_main_bg(MAIN_LAYER_SCENE);
     bgSetPriority(bgMain, 2);
     renderer_set_sub_backdrop();
@@ -70,10 +98,12 @@ void renderer_init(void){
 void renderer_update(void)
 {
     oamUpdate(&oamMain);
+    oamUpdate(&oamSub);
 }
 
 void renderer_shutdown(void) {
-    for(int i = 0; i < NUM_BITMAP_SPRITES; ++i) oamFreeGfx(&oamMain, sprite_mem[i]);
+    for(int i = 0; i < NUM_MAIN_SPRITES; ++i) oamFreeGfx(&oamMain, sprite_mem_main[i]);
+    for(int j = 0; j < NUM_SUB_SPRITES; ++j) oamFreeGfx(&oamSub, sprite_mem_sub[j]);
 }
 
 void renderer_reset(void){
@@ -220,6 +250,37 @@ int renderer_set_sub_backdrop(void){
     return 0;
 }
 
+void renderer_show_choice_overlay(int choice_index, int num_choices) {
+    int dy = num_choices == 2 ? CHOICE_TWO_OFFSET_Y : num_choices == 3 ? CHOICE_THREE_OFFSET_Y : CHOICE_FOUR_OFFSET_Y;
+    int y_0 = num_choices == 2 ? CHOICE_TWO_BASE_Y : num_choices == 3 ? CHOICE_THREE_BASE_Y : CHOICE_FOUR_BASE_Y;
+    for(int j = 0; j < 3; ++j){
+        oamSet(&oamSub, j, 32 + (64 * j), y_0 + (choice_index * dy), 0, 0, SpriteSize_64x32, 
+        SpriteColorFormat_256Color,  sprite_mem_sub[j], -1, 
+        false, false, false, false, false);
+    }
+}
+
+void renderer_hide_choice_overlay(void){
+    for(int j = 0; j < 3; ++j){
+        oamSet(&oamSub, j, 32 + (64 * j), 0, 0, 0, SpriteSize_64x32, 
+        SpriteColorFormat_256Color,  sprite_mem_sub[j], -1, 
+        false, true, false, false, false);
+    }
+}
+
+static void load_normal_sprite(const char *path, void *gfxAlloc){ 
+    void *gfxGrf = NULL;
+    size_t gfxSize = 0;
+    void *palData = NULL;
+    size_t palSize = 0;
+    grfLoadPath(path, NULL, &gfxGrf, &gfxSize,
+                NULL, NULL, &palData, &palSize);
+    memcpy(gfxAlloc, gfxGrf, gfxSize);
+    memcpy(SPRITE_PALETTE_SUB, palData, palSize);
+    free(gfxGrf);
+    free(palData);
+}
+
 static int load_bmp_sprite(const char *path, void *gfxAlloc) {
     if(gfxAlloc == NULL) return -1;
     
@@ -242,14 +303,15 @@ static int renderer_show_portrait(const PortraitSlot *slot, const char *name, co
         char path[100];
         int n = snprintf(path, sizeof(path), "nitro:/grit/sprites/%s/%s/%s", name, expression, spriteComponent[i]);
         if(n >= sizeof(path)) return -1;
-        int ret = load_bmp_sprite(path, sprite_mem[slot->baseIndex + i]);
+        int ret = load_bmp_sprite(path, sprite_mem_main[slot->baseIndex + i]);
         if (ret!= 0) return ret;
         oamSet(&oamMain, slot->baseIndex + i, sprite_x(slot->anchorX, i) + additional_offset, 
-        sprite_y(i), 0, 15,SpriteSize_64x64, SpriteColorFormat_Bmp, sprite_mem[slot->baseIndex + i],
+        sprite_y(i), 0, 15,SpriteSize_64x64, SpriteColorFormat_Bmp, sprite_mem_main[slot->baseIndex + i],
         -1, false, false, false, false, false);
     }
     return 0;
 }
+
 
 static inline int sprite_x(int anchor, int i){
     return anchor + 64 * (i % 2);
@@ -264,7 +326,7 @@ static inline int sprite_y(int i){
 static void renderer_hide_portrait(const PortraitSlot *slot){
     for(int i = 0; i < 4; ++i)
         oamSet(&oamMain, slot->baseIndex + i, sprite_x(slot->anchorX, i), sprite_y(i), 0, 15,SpriteSize_64x64,
-                SpriteColorFormat_Bmp, sprite_mem[slot->baseIndex + i], -1, false, true, false, false, false);
+                SpriteColorFormat_Bmp, sprite_mem_main[slot->baseIndex + i], -1, false, true, false, false, false);
 }
 
 static int get_portrait_offset(const char *name, const char *expression){

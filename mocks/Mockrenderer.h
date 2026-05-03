@@ -28,48 +28,139 @@ void Mockrenderer_Verify(void);
 
 
 
+#define renderer_init_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_init requires _Ignore (not AndReturn)");
+#define renderer_init_Ignore() renderer_init_CMockIgnore()
+void renderer_init_CMockIgnore(void);
+#define renderer_init_StopIgnore() renderer_init_CMockStopIgnore()
+void renderer_init_CMockStopIgnore(void);
 #define renderer_init_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_init requires _Expect (not AndReturn)");
 #define renderer_init_Expect() renderer_init_CMockExpect(__LINE__)
 void renderer_init_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_shutdown_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_shutdown requires _Ignore (not AndReturn)");
+#define renderer_shutdown_Ignore() renderer_shutdown_CMockIgnore()
+void renderer_shutdown_CMockIgnore(void);
+#define renderer_shutdown_StopIgnore() renderer_shutdown_CMockStopIgnore()
+void renderer_shutdown_CMockStopIgnore(void);
 #define renderer_shutdown_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_shutdown requires _Expect (not AndReturn)");
 #define renderer_shutdown_Expect() renderer_shutdown_CMockExpect(__LINE__)
 void renderer_shutdown_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_update_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_update requires _Ignore (not AndReturn)");
+#define renderer_update_Ignore() renderer_update_CMockIgnore()
+void renderer_update_CMockIgnore(void);
+#define renderer_update_StopIgnore() renderer_update_CMockStopIgnore()
+void renderer_update_CMockStopIgnore(void);
 #define renderer_update_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_update requires _Expect (not AndReturn)");
 #define renderer_update_Expect() renderer_update_CMockExpect(__LINE__)
 void renderer_update_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_reset_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_reset requires _Ignore (not AndReturn)");
+#define renderer_reset_Ignore() renderer_reset_CMockIgnore()
+void renderer_reset_CMockIgnore(void);
+#define renderer_reset_StopIgnore() renderer_reset_CMockStopIgnore()
+void renderer_reset_CMockStopIgnore(void);
 #define renderer_reset_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_reset requires _Expect (not AndReturn)");
 #define renderer_reset_Expect() renderer_reset_CMockExpect(__LINE__)
 void renderer_reset_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_set_background_Ignore() TEST_FAIL_MESSAGE("renderer_set_background requires _IgnoreAndReturn");
+#define renderer_set_background_IgnoreAndReturn(cmock_retval) renderer_set_background_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void renderer_set_background_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return);
+#define renderer_set_background_StopIgnore() renderer_set_background_CMockStopIgnore()
+void renderer_set_background_CMockStopIgnore(void);
 #define renderer_set_background_Expect(bg_name, mainScreen) TEST_FAIL_MESSAGE("renderer_set_background requires _ExpectAndReturn");
 #define renderer_set_background_ExpectAndReturn(bg_name, mainScreen, cmock_retval) renderer_set_background_CMockExpectAndReturn(__LINE__, bg_name, mainScreen, cmock_retval)
 void renderer_set_background_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* bg_name, bool mainScreen, int cmock_to_return);
+#define renderer_hide_background_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_background requires _Ignore (not AndReturn)");
+#define renderer_hide_background_Ignore() renderer_hide_background_CMockIgnore()
+void renderer_hide_background_CMockIgnore(void);
+#define renderer_hide_background_StopIgnore() renderer_hide_background_CMockStopIgnore()
+void renderer_hide_background_CMockStopIgnore(void);
 #define renderer_hide_background_ExpectAndReturn(mainScreen, cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_background requires _Expect (not AndReturn)");
 #define renderer_hide_background_Expect(mainScreen) renderer_hide_background_CMockExpect(__LINE__, mainScreen)
 void renderer_hide_background_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen);
+#define renderer_load_textbox_Ignore() TEST_FAIL_MESSAGE("renderer_load_textbox requires _IgnoreAndReturn");
+#define renderer_load_textbox_IgnoreAndReturn(cmock_retval) renderer_load_textbox_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void renderer_load_textbox_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return);
+#define renderer_load_textbox_StopIgnore() renderer_load_textbox_CMockStopIgnore()
+void renderer_load_textbox_CMockStopIgnore(void);
 #define renderer_load_textbox_Expect(textbox_name, mainScreen) TEST_FAIL_MESSAGE("renderer_load_textbox requires _ExpectAndReturn");
 #define renderer_load_textbox_ExpectAndReturn(textbox_name, mainScreen, cmock_retval) renderer_load_textbox_CMockExpectAndReturn(__LINE__, textbox_name, mainScreen, cmock_retval)
 void renderer_load_textbox_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* textbox_name, bool mainScreen, int cmock_to_return);
+#define renderer_show_textbox_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_show_textbox requires _Ignore (not AndReturn)");
+#define renderer_show_textbox_Ignore() renderer_show_textbox_CMockIgnore()
+void renderer_show_textbox_CMockIgnore(void);
+#define renderer_show_textbox_StopIgnore() renderer_show_textbox_CMockStopIgnore()
+void renderer_show_textbox_CMockStopIgnore(void);
 #define renderer_show_textbox_ExpectAndReturn(mainScreen, cmock_retval) TEST_FAIL_MESSAGE("renderer_show_textbox requires _Expect (not AndReturn)");
 #define renderer_show_textbox_Expect(mainScreen) renderer_show_textbox_CMockExpect(__LINE__, mainScreen)
 void renderer_show_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen);
+#define renderer_hide_textbox_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_textbox requires _Ignore (not AndReturn)");
+#define renderer_hide_textbox_Ignore() renderer_hide_textbox_CMockIgnore()
+void renderer_hide_textbox_CMockIgnore(void);
+#define renderer_hide_textbox_StopIgnore() renderer_hide_textbox_CMockStopIgnore()
+void renderer_hide_textbox_CMockStopIgnore(void);
 #define renderer_hide_textbox_ExpectAndReturn(mainScreen, cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_textbox requires _Expect (not AndReturn)");
 #define renderer_hide_textbox_Expect(mainScreen) renderer_hide_textbox_CMockExpect(__LINE__, mainScreen)
 void renderer_hide_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen);
+#define renderer_show_choice_overlay_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_show_choice_overlay requires _Ignore (not AndReturn)");
+#define renderer_show_choice_overlay_Ignore() renderer_show_choice_overlay_CMockIgnore()
+void renderer_show_choice_overlay_CMockIgnore(void);
+#define renderer_show_choice_overlay_StopIgnore() renderer_show_choice_overlay_CMockStopIgnore()
+void renderer_show_choice_overlay_CMockStopIgnore(void);
+#define renderer_show_choice_overlay_ExpectAndReturn(choice_index, num_choices, cmock_retval) TEST_FAIL_MESSAGE("renderer_show_choice_overlay requires _Expect (not AndReturn)");
+#define renderer_show_choice_overlay_Expect(choice_index, num_choices) renderer_show_choice_overlay_CMockExpect(__LINE__, choice_index, num_choices)
+void renderer_show_choice_overlay_CMockExpect(UNITY_LINE_TYPE cmock_line, int choice_index, int num_choices);
+#define renderer_hide_choice_overlay_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_choice_overlay requires _Ignore (not AndReturn)");
+#define renderer_hide_choice_overlay_Ignore() renderer_hide_choice_overlay_CMockIgnore()
+void renderer_hide_choice_overlay_CMockIgnore(void);
+#define renderer_hide_choice_overlay_StopIgnore() renderer_hide_choice_overlay_CMockStopIgnore()
+void renderer_hide_choice_overlay_CMockStopIgnore(void);
+#define renderer_hide_choice_overlay_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_choice_overlay requires _Expect (not AndReturn)");
+#define renderer_hide_choice_overlay_Expect() renderer_hide_choice_overlay_CMockExpect(__LINE__)
+void renderer_hide_choice_overlay_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_show_left_Ignore() TEST_FAIL_MESSAGE("renderer_show_left requires _IgnoreAndReturn");
+#define renderer_show_left_IgnoreAndReturn(cmock_retval) renderer_show_left_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void renderer_show_left_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return);
+#define renderer_show_left_StopIgnore() renderer_show_left_CMockStopIgnore()
+void renderer_show_left_CMockStopIgnore(void);
 #define renderer_show_left_Expect(name, expression) TEST_FAIL_MESSAGE("renderer_show_left requires _ExpectAndReturn");
 #define renderer_show_left_ExpectAndReturn(name, expression, cmock_retval) renderer_show_left_CMockExpectAndReturn(__LINE__, name, expression, cmock_retval)
 void renderer_show_left_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return);
+#define renderer_show_right_Ignore() TEST_FAIL_MESSAGE("renderer_show_right requires _IgnoreAndReturn");
+#define renderer_show_right_IgnoreAndReturn(cmock_retval) renderer_show_right_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void renderer_show_right_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return);
+#define renderer_show_right_StopIgnore() renderer_show_right_CMockStopIgnore()
+void renderer_show_right_CMockStopIgnore(void);
 #define renderer_show_right_Expect(name, expression) TEST_FAIL_MESSAGE("renderer_show_right requires _ExpectAndReturn");
 #define renderer_show_right_ExpectAndReturn(name, expression, cmock_retval) renderer_show_right_CMockExpectAndReturn(__LINE__, name, expression, cmock_retval)
 void renderer_show_right_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return);
+#define renderer_show_center_Ignore() TEST_FAIL_MESSAGE("renderer_show_center requires _IgnoreAndReturn");
+#define renderer_show_center_IgnoreAndReturn(cmock_retval) renderer_show_center_CMockIgnoreAndReturn(__LINE__, cmock_retval)
+void renderer_show_center_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return);
+#define renderer_show_center_StopIgnore() renderer_show_center_CMockStopIgnore()
+void renderer_show_center_CMockStopIgnore(void);
 #define renderer_show_center_Expect(name, expression) TEST_FAIL_MESSAGE("renderer_show_center requires _ExpectAndReturn");
 #define renderer_show_center_ExpectAndReturn(name, expression, cmock_retval) renderer_show_center_CMockExpectAndReturn(__LINE__, name, expression, cmock_retval)
 void renderer_show_center_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return);
+#define renderer_hide_left_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_left requires _Ignore (not AndReturn)");
+#define renderer_hide_left_Ignore() renderer_hide_left_CMockIgnore()
+void renderer_hide_left_CMockIgnore(void);
+#define renderer_hide_left_StopIgnore() renderer_hide_left_CMockStopIgnore()
+void renderer_hide_left_CMockStopIgnore(void);
 #define renderer_hide_left_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_left requires _Expect (not AndReturn)");
 #define renderer_hide_left_Expect() renderer_hide_left_CMockExpect(__LINE__)
 void renderer_hide_left_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_hide_right_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_right requires _Ignore (not AndReturn)");
+#define renderer_hide_right_Ignore() renderer_hide_right_CMockIgnore()
+void renderer_hide_right_CMockIgnore(void);
+#define renderer_hide_right_StopIgnore() renderer_hide_right_CMockStopIgnore()
+void renderer_hide_right_CMockStopIgnore(void);
 #define renderer_hide_right_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_right requires _Expect (not AndReturn)");
 #define renderer_hide_right_Expect() renderer_hide_right_CMockExpect(__LINE__)
 void renderer_hide_right_CMockExpect(UNITY_LINE_TYPE cmock_line);
+#define renderer_hide_center_IgnoreAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_center requires _Ignore (not AndReturn)");
+#define renderer_hide_center_Ignore() renderer_hide_center_CMockIgnore()
+void renderer_hide_center_CMockIgnore(void);
+#define renderer_hide_center_StopIgnore() renderer_hide_center_CMockStopIgnore()
+void renderer_hide_center_CMockStopIgnore(void);
 #define renderer_hide_center_ExpectAndReturn(cmock_retval) TEST_FAIL_MESSAGE("renderer_hide_center requires _Expect (not AndReturn)");
 #define renderer_hide_center_Expect() renderer_hide_center_CMockExpect(__LINE__)
 void renderer_hide_center_CMockExpect(UNITY_LINE_TYPE cmock_line);

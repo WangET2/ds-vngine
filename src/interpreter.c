@@ -175,6 +175,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             char *ui_element = num_choices == 2 ? "choicetwo" : num_choices == 3 ? "choicethree" : "choicefour";
             renderer_load_textbox(ui_element, false);
             renderer_show_textbox(false);
+            renderer_show_choice_overlay(0, num_choices);
             //this function is much more general than loading a textbox (?) worth a rename?
             //magic string! bad!
 

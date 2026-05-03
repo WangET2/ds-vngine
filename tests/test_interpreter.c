@@ -226,6 +226,7 @@ void test_interpreter_choice_two(void){
     char buf1[PARSER_MAX_TOKEN_LEN];
     renderer_load_textbox_ExpectAndReturn("choicetwo", false, 0);
     renderer_show_textbox_Expect(false);
+    renderer_show_choice_overlay_Ignore();
     text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(2, choice_num_choices());
@@ -243,6 +244,7 @@ void test_interpreter_choice_three(void){
     char buf1[PARSER_MAX_TOKEN_LEN];
     renderer_load_textbox_ExpectAndReturn("choicethree", false, 0);
     renderer_show_textbox_Expect(false);
+    renderer_show_choice_overlay_Ignore();
     text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 6, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(3, choice_num_choices());
@@ -264,6 +266,7 @@ void test_interpreter_choice_four(void){
     char buf1[PARSER_MAX_TOKEN_LEN];
     renderer_load_textbox_ExpectAndReturn("choicefour", false, 0);
     renderer_show_textbox_Expect(false);
+    renderer_show_choice_overlay_Ignore();
     text_write_choices_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 8, args, INTERPRETER_RESULT_BLOCKED, true);
     TEST_ASSERT_EQUAL_INT(4, choice_num_choices());
@@ -289,6 +292,7 @@ void test_interpreter_choice_dispatch(void){
     renderer_load_textbox_ExpectAndReturn("choicetwo", false, 0);
     renderer_show_textbox_Expect(false);
     text_write_choices_Ignore();
+    renderer_show_choice_overlay_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     choice_set_choice(1);
     text_debug_clear_Expect();
@@ -312,6 +316,7 @@ void test_interpreter_choice_nested_dispatch(void){
     renderer_load_textbox_ExpectAndReturn("choicetwo", false, 0);
     renderer_show_textbox_Expect(false);
     text_write_choices_Ignore();
+    renderer_show_choice_overlay_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     text_debug_clear_Expect();
     flags_set("flag1");
@@ -326,6 +331,7 @@ void test_interpreter_nested_multi_choice(void){
     renderer_load_textbox_ExpectAndReturn("choicetwo", false, 0);
     renderer_show_textbox_Expect(false);
     text_write_choices_Ignore();
+    renderer_show_choice_overlay_Ignore();
     fill_and_test_interpreter(CMD_CHOICE, 4, args, INTERPRETER_RESULT_BLOCKED, true);
     text_debug_clear_Expect();
     TEST_ASSERT_EQUAL_INT(INTERPRETER_RESULT_BLOCKED, interpreter_advance());

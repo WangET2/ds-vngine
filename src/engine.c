@@ -4,7 +4,7 @@
 #include "script.h"
 #include "display.h"
 #include "choice.h"
-
+#include "renderer.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -52,20 +52,35 @@ EngineResult engine_update(void){
 
 void engine_handle_input(u16 keys_down){
     InterpreterBlockType block_type = interpreter_is_blocked();
-    if(block_type == BLOCK_NONE) return;
-    if(block_type == BLOCK_TEXT && (keys_down & KEY_A)) interpreter_advance();
-    if(block_type == BLOCK_CHOICE){
-        int current_index = choice_current_index();
-        if(keys_down & KEY_DOWN){
-            if(current_index < choice_num_choices() - 1) choice_set_choice(current_index + 1);
-        } else if(keys_down & KEY_UP){
-            if(current_index > 0) choice_set_choice(current_index - 1);
-        } else if(keys_down & KEY_A){
-            interpreter_advance();
+    switch(block_type) {
+        case BLOCK_NONE: {
+            return;
         }
-        //touch screen stuff should be grabbed as well... (pass touchRead as arg as well?)
+        case BLOCK_TEXT: {
+            if(keys_down & KEY_A) interpreter_advance();
+            break;
+        }
+        case BLOCK_WAIT: {
+            if(keys_down & KEY_A) interpreter_advance();
+            break;
+        }
+        case BLOCK_CHOICE: {
+            int current_index = choice_current_index();
+            if(keys_down & KEY_DOWN){
+                if(current_index < choice_num_choices() - 1) choice_set_choice(current_index + 1);
+            } else if(keys_down & KEY_UP){
+                if(current_index > 0) choice_set_choice(current_index - 1);
+            } else if(keys_down & KEY_A){
+                renderer_hide_choice_overlay();
+                interpreter_advance();
+                return;
+            }
+            renderer_show_choice_overlay(choice_current_index(), choice_num_choices());
+            //touch screen stuff should be grabbed as well... (pass touchRead as arg as well?)
+            break;
+        }
     }
-
+    return;
 }
 
 int engine_current_line(void){

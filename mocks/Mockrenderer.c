@@ -6,11 +6,14 @@
 #include "Mockrenderer.h"
 
 static const char* CMockString_bg_name = "bg_name";
+static const char* CMockString_choice_index = "choice_index";
 static const char* CMockString_expression = "expression";
 static const char* CMockString_mainScreen = "mainScreen";
 static const char* CMockString_name = "name";
+static const char* CMockString_num_choices = "num_choices";
 static const char* CMockString_renderer_hide_background = "renderer_hide_background";
 static const char* CMockString_renderer_hide_center = "renderer_hide_center";
+static const char* CMockString_renderer_hide_choice_overlay = "renderer_hide_choice_overlay";
 static const char* CMockString_renderer_hide_left = "renderer_hide_left";
 static const char* CMockString_renderer_hide_right = "renderer_hide_right";
 static const char* CMockString_renderer_hide_textbox = "renderer_hide_textbox";
@@ -19,6 +22,7 @@ static const char* CMockString_renderer_load_textbox = "renderer_load_textbox";
 static const char* CMockString_renderer_reset = "renderer_reset";
 static const char* CMockString_renderer_set_background = "renderer_set_background";
 static const char* CMockString_renderer_show_center = "renderer_show_center";
+static const char* CMockString_renderer_show_choice_overlay = "renderer_show_choice_overlay";
 static const char* CMockString_renderer_show_left = "renderer_show_left";
 static const char* CMockString_renderer_show_right = "renderer_show_right";
 static const char* CMockString_renderer_show_textbox = "renderer_show_textbox";
@@ -89,6 +93,20 @@ typedef struct _CMOCK_renderer_hide_textbox_CALL_INSTANCE
 
 } CMOCK_renderer_hide_textbox_CALL_INSTANCE;
 
+typedef struct _CMOCK_renderer_show_choice_overlay_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+  int Expected_choice_index;
+  int Expected_num_choices;
+
+} CMOCK_renderer_show_choice_overlay_CALL_INSTANCE;
+
+typedef struct _CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE
+{
+  UNITY_LINE_TYPE LineNumber;
+
+} CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE;
+
 typedef struct _CMOCK_renderer_show_left_CALL_INSTANCE
 {
   UNITY_LINE_TYPE LineNumber;
@@ -136,20 +154,44 @@ typedef struct _CMOCK_renderer_hide_center_CALL_INSTANCE
 
 static struct MockrendererInstance
 {
+  char renderer_init_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_init_CallInstance;
+  char renderer_shutdown_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_shutdown_CallInstance;
+  char renderer_update_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_update_CallInstance;
+  char renderer_reset_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_reset_CallInstance;
+  char renderer_set_background_IgnoreBool;
+  int renderer_set_background_FinalReturn;
   CMOCK_MEM_INDEX_TYPE renderer_set_background_CallInstance;
+  char renderer_hide_background_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_hide_background_CallInstance;
+  char renderer_load_textbox_IgnoreBool;
+  int renderer_load_textbox_FinalReturn;
   CMOCK_MEM_INDEX_TYPE renderer_load_textbox_CallInstance;
+  char renderer_show_textbox_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_show_textbox_CallInstance;
+  char renderer_hide_textbox_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_hide_textbox_CallInstance;
+  char renderer_show_choice_overlay_IgnoreBool;
+  CMOCK_MEM_INDEX_TYPE renderer_show_choice_overlay_CallInstance;
+  char renderer_hide_choice_overlay_IgnoreBool;
+  CMOCK_MEM_INDEX_TYPE renderer_hide_choice_overlay_CallInstance;
+  char renderer_show_left_IgnoreBool;
+  int renderer_show_left_FinalReturn;
   CMOCK_MEM_INDEX_TYPE renderer_show_left_CallInstance;
+  char renderer_show_right_IgnoreBool;
+  int renderer_show_right_FinalReturn;
   CMOCK_MEM_INDEX_TYPE renderer_show_right_CallInstance;
+  char renderer_show_center_IgnoreBool;
+  int renderer_show_center_FinalReturn;
   CMOCK_MEM_INDEX_TYPE renderer_show_center_CallInstance;
+  char renderer_hide_left_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_hide_left_CallInstance;
+  char renderer_hide_right_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_hide_right_CallInstance;
+  char renderer_hide_center_IgnoreBool;
   CMOCK_MEM_INDEX_TYPE renderer_hide_center_CallInstance;
 } Mock;
 
@@ -159,90 +201,136 @@ void Mockrenderer_Verify(void)
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   CMOCK_MEM_INDEX_TYPE call_instance;
   call_instance = Mock.renderer_init_CallInstance;
+  if (Mock.renderer_init_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_init);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_shutdown_CallInstance;
+  if (Mock.renderer_shutdown_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_shutdown);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_update_CallInstance;
+  if (Mock.renderer_update_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_update);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_reset_CallInstance;
+  if (Mock.renderer_reset_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_reset);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_set_background_CallInstance;
+  if (Mock.renderer_set_background_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_set_background);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_hide_background_CallInstance;
+  if (Mock.renderer_hide_background_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_hide_background);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_load_textbox_CallInstance;
+  if (Mock.renderer_load_textbox_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_load_textbox);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_show_textbox_CallInstance;
+  if (Mock.renderer_show_textbox_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_show_textbox);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_hide_textbox_CallInstance;
+  if (Mock.renderer_hide_textbox_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_hide_textbox);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
+  call_instance = Mock.renderer_show_choice_overlay_CallInstance;
+  if (Mock.renderer_show_choice_overlay_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
+  if (CMOCK_GUTS_NONE != call_instance)
+  {
+    UNITY_SET_DETAIL(CMockString_renderer_show_choice_overlay);
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
+  }
+  call_instance = Mock.renderer_hide_choice_overlay_CallInstance;
+  if (Mock.renderer_hide_choice_overlay_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
+  if (CMOCK_GUTS_NONE != call_instance)
+  {
+    UNITY_SET_DETAIL(CMockString_renderer_hide_choice_overlay);
+    UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
+  }
   call_instance = Mock.renderer_show_left_CallInstance;
+  if (Mock.renderer_show_left_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_show_left);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_show_right_CallInstance;
+  if (Mock.renderer_show_right_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_show_right);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_show_center_CallInstance;
+  if (Mock.renderer_show_center_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_show_center);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_hide_left_CallInstance;
+  if (Mock.renderer_hide_left_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_hide_left);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_hide_right_CallInstance;
+  if (Mock.renderer_hide_right_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_hide_right);
     UNITY_TEST_FAIL(cmock_line, CMockStringCalledLess);
   }
   call_instance = Mock.renderer_hide_center_CallInstance;
+  if (Mock.renderer_hide_center_IgnoreBool)
+    call_instance = CMOCK_GUTS_NONE;
   if (CMOCK_GUTS_NONE != call_instance)
   {
     UNITY_SET_DETAIL(CMockString_renderer_hide_center);
@@ -268,9 +356,24 @@ void renderer_init(void)
   UNITY_SET_DETAIL(CMockString_renderer_init);
   cmock_call_instance = (CMOCK_renderer_init_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_init_CallInstance);
   Mock.renderer_init_CallInstance = CMock_Guts_MemNext(Mock.renderer_init_CallInstance);
+  if (Mock.renderer_init_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_init_CMockIgnore(void)
+{
+  Mock.renderer_init_IgnoreBool = (char)1;
+}
+
+void renderer_init_CMockStopIgnore(void)
+{
+  Mock.renderer_init_IgnoreBool = (char)0;
 }
 
 void renderer_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -280,6 +383,7 @@ void renderer_init_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_init_CallInstance = CMock_Guts_MemChain(Mock.renderer_init_CallInstance, cmock_guts_index);
+  Mock.renderer_init_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -290,9 +394,24 @@ void renderer_shutdown(void)
   UNITY_SET_DETAIL(CMockString_renderer_shutdown);
   cmock_call_instance = (CMOCK_renderer_shutdown_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_shutdown_CallInstance);
   Mock.renderer_shutdown_CallInstance = CMock_Guts_MemNext(Mock.renderer_shutdown_CallInstance);
+  if (Mock.renderer_shutdown_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_shutdown_CMockIgnore(void)
+{
+  Mock.renderer_shutdown_IgnoreBool = (char)1;
+}
+
+void renderer_shutdown_CMockStopIgnore(void)
+{
+  Mock.renderer_shutdown_IgnoreBool = (char)0;
 }
 
 void renderer_shutdown_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -302,6 +421,7 @@ void renderer_shutdown_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_shutdown_CallInstance = CMock_Guts_MemChain(Mock.renderer_shutdown_CallInstance, cmock_guts_index);
+  Mock.renderer_shutdown_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -312,9 +432,24 @@ void renderer_update(void)
   UNITY_SET_DETAIL(CMockString_renderer_update);
   cmock_call_instance = (CMOCK_renderer_update_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_update_CallInstance);
   Mock.renderer_update_CallInstance = CMock_Guts_MemNext(Mock.renderer_update_CallInstance);
+  if (Mock.renderer_update_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_update_CMockIgnore(void)
+{
+  Mock.renderer_update_IgnoreBool = (char)1;
+}
+
+void renderer_update_CMockStopIgnore(void)
+{
+  Mock.renderer_update_IgnoreBool = (char)0;
 }
 
 void renderer_update_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -324,6 +459,7 @@ void renderer_update_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_update_CallInstance = CMock_Guts_MemChain(Mock.renderer_update_CallInstance, cmock_guts_index);
+  Mock.renderer_update_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -334,9 +470,24 @@ void renderer_reset(void)
   UNITY_SET_DETAIL(CMockString_renderer_reset);
   cmock_call_instance = (CMOCK_renderer_reset_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_reset_CallInstance);
   Mock.renderer_reset_CallInstance = CMock_Guts_MemNext(Mock.renderer_reset_CallInstance);
+  if (Mock.renderer_reset_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_reset_CMockIgnore(void)
+{
+  Mock.renderer_reset_IgnoreBool = (char)1;
+}
+
+void renderer_reset_CMockStopIgnore(void)
+{
+  Mock.renderer_reset_IgnoreBool = (char)0;
 }
 
 void renderer_reset_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -346,6 +497,7 @@ void renderer_reset_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_reset_CallInstance = CMock_Guts_MemChain(Mock.renderer_reset_CallInstance, cmock_guts_index);
+  Mock.renderer_reset_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -356,6 +508,14 @@ int renderer_set_background(const char* bg_name, bool mainScreen)
   UNITY_SET_DETAIL(CMockString_renderer_set_background);
   cmock_call_instance = (CMOCK_renderer_set_background_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_set_background_CallInstance);
   Mock.renderer_set_background_CallInstance = CMock_Guts_MemNext(Mock.renderer_set_background_CallInstance);
+  if (Mock.renderer_set_background_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.renderer_set_background_FinalReturn;
+    Mock.renderer_set_background_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -377,6 +537,26 @@ void CMockExpectParameters_renderer_set_background(CMOCK_renderer_set_background
   cmock_call_instance->Expected_mainScreen = mainScreen;
 }
 
+void renderer_set_background_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_set_background_CALL_INSTANCE));
+  CMOCK_renderer_set_background_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_set_background_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_set_background_CallInstance = CMock_Guts_MemChain(Mock.renderer_set_background_CallInstance, cmock_guts_index);
+  Mock.renderer_set_background_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.renderer_set_background_IgnoreBool = (char)1;
+}
+
+void renderer_set_background_CMockStopIgnore(void)
+{
+  if(Mock.renderer_set_background_IgnoreBool)
+    Mock.renderer_set_background_CallInstance = CMock_Guts_MemNext(Mock.renderer_set_background_CallInstance);
+  Mock.renderer_set_background_IgnoreBool = (char)0;
+}
+
 void renderer_set_background_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* bg_name, bool mainScreen, int cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_set_background_CALL_INSTANCE));
@@ -384,6 +564,7 @@ void renderer_set_background_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, co
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_set_background_CallInstance = CMock_Guts_MemChain(Mock.renderer_set_background_CallInstance, cmock_guts_index);
+  Mock.renderer_set_background_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_set_background(cmock_call_instance, bg_name, mainScreen);
   cmock_call_instance->ReturnVal = cmock_to_return;
@@ -396,6 +577,11 @@ void renderer_hide_background(bool mainScreen)
   UNITY_SET_DETAIL(CMockString_renderer_hide_background);
   cmock_call_instance = (CMOCK_renderer_hide_background_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_background_CallInstance);
   Mock.renderer_hide_background_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_background_CallInstance);
+  if (Mock.renderer_hide_background_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -411,6 +597,16 @@ void CMockExpectParameters_renderer_hide_background(CMOCK_renderer_hide_backgrou
   cmock_call_instance->Expected_mainScreen = mainScreen;
 }
 
+void renderer_hide_background_CMockIgnore(void)
+{
+  Mock.renderer_hide_background_IgnoreBool = (char)1;
+}
+
+void renderer_hide_background_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_background_IgnoreBool = (char)0;
+}
+
 void renderer_hide_background_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_hide_background_CALL_INSTANCE));
@@ -418,6 +614,7 @@ void renderer_hide_background_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainS
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_hide_background_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_background_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_background_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_hide_background(cmock_call_instance, mainScreen);
 }
@@ -429,6 +626,14 @@ int renderer_load_textbox(const char* textbox_name, bool mainScreen)
   UNITY_SET_DETAIL(CMockString_renderer_load_textbox);
   cmock_call_instance = (CMOCK_renderer_load_textbox_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_load_textbox_CallInstance);
   Mock.renderer_load_textbox_CallInstance = CMock_Guts_MemNext(Mock.renderer_load_textbox_CallInstance);
+  if (Mock.renderer_load_textbox_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.renderer_load_textbox_FinalReturn;
+    Mock.renderer_load_textbox_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -450,6 +655,26 @@ void CMockExpectParameters_renderer_load_textbox(CMOCK_renderer_load_textbox_CAL
   cmock_call_instance->Expected_mainScreen = mainScreen;
 }
 
+void renderer_load_textbox_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_load_textbox_CALL_INSTANCE));
+  CMOCK_renderer_load_textbox_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_load_textbox_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_load_textbox_CallInstance = CMock_Guts_MemChain(Mock.renderer_load_textbox_CallInstance, cmock_guts_index);
+  Mock.renderer_load_textbox_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.renderer_load_textbox_IgnoreBool = (char)1;
+}
+
+void renderer_load_textbox_CMockStopIgnore(void)
+{
+  if(Mock.renderer_load_textbox_IgnoreBool)
+    Mock.renderer_load_textbox_CallInstance = CMock_Guts_MemNext(Mock.renderer_load_textbox_CallInstance);
+  Mock.renderer_load_textbox_IgnoreBool = (char)0;
+}
+
 void renderer_load_textbox_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* textbox_name, bool mainScreen, int cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_load_textbox_CALL_INSTANCE));
@@ -457,6 +682,7 @@ void renderer_load_textbox_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, cons
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_load_textbox_CallInstance = CMock_Guts_MemChain(Mock.renderer_load_textbox_CallInstance, cmock_guts_index);
+  Mock.renderer_load_textbox_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_load_textbox(cmock_call_instance, textbox_name, mainScreen);
   cmock_call_instance->ReturnVal = cmock_to_return;
@@ -469,6 +695,11 @@ void renderer_show_textbox(bool mainScreen)
   UNITY_SET_DETAIL(CMockString_renderer_show_textbox);
   cmock_call_instance = (CMOCK_renderer_show_textbox_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_show_textbox_CallInstance);
   Mock.renderer_show_textbox_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_textbox_CallInstance);
+  if (Mock.renderer_show_textbox_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -484,6 +715,16 @@ void CMockExpectParameters_renderer_show_textbox(CMOCK_renderer_show_textbox_CAL
   cmock_call_instance->Expected_mainScreen = mainScreen;
 }
 
+void renderer_show_textbox_CMockIgnore(void)
+{
+  Mock.renderer_show_textbox_IgnoreBool = (char)1;
+}
+
+void renderer_show_textbox_CMockStopIgnore(void)
+{
+  Mock.renderer_show_textbox_IgnoreBool = (char)0;
+}
+
 void renderer_show_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_textbox_CALL_INSTANCE));
@@ -491,6 +732,7 @@ void renderer_show_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScre
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_show_textbox_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_textbox_CallInstance, cmock_guts_index);
+  Mock.renderer_show_textbox_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_show_textbox(cmock_call_instance, mainScreen);
 }
@@ -502,6 +744,11 @@ void renderer_hide_textbox(bool mainScreen)
   UNITY_SET_DETAIL(CMockString_renderer_hide_textbox);
   cmock_call_instance = (CMOCK_renderer_hide_textbox_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_textbox_CallInstance);
   Mock.renderer_hide_textbox_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_textbox_CallInstance);
+  if (Mock.renderer_hide_textbox_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -517,6 +764,16 @@ void CMockExpectParameters_renderer_hide_textbox(CMOCK_renderer_hide_textbox_CAL
   cmock_call_instance->Expected_mainScreen = mainScreen;
 }
 
+void renderer_hide_textbox_CMockIgnore(void)
+{
+  Mock.renderer_hide_textbox_IgnoreBool = (char)1;
+}
+
+void renderer_hide_textbox_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_textbox_IgnoreBool = (char)0;
+}
+
 void renderer_hide_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScreen)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_hide_textbox_CALL_INSTANCE));
@@ -524,8 +781,101 @@ void renderer_hide_textbox_CMockExpect(UNITY_LINE_TYPE cmock_line, bool mainScre
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_hide_textbox_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_textbox_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_textbox_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_hide_textbox(cmock_call_instance, mainScreen);
+}
+
+void renderer_show_choice_overlay(int choice_index, int num_choices)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_renderer_show_choice_overlay_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_renderer_show_choice_overlay);
+  cmock_call_instance = (CMOCK_renderer_show_choice_overlay_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_show_choice_overlay_CallInstance);
+  Mock.renderer_show_choice_overlay_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_choice_overlay_CallInstance);
+  if (Mock.renderer_show_choice_overlay_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  {
+    UNITY_SET_DETAILS(CMockString_renderer_show_choice_overlay,CMockString_choice_index);
+    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_choice_index, choice_index, cmock_line, CMockStringMismatch);
+  }
+  {
+    UNITY_SET_DETAILS(CMockString_renderer_show_choice_overlay,CMockString_num_choices);
+    UNITY_TEST_ASSERT_EQUAL_INT(cmock_call_instance->Expected_num_choices, num_choices, cmock_line, CMockStringMismatch);
+  }
+  UNITY_CLR_DETAILS();
+}
+
+void CMockExpectParameters_renderer_show_choice_overlay(CMOCK_renderer_show_choice_overlay_CALL_INSTANCE* cmock_call_instance, int choice_index, int num_choices);
+void CMockExpectParameters_renderer_show_choice_overlay(CMOCK_renderer_show_choice_overlay_CALL_INSTANCE* cmock_call_instance, int choice_index, int num_choices)
+{
+  cmock_call_instance->Expected_choice_index = choice_index;
+  cmock_call_instance->Expected_num_choices = num_choices;
+}
+
+void renderer_show_choice_overlay_CMockIgnore(void)
+{
+  Mock.renderer_show_choice_overlay_IgnoreBool = (char)1;
+}
+
+void renderer_show_choice_overlay_CMockStopIgnore(void)
+{
+  Mock.renderer_show_choice_overlay_IgnoreBool = (char)0;
+}
+
+void renderer_show_choice_overlay_CMockExpect(UNITY_LINE_TYPE cmock_line, int choice_index, int num_choices)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_choice_overlay_CALL_INSTANCE));
+  CMOCK_renderer_show_choice_overlay_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_show_choice_overlay_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_show_choice_overlay_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_choice_overlay_CallInstance, cmock_guts_index);
+  Mock.renderer_show_choice_overlay_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  CMockExpectParameters_renderer_show_choice_overlay(cmock_call_instance, choice_index, num_choices);
+}
+
+void renderer_hide_choice_overlay(void)
+{
+  UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
+  CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE* cmock_call_instance;
+  UNITY_SET_DETAIL(CMockString_renderer_hide_choice_overlay);
+  cmock_call_instance = (CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_choice_overlay_CallInstance);
+  Mock.renderer_hide_choice_overlay_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_choice_overlay_CallInstance);
+  if (Mock.renderer_hide_choice_overlay_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
+  cmock_line = cmock_call_instance->LineNumber;
+  UNITY_CLR_DETAILS();
+}
+
+void renderer_hide_choice_overlay_CMockIgnore(void)
+{
+  Mock.renderer_hide_choice_overlay_IgnoreBool = (char)1;
+}
+
+void renderer_hide_choice_overlay_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_choice_overlay_IgnoreBool = (char)0;
+}
+
+void renderer_hide_choice_overlay_CMockExpect(UNITY_LINE_TYPE cmock_line)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE));
+  CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_hide_choice_overlay_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_hide_choice_overlay_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_choice_overlay_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_choice_overlay_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
 }
 
 int renderer_show_left(const char* name, const char* expression)
@@ -535,6 +885,14 @@ int renderer_show_left(const char* name, const char* expression)
   UNITY_SET_DETAIL(CMockString_renderer_show_left);
   cmock_call_instance = (CMOCK_renderer_show_left_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_show_left_CallInstance);
   Mock.renderer_show_left_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_left_CallInstance);
+  if (Mock.renderer_show_left_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.renderer_show_left_FinalReturn;
+    Mock.renderer_show_left_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -556,6 +914,26 @@ void CMockExpectParameters_renderer_show_left(CMOCK_renderer_show_left_CALL_INST
   cmock_call_instance->Expected_expression = expression;
 }
 
+void renderer_show_left_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_left_CALL_INSTANCE));
+  CMOCK_renderer_show_left_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_show_left_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_show_left_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_left_CallInstance, cmock_guts_index);
+  Mock.renderer_show_left_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.renderer_show_left_IgnoreBool = (char)1;
+}
+
+void renderer_show_left_CMockStopIgnore(void)
+{
+  if(Mock.renderer_show_left_IgnoreBool)
+    Mock.renderer_show_left_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_left_CallInstance);
+  Mock.renderer_show_left_IgnoreBool = (char)0;
+}
+
 void renderer_show_left_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_left_CALL_INSTANCE));
@@ -563,6 +941,7 @@ void renderer_show_left_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const c
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_show_left_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_left_CallInstance, cmock_guts_index);
+  Mock.renderer_show_left_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_show_left(cmock_call_instance, name, expression);
   cmock_call_instance->ReturnVal = cmock_to_return;
@@ -575,6 +954,14 @@ int renderer_show_right(const char* name, const char* expression)
   UNITY_SET_DETAIL(CMockString_renderer_show_right);
   cmock_call_instance = (CMOCK_renderer_show_right_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_show_right_CallInstance);
   Mock.renderer_show_right_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_right_CallInstance);
+  if (Mock.renderer_show_right_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.renderer_show_right_FinalReturn;
+    Mock.renderer_show_right_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -596,6 +983,26 @@ void CMockExpectParameters_renderer_show_right(CMOCK_renderer_show_right_CALL_IN
   cmock_call_instance->Expected_expression = expression;
 }
 
+void renderer_show_right_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_right_CALL_INSTANCE));
+  CMOCK_renderer_show_right_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_show_right_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_show_right_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_right_CallInstance, cmock_guts_index);
+  Mock.renderer_show_right_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.renderer_show_right_IgnoreBool = (char)1;
+}
+
+void renderer_show_right_CMockStopIgnore(void)
+{
+  if(Mock.renderer_show_right_IgnoreBool)
+    Mock.renderer_show_right_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_right_CallInstance);
+  Mock.renderer_show_right_IgnoreBool = (char)0;
+}
+
 void renderer_show_right_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_right_CALL_INSTANCE));
@@ -603,6 +1010,7 @@ void renderer_show_right_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const 
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_show_right_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_right_CallInstance, cmock_guts_index);
+  Mock.renderer_show_right_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_show_right(cmock_call_instance, name, expression);
   cmock_call_instance->ReturnVal = cmock_to_return;
@@ -615,6 +1023,14 @@ int renderer_show_center(const char* name, const char* expression)
   UNITY_SET_DETAIL(CMockString_renderer_show_center);
   cmock_call_instance = (CMOCK_renderer_show_center_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_show_center_CallInstance);
   Mock.renderer_show_center_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_center_CallInstance);
+  if (Mock.renderer_show_center_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    if (cmock_call_instance == NULL)
+      return Mock.renderer_show_center_FinalReturn;
+    Mock.renderer_show_center_FinalReturn = cmock_call_instance->ReturnVal;
+    return cmock_call_instance->ReturnVal;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   {
@@ -636,6 +1052,26 @@ void CMockExpectParameters_renderer_show_center(CMOCK_renderer_show_center_CALL_
   cmock_call_instance->Expected_expression = expression;
 }
 
+void renderer_show_center_CMockIgnoreAndReturn(UNITY_LINE_TYPE cmock_line, int cmock_to_return)
+{
+  CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_center_CALL_INSTANCE));
+  CMOCK_renderer_show_center_CALL_INSTANCE* cmock_call_instance = (CMOCK_renderer_show_center_CALL_INSTANCE*)CMock_Guts_GetAddressFor(cmock_guts_index);
+  UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
+  memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
+  Mock.renderer_show_center_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_center_CallInstance, cmock_guts_index);
+  Mock.renderer_show_center_IgnoreBool = (char)0;
+  cmock_call_instance->LineNumber = cmock_line;
+  cmock_call_instance->ReturnVal = cmock_to_return;
+  Mock.renderer_show_center_IgnoreBool = (char)1;
+}
+
+void renderer_show_center_CMockStopIgnore(void)
+{
+  if(Mock.renderer_show_center_IgnoreBool)
+    Mock.renderer_show_center_CallInstance = CMock_Guts_MemNext(Mock.renderer_show_center_CallInstance);
+  Mock.renderer_show_center_IgnoreBool = (char)0;
+}
+
 void renderer_show_center_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const char* name, const char* expression, int cmock_to_return)
 {
   CMOCK_MEM_INDEX_TYPE cmock_guts_index = CMock_Guts_MemNew(sizeof(CMOCK_renderer_show_center_CALL_INSTANCE));
@@ -643,6 +1079,7 @@ void renderer_show_center_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, const
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_show_center_CallInstance = CMock_Guts_MemChain(Mock.renderer_show_center_CallInstance, cmock_guts_index);
+  Mock.renderer_show_center_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
   CMockExpectParameters_renderer_show_center(cmock_call_instance, name, expression);
   cmock_call_instance->ReturnVal = cmock_to_return;
@@ -655,9 +1092,24 @@ void renderer_hide_left(void)
   UNITY_SET_DETAIL(CMockString_renderer_hide_left);
   cmock_call_instance = (CMOCK_renderer_hide_left_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_left_CallInstance);
   Mock.renderer_hide_left_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_left_CallInstance);
+  if (Mock.renderer_hide_left_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_hide_left_CMockIgnore(void)
+{
+  Mock.renderer_hide_left_IgnoreBool = (char)1;
+}
+
+void renderer_hide_left_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_left_IgnoreBool = (char)0;
 }
 
 void renderer_hide_left_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -667,6 +1119,7 @@ void renderer_hide_left_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_hide_left_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_left_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_left_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -677,9 +1130,24 @@ void renderer_hide_right(void)
   UNITY_SET_DETAIL(CMockString_renderer_hide_right);
   cmock_call_instance = (CMOCK_renderer_hide_right_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_right_CallInstance);
   Mock.renderer_hide_right_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_right_CallInstance);
+  if (Mock.renderer_hide_right_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_hide_right_CMockIgnore(void)
+{
+  Mock.renderer_hide_right_IgnoreBool = (char)1;
+}
+
+void renderer_hide_right_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_right_IgnoreBool = (char)0;
 }
 
 void renderer_hide_right_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -689,6 +1157,7 @@ void renderer_hide_right_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_hide_right_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_right_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_right_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
@@ -699,9 +1168,24 @@ void renderer_hide_center(void)
   UNITY_SET_DETAIL(CMockString_renderer_hide_center);
   cmock_call_instance = (CMOCK_renderer_hide_center_CALL_INSTANCE*)CMock_Guts_GetAddressFor(Mock.renderer_hide_center_CallInstance);
   Mock.renderer_hide_center_CallInstance = CMock_Guts_MemNext(Mock.renderer_hide_center_CallInstance);
+  if (Mock.renderer_hide_center_IgnoreBool)
+  {
+    UNITY_CLR_DETAILS();
+    return;
+  }
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringCalledMore);
   cmock_line = cmock_call_instance->LineNumber;
   UNITY_CLR_DETAILS();
+}
+
+void renderer_hide_center_CMockIgnore(void)
+{
+  Mock.renderer_hide_center_IgnoreBool = (char)1;
+}
+
+void renderer_hide_center_CMockStopIgnore(void)
+{
+  Mock.renderer_hide_center_IgnoreBool = (char)0;
 }
 
 void renderer_hide_center_CMockExpect(UNITY_LINE_TYPE cmock_line)
@@ -711,6 +1195,7 @@ void renderer_hide_center_CMockExpect(UNITY_LINE_TYPE cmock_line)
   UNITY_TEST_ASSERT_NOT_NULL(cmock_call_instance, cmock_line, CMockStringOutOfMemory);
   memset(cmock_call_instance, 0, sizeof(*cmock_call_instance));
   Mock.renderer_hide_center_CallInstance = CMock_Guts_MemChain(Mock.renderer_hide_center_CallInstance, cmock_guts_index);
+  Mock.renderer_hide_center_IgnoreBool = (char)0;
   cmock_call_instance->LineNumber = cmock_line;
 }
 
