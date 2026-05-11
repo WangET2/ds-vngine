@@ -7,6 +7,7 @@
 #include "Mocktext.h"
 #include "Mockdisplay.h"
 #include "Mockscript.h"
+#include "Mockaudio.h"
 #include <string.h>
 #include <stdbool.h>
 
