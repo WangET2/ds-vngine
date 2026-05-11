@@ -166,6 +166,12 @@ void test_parser_endbgm(void){
     verify_command_fields(input, CMD_ENDBGM, 0, expected_args);
 }
 
+void test_parser_endsfx(void){
+    char *input = "ENDSFX";
+    char *expected_args[1];
+    verify_command_fields(input, CMD_ENDSFX, 0, expected_args);
+}
+
 void test_parser_wait(void){
     char *input = "WAIT";
     char *expected_args[1];
@@ -275,6 +281,7 @@ void run_parser_tests(void){
     RUN_TEST(test_parser_bgm);
     RUN_TEST(test_parser_sfx);
     RUN_TEST(test_parser_endbgm);
+    RUN_TEST(test_parser_endsfx);
 
     RUN_TEST(test_parser_wait);
     RUN_TEST(test_parser_load);

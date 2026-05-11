@@ -341,6 +341,40 @@ void test_interpreter_nested_multi_choice(void){
     TEST_ASSERT_TRUE(flags_has("flag1"));
 }
 
+void test_interpreter_bgm(void){
+    char *args[1] = {"test_bgm"};
+    audio_start_bgm_ExpectAndReturn("test_bgm", 0);
+    fill_and_test_interpreter(CMD_BGM, 1, args, INTERPRETER_RESULT_OK, false);
+}
+
+void test_interpreter_bgm_error(void){
+    char *args[1] = {"test_bgm"};
+    audio_start_bgm_ExpectAndReturn("test_bgm", -1);
+    fill_and_test_interpreter(CMD_BGM, 1, args, INTERPRETER_RESULT_ERROR, false);
+}
+
+void test_interpreter_sfx(void){
+    char *args[1] = {"test_sfx"};
+    audio_start_sfx_ExpectAndReturn("test_sfx", 0);
+    fill_and_test_interpreter(CMD_SFX, 1, args, INTERPRETER_RESULT_OK, false);
+}
+
+void test_interpreter_sfx_error(void){
+    char *args[1] = {"test_sfx"};
+    audio_start_sfx_ExpectAndReturn("test_sfx", -1);
+    fill_and_test_interpreter(CMD_SFX, 1, args, INTERPRETER_RESULT_ERROR, false);
+}
+
+void test_interpreter_endbgm(void){
+    audio_stop_bgm_Expect();
+    fill_and_test_interpreter(CMD_ENDBGM, 0, NULL, INTERPRETER_RESULT_OK, false);
+}
+
+void test_interpreter_endsfx(void){
+    audio_stop_sfx_Expect();
+    fill_and_test_interpreter(CMD_ENDSFX, 0, NULL, INTERPRETER_RESULT_OK, false);
+}
+
 void test_interpreter_pass(void){
     fill_and_test_interpreter(CMD_PASS, 0, NULL, INTERPRETER_RESULT_OK, false);
 }
@@ -411,6 +445,13 @@ void run_interpreter_tests(void){
     RUN_TEST(test_interpreter_choice_dispatch);
     RUN_TEST(test_interpreter_choice_nested_dispatch);
     RUN_TEST(test_interpreter_nested_multi_choice);
+
+    RUN_TEST(test_interpreter_bgm);
+    RUN_TEST(test_interpreter_bgm_error);
+    RUN_TEST(test_interpreter_sfx);
+    RUN_TEST(test_interpreter_sfx_error);
+    RUN_TEST(test_interpreter_endbgm);
+    RUN_TEST(test_interpreter_endsfx);
 
     RUN_TEST(test_interpreter_pass);
     RUN_TEST(test_interpreter_wait);
