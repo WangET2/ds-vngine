@@ -36,6 +36,7 @@ HIDE_NARRATE, CMD_HIDE_NARRATE, 0, false
 BGM, CMD_BGM, 1, false
 SFX, CMD_SFX, 1, false
 ENDBGM, CMD_ENDBGM, 0, false
+ENDSFX, CMD_ENDSFX, 0, false
 WAIT, CMD_WAIT, 0, false
 LOAD, CMD_LOAD, 1, false
 PASS, CMD_PASS, 0, false

@@ -5,11 +5,13 @@
 #include "display.h"
 #include "choice.h"
 #include "renderer.h"
+#include "audio.h"
 #include <stdbool.h>
 #include <string.h>
 
 void engine_init(void){
     display_init();
+    audio_init();
     interpreter_init();
 }
 

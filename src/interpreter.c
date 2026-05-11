@@ -5,6 +5,7 @@
 #include "script.h"
 #include "flags.h"
 #include "choice.h"
+#include "audio.h"
 #include <stdbool.h>
 #include <string.h>
 
@@ -165,24 +166,14 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         case CMD_CHOICE: {
             blocked = true;
             blockType = BLOCK_CHOICE;
-            //renderer set ui, text draw choice text, etc.
-
             int arr_size = cmd->num_args;
             int num_choices = arr_size/2;
-
-            //replace this call with appropriate choice ui once the asset is created
-            //ternary operator on num_choices for name of asset?
             char *ui_element = num_choices == 2 ? "choicetwo" : num_choices == 3 ? "choicethree" : "choicefour";
+            
             renderer_load_textbox(ui_element, false);
             renderer_show_textbox(false);
             renderer_show_choice_overlay(0, num_choices);
-            //this function is much more general than loading a textbox (?) worth a rename?
-            //magic string! bad!
 
-            //also todo: refactor text module; this leaf module knows too much about dispatch... 
-            //are text locations more like dispatch details? 
-            //immediate write vs animated write
-            //anyways call text to write choice text here
             char *choice_text[num_choices];
             for(int i = 0; i < arr_size; i+=2)
                 choice_text[i/2] = cmd->args[i];
@@ -193,6 +184,22 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
                 instructions[j/2] = cmd->args[j];
             choice_init(instructions, num_choices);
             return INTERPRETER_RESULT_BLOCKED;
+        }
+        case CMD_BGM: {
+            ret = audio_start_bgm(cmd->args[0]);
+            return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
+        }
+        case CMD_SFX: {
+            ret = audio_start_sfx(cmd->args[0]);
+            return ret == 0 ? INTERPRETER_RESULT_OK : INTERPRETER_RESULT_ERROR;
+        }
+        case CMD_ENDBGM: {
+            audio_stop_bgm();
+            return INTERPRETER_RESULT_OK;
+        }
+        case CMD_ENDSFX: {
+            audio_stop_sfx();
+            return INTERPRETER_RESULT_OK;
         }
         case CMD_WAIT: {
             blocked = true;

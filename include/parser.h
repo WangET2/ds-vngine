@@ -32,6 +32,7 @@ typedef enum{
     CMD_BGM,
     CMD_SFX,
     CMD_ENDBGM,
+    CMD_ENDSFX,
     
     CMD_WAIT,
     CMD_LOAD,
