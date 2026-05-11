@@ -6,3 +6,6 @@ ninja.exe
 architectds/
 build/
 test_runner
+tools/__pycache__
+src/soundbank.gperf
+src/soundbank.c
