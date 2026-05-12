@@ -48,5 +48,6 @@ void audio_stop_bgm(void){
 void audio_stop_sfx(void){
     if(!g_sfx) return;
     mmEffectCancelAll();
+    mmUnloadEffect(g_sfx->index);
     g_sfx = NULL;
 }
