@@ -6,9 +6,14 @@
 
 from architectds import *
 from tools.soundbank_mapgen import create_soundbank_gperf, build_soundbank_source
+from tools.backgroundmaker import convert_backgrounds
+from tools.spritemaker import convert_sprites
 
 nitrofs = NitroFS()
-nitrofs.add_grit(['assets/graphics'])
+convert_sprites()
+convert_backgrounds()
+nitrofs.add_grit(['build/assets/graphics', 'assets/graphics/ui'])
+nitrofs.add_grit(['assets/graphics/ui'],out_dir='grit/ui')
 nitrofs.add_files_unchanged(['assets/scripts'], out_dir='scripts')
 nitrofs.add_files_unchanged(['assets/graphics/sprites/offsets'], out_dir='offsets')
 nitrofs_soundbank_header = nitrofs.add_mmutil(['assets/audio/sfx', 'assets/audio/bgm'])

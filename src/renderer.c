@@ -221,7 +221,7 @@ int renderer_set_sub_backdrop(void){
     size_t mapSize = 0;
     void *palData = NULL;
     size_t palSize = 0;
-    GRFError err = grfLoadPath("nitro:/grit/bg/subbg_png.grf", NULL, &bgData, &bgSize,
+    GRFError err = grfLoadPath("nitro:/grit/ui/subbg_png.grf", NULL, &bgData, &bgSize,
                                &mapData, &mapSize, &palData, &palSize); 
     if(err != GRF_NO_ERROR) return -1;
     memcpy(bgGetGfxPtr(subBg), bgData, bgSize);
