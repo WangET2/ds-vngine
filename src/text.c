@@ -1,5 +1,6 @@
 #include "text.h"
 #include "display.h"
+#include "common.h"
 
 #include <nds.h>
 #include <string.h>
@@ -29,8 +30,8 @@ enum {
 };
 
 typedef struct {
-    char speaker[32];
-    char text[512];
+    char speaker[MAX_SPEAKER_LEN];
+    char text[MAX_TEXT_LEN];
 
     int visible_chars;
     int total_chars;

@@ -3,10 +3,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include "common.h"
 
 static FILE *fptr = NULL;
 static int lineNum;
-char currentScene[100];
+char currentScene[MAX_SCRIPT_TITLE_LEN];
 
 void script_close(void){
     if(fptr != NULL) fclose(fptr);
@@ -17,7 +18,7 @@ void script_close(void){
 
 int script_open(const char* scene_name){
     if(fptr != NULL) script_close();
-    char path[100];
+    char path[MAX_SCRIPT_TITLE_LEN];
     int n = snprintf(path, sizeof(path), "nitro:/scripts/%s.txt", scene_name);
     if(n >= sizeof(path)) return -1; 
     fptr = fopen(path, "r");
