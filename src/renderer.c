@@ -139,7 +139,7 @@ int renderer_set_background(const char *bg_name, bool mainScreen) {
     size_t bgSize = 0;
     void *palData = NULL;
     size_t palSize = 0;
-    char path[100];
+    char path[128];
     int n = snprintf(path, sizeof(path), "nitro:/grit/bg/%s_png.grf", bg_name);
     if(n >= sizeof(path)) return -1;
     GRFError err = grfLoadPath(path, NULL, &bgData, &bgSize,

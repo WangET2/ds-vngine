@@ -1,8 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-//#include <nds.h>
-
 typedef enum{
     MAIN_LAYER_TEXT = 0,
     MAIN_LAYER_TEXTBOX = 1,
@@ -41,7 +39,6 @@ typedef enum{
     SUB_UI_MAPBASE,
     SUB_SCENE_BITMAPBASE = 4
 }SubMapBase;
-
 
 void display_init(void);
 void display_shutdown(void);

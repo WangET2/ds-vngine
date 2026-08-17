@@ -2,6 +2,17 @@
 #define RENDERER_H
 #include <stdbool.h>
 
+#include "common.h"
+
+typedef struct{
+    char sprite_slot_left[MAX_SPRITE_FILENAME_LEN];
+    char sprite_slot_right[MAX_SPRITE_FILENAME_LEN];
+    char sprite_slot_center[MAX_SPRITE_FILENAME_LEN];
+
+    char background_main[MAX_BACKGROUND_FILENAME_LEN];
+    char background_sub[MAX_BACKGROUND_FILENAME_LEN];
+}RendererState;
+
 void renderer_init(void);
 void renderer_shutdown(void);
 void renderer_update(void);
