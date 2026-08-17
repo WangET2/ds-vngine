@@ -4,10 +4,16 @@
 
 #include "common.h"
 
+typedef struct {
+    char sprite_name[MAX_SPRITE_FILENAME_LEN];
+    char sprite_expression[MAX_SPRITE_FILENAME_LEN];
+} SlotState;
+
+
 typedef struct{
-    char sprite_slot_left[MAX_SPRITE_FILENAME_LEN];
-    char sprite_slot_right[MAX_SPRITE_FILENAME_LEN];
-    char sprite_slot_center[MAX_SPRITE_FILENAME_LEN];
+    SlotState slot_left;
+    SlotState slot_right;
+    SlotState slot_center;
 
     char background_main[MAX_BACKGROUND_FILENAME_LEN];
     char background_sub[MAX_BACKGROUND_FILENAME_LEN];
@@ -35,5 +41,7 @@ int renderer_show_center(const char *name, const char *expression);
 void renderer_hide_left(void);
 void renderer_hide_right(void);
 void renderer_hide_center(void);
+
+void renderer_get_state(RendererState* out);
 
 #endif

@@ -28,6 +28,9 @@ int engine_load_scene(const char *scene_name){
     return script_open(scene_name);
 }
 
+extern void text_debug_set(const char* text);
+extern void text_debug_clear(void);
+
 EngineResult engine_update(void){
     if(!script_is_open()) return ENGINE_RESULT_ERROR;
     char currentLine[PARSER_MAX_LINE_LEN];
@@ -48,7 +51,20 @@ EngineResult engine_update(void){
         }
         //interpreter_update();
     }
+    text_debug_clear();
     interpreter_update();
+    RendererState rs;
+    renderer_get_state(&rs);
+    char buf[1024];
+    snprintf(&buf[0], sizeof(buf), "%s %s\n%s %s\n%s %s", 
+        &(rs.slot_left.sprite_name[0]),
+        &(rs.slot_left.sprite_expression[0]),
+        &(rs.slot_right.sprite_name[0]),
+        &(rs.slot_right.sprite_expression[0]),
+        &(rs.background_main[0]),
+        &(rs.background_sub[0])
+    );
+    text_debug_set(&buf[0]);
     return ENGINE_RESULT_OK;
 }
 
