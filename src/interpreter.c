@@ -231,6 +231,7 @@ InterpreterBlockType interpreter_is_blocked(void){
 
 void interpreter_update(void){
     renderer_update();
+    audio_update();
     if (!blocked) return;
     if(blockType == BLOCK_TEXT) text_update();
 }
