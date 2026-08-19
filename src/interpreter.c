@@ -27,7 +27,7 @@ void interpreter_reset(void){
 
 void interpreter_shutdown(void){
     flags_destroy();
-    text_clear();
+    text_reset();
     renderer_shutdown();
 }
 
@@ -118,13 +118,13 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
         case CMD_HIDE_SAY: {
             blocked = false;
             renderer_hide_textbox(true);
-            text_clear();
+            text_reset();
             return INTERPRETER_RESULT_OK;
         }
         case CMD_HIDE_NARRATE: {
             blocked = false;
             renderer_hide_textbox(false);
-            text_clear();
+            text_reset();
             return INTERPRETER_RESULT_OK;
         }
         case CMD_FLAG: {
@@ -218,7 +218,7 @@ InterpreterResult interpreter_execute(const ParsedCommand *cmd){
             ret = script_open(script_name);
             if(ret != 0) return INTERPRETER_RESULT_ERROR;
             renderer_reset();
-            text_clear();
+            text_reset();
             return INTERPRETER_RESULT_OK;
         }
     }

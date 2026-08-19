@@ -6,30 +6,25 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+
 #define FRAMESPERCHAR 2
 
-enum {
-    MAIN_ANCHOR_X = 2,
-    MAIN_ANCHOR_Y = 20,
-    SPEAKER_ANCHOR_X = 2,
-    SPEAKER_ANCHOR_Y = 18,
+//main screen textboxes
+#define MAIN_ANCHOR_X 2
+#define MAIN_ANCHOR_Y 20
+#define SPEAKER_ANCHOR_X 2
+#define SPEAKER_ANCHOR_Y 18
 
-    SUB_ANCHOR_X = 3,
-    SUB_ANCHOR_Y = 4,
+#define SUB_ANCHOR_X 3
+#define SUB_ANCHOR_Y 4
 
-    CHOICE_ANCHOR_X = 5,
-    CHOICE_2_1_ANCHOR_Y = 8,
-    CHOICE_2_2_ANCHOR_Y = 15,
-    CHOICE_3_1_ANCHOR_Y = 6,
-    CHOICE_3_2_ANCHOR_Y = 11,
-    CHOICE_3_3_ANCHOR_Y = 16,
-    CHOICE_4_1_ANCHOR_Y = 4,
-    CHOICE_4_2_ANCHOR_Y = 9,
-    CHOICE_4_3_ANCHOR_Y = 14,
-    CHOICE_4_4_ANCHOR_Y = 19,
-};
+#define CHOICE_ANCHOR_X 5
 
-typedef struct {
+static const int TWO_CHOICE_ANCHOR_Y[2] = {8, 15};
+static const int THREE_CHOICE_ANCHOR_Y[3] = {6, 11, 16};
+static const int FOUR_CHOICE_ANCHOR_Y[4] = {4, 9, 14, 19};
+
+/* typedef struct {
     char speaker[MAX_SPEAKER_LEN];
     char text[MAX_TEXT_LEN];
 
@@ -41,25 +36,65 @@ typedef struct {
 
     bool finished;
     bool narration;
-} TextState;
+} TextState; */
 
-static TextState g_text;
+typedef enum {
+    SLOT_DIALOGUE,
+    SLOT_SPEAKER,
+    SLOT_NARRATION,
+    SLOT_CHOICE_ONE,
+    SLOT_CHOICE_TWO,
+    SLOT_CHOICE_THREE,
+    SLOT_CHOICE_FOUR,
+    NUM_TEXT_SLOTS
+} TextSlot_t;
 
-static PrintConsole dialogueBox;
-static PrintConsole speakerBox;
-static PrintConsole narrationBox;
-static PrintConsole debugWindow;
-static PrintConsole choice1;
-static PrintConsole choice2;
-static PrintConsole choice3;
-static PrintConsole choice4;
+typedef enum {
+    TEXT_MODE_NORMAL,
+    TEXT_MODE_WRITING
+} TextMode_t;
+
+typedef struct {
+    char buf[MAX_TEXT_LEN];
+
+    int visible_chars;
+    int total_chars;
+
+    int frame_counter;
+    bool finished;
+} TextSlot;
+
+typdef struct {
+    const TextSlot_t slot,
+    *PrintConsole console
+} TextSlotInfo_t;
+
+static PrintConsole s_dialogueBox;
+static PrintConsole s_speakerBox;
+static PrintConsole s_narrationBox;
+static PrintConsole s_choice1;
+static PrintConsole s_choice2;
+static PrintConsole s_choice3;
+static PrintConsole s_choice4;
+static PrintConsole s_debugWindow;
+
+TextSlotInfo_t s_text_slot_info[NUM_TEXT_SLOTS] = {
+    {SLOT_DIALOGUE, &s_dialogueBox},
+    {SLOT_SPEAKER, &s_speakerBox},
+    {SLOT_NARRATION, &s_narrationBox},
+    {SLOT_CHOICE_ONE, &s_choice1},
+    {SLOT_CHOICE_TWO, &s_choice2},
+    {SLOT_CHOICE_THREE, &s_choice3},
+    {SLOT_CHOICE_FOUR, &s_choice4}
+};
+
 
 void text_init(void){
-    consoleInit(&dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
+    consoleInit(&s_dialogueBox, MAIN_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 MAIN_TEXT_MAPBASE, MAIN_TEXT_TILEBASE, true, true);
     speakerBox = dialogueBox;
     
-    consoleInit(&narrationBox, SUB_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
+    consoleInit(&s_narrationBox, SUB_LAYER_TEXT, BgType_Text4bpp, BgSize_T_256x256,
                 SUB_TEXT_MAPBASE, SUB_TEXT_TILEBASE, false, true);
 
     debugWindow = narrationBox;
@@ -74,54 +109,44 @@ void text_init(void){
     consoleSetWindow(&narrationBox, SUB_ANCHOR_X, SUB_ANCHOR_Y, 26, 8);
     consoleSetWindow(&debugWindow, 2, 20, 30, 4);
 
-    g_text.frames_per_char = FRAMESPERCHAR;
+    s_text.frames_per_char = FRAMESPERCHAR;
 }
 
-void text_clear(void){
-    strcpy(g_text.speaker, "");
-    strcpy(g_text.text, "");
-    g_text.visible_chars = 0;
-    g_text.total_chars = 0;
-    g_text.frame_counter = 0;
-    g_text.finished = true;
-    consoleSelect(&dialogueBox);
-    consoleClear();
-    consoleSelect(&speakerBox);
-    consoleClear();
-    consoleSelect(&narrationBox);
-    consoleClear();
-    consoleSelect(&choice1);
-    consoleClear();
-    consoleSelect(&choice2);
-    consoleClear();
-    consoleSelect(&choice3);
-    consoleClear();
-    consoleSelect(&choice4);
-    consoleClear();
+void text_reset(void){
+    strcpy(s_text.speaker, "");
+    strcpy(s_text.text, "");
+    s_text.visible_chars = 0;
+    s_text.total_chars = 0;
+    s_text.frame_counter = 0;
+    s_text.finished = true;
+    for(int i = 0; i < NUM_TEXT_SLOTS; ++i){
+        consoleSelect(s_text_slot_info[i].console);
+        consoleClear();
+    }
 }
 
 void text_begin_dialogue(const char *speaker, const char *text) {
     text_clear();
-    strcpy(g_text.speaker, speaker);
+    strcpy(s_text.speaker, speaker);
     consoleSelect(&speakerBox);
     printf("%s", speaker);
-    strcpy(g_text.text, text);
-    g_text.total_chars = strlen(text);
-    g_text.visible_chars = 1;
-    g_text.frame_counter = 0;
-    g_text.finished = false;
-    g_text.narration = false;
+    strcpy(s_text.text, text);
+    s_text.total_chars = strlen(text);
+    s_text.visible_chars = 1;
+    s_text.frame_counter = 0;
+    s_text.finished = false;
+    s_text.narration = false;
 }
 
 void text_begin_narration(const char *text) {
     text_clear();
-    strcpy(g_text.speaker, "");
-    strcpy(g_text.text, text);
-    g_text.total_chars = strlen(text);
-    g_text.visible_chars = 1;
-    g_text.frame_counter = 0;
-    g_text.finished = false;
-    g_text.narration = true;
+    strcpy(s_text.speaker, "");
+    strcpy(s_text.text, text);
+    s_text.total_chars = strlen(text);
+    s_text.visible_chars = 1;
+    s_text.frame_counter = 0;
+    s_text.finished = false;
+    s_text.narration = true;
 }
 
 void text_write_choices(char* choices[], int num_choices){
@@ -129,38 +154,38 @@ void text_write_choices(char* choices[], int num_choices){
     //temporary, for testing purposes:
     switch(num_choices){
         case 2:{
-            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, CHOICE_2_1_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, TWO_CHOICE_ANCHOR_Y[0], 20, 2);
             consoleSelect(&choice1);
             printf("%s", choices[0]);
-            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, CHOICE_2_2_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, TWO_CHOICE_ANCHOR_Y[1], 20, 2);
             consoleSelect(&choice2);
             printf("%s", choices[1]);
             break;
         }
         case 3:{
-            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, CHOICE_3_1_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, THREE_CHOICE_ANCHOR_Y[0], 20, 2);
             consoleSelect(&choice1);
             printf("%s", choices[0]);
-            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, CHOICE_3_2_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, THREE_CHOICE_ANCHOR_Y[1], 20, 2);
             consoleSelect(&choice2);
             printf("%s", choices[1]);
-            consoleSetWindow(&choice3, CHOICE_ANCHOR_X, CHOICE_3_3_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice3, CHOICE_ANCHOR_X, THREE_CHOICE_ANCHOR_Y[2], 20, 2);
             consoleSelect(&choice3);
             printf("%s", choices[2]);
             break;
 
         }
         case 4:{
-            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, CHOICE_4_1_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice1, CHOICE_ANCHOR_X, FOUR_CHOICE_ANCHOR_Y[0], 20, 2);
             consoleSelect(&choice1);
             printf("%s", choices[0]);
-            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, CHOICE_4_2_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice2, CHOICE_ANCHOR_X, FOUR_CHOICE_ANCHOR_Y[1], 20, 2);
             consoleSelect(&choice2);
             printf("%s", choices[1]);
-            consoleSetWindow(&choice3, CHOICE_ANCHOR_X, CHOICE_4_3_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice3, CHOICE_ANCHOR_X, FOUR_CHOICE_ANCHOR_Y[2], 20, 2);
             consoleSelect(&choice3);
             printf("%s", choices[2]);
-            consoleSetWindow(&choice4, CHOICE_ANCHOR_X, CHOICE_4_4_ANCHOR_Y, 20, 2);
+            consoleSetWindow(&choice4, CHOICE_ANCHOR_X, FOUR_CHOICE_ANCHOR_Y[3], 20, 2);
             consoleSelect(&choice4);
             printf("%s", choices[3]);
             break;
@@ -170,26 +195,26 @@ void text_write_choices(char* choices[], int num_choices){
 }
 
 void text_update(void) {
-    if(g_text.visible_chars > g_text.total_chars){
-        g_text.finished = true;
+    if(s_text.visible_chars > s_text.total_chars){
+        s_text.finished = true;
         return;
     }
-    if(g_text.frame_counter == 0){
-        PrintConsole textbox = g_text.narration ? narrationBox : dialogueBox;
+    if(s_text.frame_counter == 0){
+        PrintConsole textbox = s_text.narration ? narrationBox : dialogueBox;
         consoleSelect(&textbox);
-        printf("%.*s", g_text.visible_chars, g_text.text);
-        g_text.visible_chars++;
+        printf("%.*s", s_text.visible_chars, s_text.text);
+        s_text.visible_chars++;
     }
-    g_text.frame_counter = (g_text.frame_counter + 1) % g_text.frames_per_char;
+    s_text.frame_counter = (s_text.frame_counter + 1) % s_text.frames_per_char;
 }
 
 void text_finish_immediately(void){
-    g_text.visible_chars = g_text.total_chars;
+    s_text.visible_chars = s_text.total_chars;
     text_update();
 }
 
 bool text_is_finished(void){
-    return g_text.finished;
+    return s_text.finished;
 }
 
 void text_debug_clear(){
